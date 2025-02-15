@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatting Zone</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-box">
+            <h1>Chatting Zone</h1>
+            <div class="login-form">
+                <form id="login-form">
+                    <label for="login-username">Username:</label>
+                    <input type="text" id="login-username" autocomplete="off">
+                    <label for="login-password">Password:</label>
+                    <input type="password" id="login-password" autocomplete="off">
+                    <button type="submit" id="login-submit">Log In</button>
+                </form>
+            </div>
+
+            <div class="signup-form">
+                <form id="signup-form">
+                    <label for="signup-username">Username:</label>
+                    <input type="text" id="signup-username" autocomplete="off">
+                    <label for="signup-password">Password:</label>
+                    <input type="password" id="signup-password" autocomplete="off">
+                    <button type="submit" id="signup-submit">Sign Up</button>
+                </form>
+            </div>
+
+            <div id="name-form">
+                <form id="name-submit-form">
+                    <label for="name-input">Enter your name:</label>
+                    <input type="text" id="name-input" autocomplete="off">
+                    <button type="submit" id="name-submit">Submit</button>
+                </form>
+            </div>
+
+            <div id="message-form" style="display: none;">
+                <form id="message-submit-form">
+                    <label for="message-input">Enter your message:</label>
+                    <input type="text" id="message-input" autocomplete="off" class="message-input">
+                    <button type="submit" id="message-submit" class="message-submit-button">Send</button>
+                </form>
+            </div>
+
+            <div class="message-list" id="chat-messages" style="display: none;"></div>
+        </div>
+    </div>
+    <script type="text/javascript" src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>
+ 
