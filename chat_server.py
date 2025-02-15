@@ -5,7 +5,6 @@ import tkinter as tk
 from tkinter import messagebox
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret_key'
 socketio = SocketIO(app)
 
 users = {}
