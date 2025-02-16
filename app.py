@@ -16,4 +16,4 @@ def handle_message(msg):
 
 
 if __name__ == '__main__':
-    socketio.run(app, port=8080)
+    socketio.run(app, port=8080,llow_unsafe_werkzeug=True)
