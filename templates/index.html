@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flask Chat Room</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
-    <script defer src="{{ url_for('static', filename='main.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <div class="chat-container">
-        <h2>Welcome to the Chat Room</h2>
-        <div id="chat-box"></div>
-        <input type="text" id="message" placeholder="Type a message...">
-        <button onclick="sendMessage()">Send</button>
-    </div>
+    <h1>Chat Room</h1>
+    <div id="chat-box"></div>
+
+    <input type="text" id="username" placeholder="Your Name">
+    <input type="text" id="message" placeholder="Type a message">
+    <button onclick="sendMessage()">Send</button>
+
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
 </html>

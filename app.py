@@ -1,19 +1,25 @@
-from flask import Flask, render_template
-from flask_socketio import SocketIO, send
+from flask import Flask, render_template, request, jsonify
+import time
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, cors_allowed_origins="*")
+
+messages = []  # Store chat messages
 
 @app.route('/')
-def index():
+def home():
     return render_template('index.html')
 
-@socketio.on('message')
-def handle_message(msg):
-    print(f"Message received: {msg}")
-    send(msg, broadcast=True)  # Send message to all clients
+@app.route('/send', methods=['POST'])
+def send():
+    username = request.form.get('username')
+    message = request.form.get('message')
+    if username and message:
+        messages.append({'username': username, 'message': message, 'timestamp': time.time()})
+    return '', 204  # No content response
 
+@app.route('/messages')
+def get_messages():
+    return jsonify(messages)
 
 if __name__ == '__main__':
-    socketio.run(app, debug=False,port=8080,host="0.0.0.0",allow_unsafe_werkzeug=True)
+    app.run(host='0.0.0.0', port=8080)
