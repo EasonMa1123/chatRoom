@@ -1,5 +1,15 @@
 from flask import Flask, render_template, request, jsonify
 import time
+from flask import Flask, render_template, request, jsonify
+from encryption_V2 import Encrytion
+from DataBase import DataRecord
+from password_strength import password_strength_checker
+
+
+
+from email_sender import email_send
+
+
 
 app = Flask(__name__)
 
