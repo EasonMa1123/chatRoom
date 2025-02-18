@@ -1,0 +1,66 @@
+body{
+    margin: 10px;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #41506b;
+}
+
+#container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;     
+    align-items: center;         
+    flex-direction: column;     
+}
+
+.processor{
+    background-color: #90f6d7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+    padding: auto;
+    border-radius: 20px;
+}
+
+input {
+    margin: 20px;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    
+}
+
+button{
+  margin: 17px;
+  font-family: 'Poppins', sans-serif;
+}
+
+#login-signup-switch {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    border-radius: 15px;
+    align-self: center;
+    margin: 0 auto;         
+}
+
+
+.signup-login-switch-toggle {
+    float: left;
+    background: #242729;
+
+ }
+ .signup-login-switch-toggle input {
+   position: absolute;
+   opacity: 0;
+ }
+ .signup-login-switch-toggle input + label {
+   padding: 7px;
+   float:left;
+   color: #fff;
+   cursor: pointer;
+ }
+ .signup-login-switch-toggle input:checked + label {
+   background: #1e549f;
+   border-radius: 8px;
+ }
