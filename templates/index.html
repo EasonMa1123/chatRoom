@@ -13,19 +13,61 @@
         <input type="button" onclick="menu_open()" class="sidebar-item" id="open_menu_button" style="display: none;"></button>
     </div>
     <h1>Chat Room</h1>
+    <div id="overlay-setting">
+        <div id="setting-layer">
+            <div id="setting-layout">
+                <div id="personal-setting">
+                    <div id="theme-setting" class="setting-section" >
+                        <a>Theme setting</a>
+                        <div class="switch-toggle">
+                            <input id="dark-theme" name="theme-setting-button" class="setting-button" type="radio" style="display: none;" onclick="set_dark_theme()" checked>
+                            <label for="dark-theme" class="setting-button">dark</label>
+                            
+                            <input id="bright-theme" name="theme-setting-button"  class="setting-button" type="radio" style="display: none;" onclick="set_bright_theme()">
+                            <label for="bright-theme"class="setting-button">bright</label>
+                        </div>
+                    </div>
+                    <div id="font-size-setting" class="setting-section">
+                        <a>Font size setting</a>
+                        <label></label>
+                        <input id="font-size" type="number" max="30" min="13" onchange="set_font_size(document.getElementById('font-size').value)" value="18">
+                    </div>
+                    <button onclick="save_setting()">Save Change</button>
+                </div>
+                <div id="change-username" class="setting-section" autocomplete="off">
+                    <a>Change Username</a>
+                    <input type="text"  id="Current-username" placeholder="Current Username" autocomplete="off" readonly onclick="this.removeAttribute('readonly');">
+                    <input type="text" id="New-username" placeholder="New Username" autocomplete="off" readonly onclick="this.removeAttribute('readonly');">
+                    <button id="Username-change-button" onclick="ChangeUserName()">Save change</button>
+
+                </div>
+                <div id="change-password" class="setting-section">
+                    <a>Change Password</a>
+                    <input type="password"  id="Current-password" placeholder="Current Password" autocomplete="off" readonly onclick="this.removeAttribute('readonly');">
+                    <input type="password" id="New-password" placeholder="New Password" autocomplete="off" readonly onclick="this.removeAttribute('readonly');">
+                    <button id="Password-change-button" onclick="ChangePassword()">Save change</button>
+
+                </div>
+                <div id="change-email" class="setting-section">
+                    <a>Change Email</a>
+                    <input type="email" id="New-email" placeholder="New Email" autocomplete="off" readonly onclick="this.removeAttribute('readonly');">
+                    <button id="Email-change-button" onclick="send_ver_email()">Send Verification Code</button>
+                    <input id="Verification-code" placeholder="Enter the code" style="display: none;">
+                    <button id="email-confirmation-button"onclick="check_ver_code()" style="display: none;">Save Change</button>
+                </div>
+                <button onclick="setting_off() ">Exit</button>
+            </div>
+        </div>
+    </div>
     <div id="sidebar" class="w3-sidebar">
         <label>User:</label>
         <label id="Username-display">Username</label>
         <button onclick="menu_close()" class="sidebar-item">Close &times;</button>
-        <label id="Encryption_button_label" for="Encryption_button" class="sidebar-item" style="background-color: #13314c;color: #ffffff;">Encryption</label>
-        <input type="radio" id="Encryption_button" onclick="show_encryption()" style="display: none;">
-        <label id="Decryption_button_label" for="Decryption_button" class="sidebar-item">Decryption</label>
-        <input type="radio" id="Decryption_button" onclick="show_decryption()" style="display: none;">
+        
         <div style="margin: 30px;"></div>
         <label for="setting">Setting </label>
         <input type="radio" id="setting" onclick="setting_on()" style="display: none;">
-        <label for="testing">testing </label>
-        <input type="radio" id="testing" onclick="direct_to_testing()" style="display: none;">
+
         <div style="margin: 30px;"></div>
         
         <div style="margin: 30px;"></div>

@@ -57,6 +57,48 @@ def Check_user_password():
     else:
         return jsonify({"check":False})
     
+
+
+@app.route('/update_account_username',methods = ['POST'])
+def update_account_username():
+    id = request.form['id']
+    new_username = request.form['New_username']
+    DataRecord().update_account_Username(new_username,id)
+    return jsonify({"Feedback":True})
+    
+
+@app.route('/password_Update',methods = ['POST'])
+def update_account_password():
+    id = request.form['id']
+    new_password = request.form['New_password']
+    DataRecord().update_account_Password(new_password,id)
+    return jsonify({"Feedback":True})
+    
+
+@app.route('/update_user_setting',methods = ['POST'])
+def update_user_setting():
+    id = request.form['id']
+    theme = request.form['theme']
+    fontsize = request.form['fontSize']
+    DataRecord().update_account_setting(id,theme,fontsize)
+    return jsonify({"Feedback":True})
+
+@app.route('/update_user_email',methods=['POST'])
+def update_user_email():
+    id = request.form["id"]
+    email = request.form["email"]
+    return jsonify({"Feedback":DataRecord().update_account_Email(email,id)})
+
+@app.route('/access_user_setting',methods = ['POST'])
+def access_user_setting():
+    id = request.form['id']
+    data = DataRecord().access_account_setting(id,False)
+    if data ==  None:
+        return jsonify({"Theme":None,"Fontsize":None})
+    else:
+        return jsonify({"Theme":data[1],"Fontsize":data[2]})
+
+    
 @app.route('/email_verification',methods = ['POST'])
 def email_verification():
     import random

@@ -17,7 +17,7 @@ function check_invalid_enter(){
 
 
 function logout(){
-    document.location.href = "/login";
+    document.location.href = "/";
     sessionStorage.setItem("",Username)
     sessionStorage.setItem("",Password)
 }
