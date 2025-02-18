@@ -1,7 +1,4 @@
-body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-}
+
 
 #chat-box {
   width: 80%;
@@ -11,4 +8,261 @@ body {
   margin: 10px auto;
   padding: 10px;
   background: #ffffff;
+}
+#sidebar {
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #f1f1f1;
+  display: none;
+  z-index: 1000; /* Ensure it stays on top */
+  overflow-x: hidden;
+  padding-top: 20px;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+}
+
+#overlay-setting {
+  position: fixed; /* Sit on top of the page content */
+  display: none; /* Hidden by default */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+  overflow: scroll;
+}
+
+#setting-layer{
+  vertical-align: middle;
+  width: 300px;
+  margin: auto;
+  border: black;
+
+}
+
+#setting-layout{
+  display: flex;
+  justify-content: center;  
+  align-items: center;      
+  margin: 15px;
+  text-align: center;
+  flex-direction: column;
+  border-radius: 10px;
+  background-color:#5fc9f3;
+  overflow-y: scroll;
+}
+
+.setting-section{
+  display: flex;
+  justify-content: center;  
+  align-items: center;      
+  margin: 15px;
+  text-align: center;
+  flex-direction: column;
+  border-radius: 10px;
+  background-color: #4fa6c8;
+  padding: 10px;
+}
+
+#personal-setting{
+  background-color: #257291;
+  border-radius: 10px;
+  margin: 6px;
+  padding: 3px;
+}
+
+/* Button inside the sidebar */
+#sidebar button {
+  padding: 10px;
+  text-align: left;
+  width: 100%;
+  background-color: #ccc;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* Sidebar item styling */
+#sidebar label {
+  display: flex;
+  padding: 10px;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  flex-direction: column;
+}
+
+body.active {
+  margin-left: 250px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+        
+  
+  height: 100vh;   
+  background-image:linear-gradient(#081f37,#0d2f53,#081f37) ;  
+           
+}
+h1{
+  color: white;
+}
+
+h1,h2 {
+  margin-top: 20px;
+  align-self: center;
+  text-align: center;
+}
+
+#sidebar {
+  background-color: white;
+}
+
+
+#content-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;     
+  align-items: center;         
+  flex-direction: column;              
+}
+
+#content_central {
+  display: flex;
+  justify-content: center;  
+  align-items: center;      
+  margin: 15px;
+  border-radius: 10px;
+  text-align: center;
+  flex-direction: row;
+}
+
+.switch-toggle {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  border-radius: 15px;
+  align-self: center;
+  margin: 0 auto;         
+}
+
+#encryption{
+  align-items: center;
+  margin: auto;
+  
+}
+
+.Processor {
+  width: 300px;
+  padding: 20px;
+  border: none;
+  border-radius: 8px;
+  
+  background-color:#5fc9f3;
+  margin: auto;
+  align-items: center;
+}
+
+#encryption:hover{
+  background-color: #56b3d8;
+}
+
+#Option_button {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.text_input{
+  text-align: center;
+  align-self:center ;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.File_upload{
+  border: 10px black;
+  background-color: #b7daf1;
+  border-radius: 10px;
+  margin:13px;
+  display: block;
+  cursor: pointer;
+}
+
+#encryption, #decryption {
+  display: none;
+}
+
+.InOutPut {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+
+input[type="file"] {
+  text-align: center;
+}
+
+textarea, input[type="text"],input[type="password"] {
+  width: 80%;              /* Adjust width to fit within the layout */
+  margin: 10px 0;
+  text-align: center;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  margin: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: #2e79ba;
+  
+
+}
+
+button:hover{
+  background-color: #13314c;
+  color: white;
+}
+
+p span {
+  max-height: 100px;                             
+  display: block;                 
+  word-wrap: break-word;
+}
+
+.message{
+  overflow: auto;
+}
+
+.switch-toggle {
+  float: left;
+  background: #242729;
+  margin: 10px;
+}
+.switch-toggle input {
+ position: absolute;
+ opacity: 0;
+}
+.switch-toggle input + label {
+ padding: 7px;
+ float:left;
+ color: #fff;
+ cursor: pointer;
+}
+.switch-toggle input:checked + label {
+ background: #1e549f;
+ border-radius: 8px;
 }
