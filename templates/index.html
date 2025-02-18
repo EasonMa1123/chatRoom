@@ -8,13 +8,44 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+    <div>
+        <label for="open_menu_button" style="font-size: 50px;color: aliceblue; margin-left: 10px;">☰</label>
+        <input type="button" onclick="menu_open()" class="sidebar-item" id="open_menu_button" style="display: none;"></button>
+    </div>
     <h1>Chat Room</h1>
-    <div id="chat-box"></div>
-
-    <input type="text" id="username" placeholder="Your Name">
-    <input type="text" id="message" placeholder="Type a message">
-    <button onclick="sendMessage()">Send</button>
-
+    <div id="sidebar" class="w3-sidebar">
+        <label>User:</label>
+        <label id="Username-display">Username</label>
+        <button onclick="menu_close()" class="sidebar-item">Close &times;</button>
+        <label id="Encryption_button_label" for="Encryption_button" class="sidebar-item" style="background-color: #13314c;color: #ffffff;">Encryption</label>
+        <input type="radio" id="Encryption_button" onclick="show_encryption()" style="display: none;">
+        <label id="Decryption_button_label" for="Decryption_button" class="sidebar-item">Decryption</label>
+        <input type="radio" id="Decryption_button" onclick="show_decryption()" style="display: none;">
+        <div style="margin: 30px;"></div>
+        <label for="setting">Setting </label>
+        <input type="radio" id="setting" onclick="setting_on()" style="display: none;">
+        <label for="testing">testing </label>
+        <input type="radio" id="testing" onclick="direct_to_testing()" style="display: none;">
+        <div style="margin: 30px;"></div>
+        
+        <div style="margin: 30px;"></div>
+        <label for="logout">Log out</label>
+        <input type="radio" id="logout" onclick="logout()" style="display: none;">
+    </div>
+    <div id="content-wrapper">
+        <div id="chat-box"></div>
+        <div id="content_central">
+        
+            <input type="text" id="message" placeholder="Type a message">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+    
     <script src="{{ url_for('static', filename='main.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='script.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='index_event.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='setting.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='setting.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='setup.js') }}"></script>
 </body>
 </html>
