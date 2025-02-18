@@ -6,8 +6,12 @@ app = Flask(__name__)
 messages = []  # Store chat messages
 
 @app.route('/')
-def home():
+def index():
     return render_template('index.html')
+
+@app.route('/login')
+def home():
+    return render_template('login.html')
 
 @app.route('/send', methods=['POST'])
 def send():
