@@ -9,7 +9,7 @@ function loadMessages() {
 }
 
 function sendMessage() {
-    let username = $('#username').val();
+    let username = sessionStorage.getItem("Username")
     let message = $('#message').val();
     if (username && message) {
         $.post('/send', {username: username, message: message}, function() {

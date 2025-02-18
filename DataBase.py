@@ -109,4 +109,3 @@ class DataRecord:
 
 
   
-print(DataRecord().access_account("tester"))
