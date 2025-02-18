@@ -15,11 +15,11 @@ app = Flask(__name__)
 
 messages = []  # Store chat messages
 
-@app.route('/')
+@app.route('/index')
 def index():
     return render_template('index.html')
 
-@app.route('/login')
+@app.route('/')
 def home():
     return render_template('login.html')
 
@@ -47,6 +47,25 @@ def access_account_detail():
                     "Username":DataRecord().access_account(Username)[1],
                     "Password":DataRecord().access_account(Username)[2],
                     "email":DataRecord().access_account(Username)[3]})
+
+@app.route('/CheckUserPassword',methods = ['POST'])
+def Check_user_password():
+    userName = request.form['userName']
+    password = request.form['Password']
+    if DataRecord().check_password(userName,password):
+        return jsonify({"check":True})
+    else:
+        return jsonify({"check":False})
+    
+@app.route('/email_verification',methods = ['POST'])
+def email_verification():
+    import random
+    email = request.form['Email']
+    code = random.randint(10000,99999)
+    Title = "email Verification"
+    Body = f'{code}'
+    email_send().send_email(Title,Body,email)
+    return jsonify({"Code":code})
 
 @app.route('/send', methods=['POST'])
 def send():
