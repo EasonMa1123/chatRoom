@@ -69,7 +69,7 @@ function login(){
         if (data.check == true){
             sessionStorage.setItem("Username",Username)
             sessionStorage.setItem("Password",Password)
-            document.location.href = "/index";
+            document.location.href = "/lobby";
             Username = "";
             Password = "";
             
