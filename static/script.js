@@ -2,19 +2,6 @@
 
 
 
-// index.html
-
-function check_invalid_enter(){
-    if(sessionStorage.getItem("Username") == null){
-        alert("What are you doing in here,this is not your place,leave! Thank You :)")
-        logout()
-    }
-}
-
-
-
-
-
 
 function logout(){
     document.location.href = "/";
@@ -22,9 +9,17 @@ function logout(){
     sessionStorage.setItem("",Password)
 }
 
+let roomCode = window.location.pathname.split("/").pop(); // Get room code from URL
+        
+function check_invalid_enter() {
+    if (sessionStorage.getItem("Username") == null) {
+        alert("You must log in first!");
+        window.location.href = "/";
+    }
+}
 
 function loadMessages() {
-    $.getJSON('/messages', function(data) {
+    $.getJSON(`/messages/${roomCode}`, function(data) {
         let chatBox = $('#chat-box');
         chatBox.html('');
         data.forEach(msg => {
@@ -34,10 +29,10 @@ function loadMessages() {
 }
 
 function sendMessage() {
-    let username = sessionStorage.getItem("Username")
+    let username = sessionStorage.getItem("Username");
     let message = $('#message').val();
     if (username && message) {
-        $.post('/send', {username: username, message: message}, function() {
+        $.post('/send', {username: username, message: message, room_code: roomCode}, function() {
             $('#message').val('');
             loadMessages();
         });
