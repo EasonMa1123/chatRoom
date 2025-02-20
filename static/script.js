@@ -10,7 +10,7 @@ function logout(){
 }
 
 let roomCode = window.location.pathname.split("/").pop(); // Get room code from URL
-        
+document.getElementById("room-code").textContent = roomCode; // Set room code in input field          
 function check_invalid_enter() {
     if (sessionStorage.getItem("Username") == null) {
         alert("You must log in first!");

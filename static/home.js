@@ -95,9 +95,9 @@ function joinRoom() {
 
 function createRoom() {
     let roomCode = $("#new-room-code").val();
-    $.post('/create_room', {room_code: roomCode}, function(response) {
+    $.post('/create_room', function(response) {
         if (response.Feedback === "Room created") {
-            window.location.href = `/index/${roomCode}`;
+            window.location.href = `/index/${response.room_code}`;
         } else {
             alert(response.Feedback);
         }

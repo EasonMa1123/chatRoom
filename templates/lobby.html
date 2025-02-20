@@ -15,13 +15,15 @@
 <body>
     <div id="container">
         <h2>Welcome to the Chat Lobby</h2>
+        <div class="processor">
+        <h3>Join a Room</h3>
         <input type="text" id="room-code" placeholder="Enter room code">
         <button onclick="joinRoom()">Join Room</button>
-        
+        </div>
+        <div class="processor">
         <h3>Create a Room</h3>
-        <input type="text" id="new-room-code" placeholder="Enter new room code">
         <button onclick="createRoom()">Create Room</button>
-
+        </div>
 
     </div>
     <script type="text/javascript" src="{{ url_for('static', filename='home_event_script.js') }}"></script>

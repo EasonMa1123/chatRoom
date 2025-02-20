@@ -4,8 +4,7 @@ from flask import Flask, render_template, request, jsonify
 from encryption_V2 import Encrytion
 from DataBase import DataRecord
 from password_strength import password_strength_checker
-
-
+import random
 
 from email_sender import email_send
 
@@ -28,7 +27,9 @@ def home():
 
 @app.route('/create_room', methods=['POST'])
 def create_room():
-    room_code = request.form.get('room_code')
+    
+    room_code = str(random.randint(1000, 9999))
+    print(room_code)
     if room_code in rooms:
         return jsonify({"Feedback": "Room already exists"})
     rooms[room_code] = []  # Create a new room with an empty message list
