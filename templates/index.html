@@ -13,6 +13,7 @@
         <input type="button" onclick="menu_open()" class="sidebar-item" id="open_menu_button" style="display: none;"></button>
     </div>
     <h1>Chat Room</h1>
+    <h1>Room Code: <span id="room-code"></span></h1>
     <div id="overlay-setting">
         <div id="setting-layer">
             <div id="setting-layout">
@@ -83,10 +84,8 @@
         </div>
     </div>
     
-    <script src="{{ url_for('static', filename='main.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='script.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='index_event.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='setting.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='setting.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='setup.js') }}"></script>
 </body>

@@ -4,24 +4,57 @@ from flask import Flask, render_template, request, jsonify
 from encryption_V2 import Encrytion
 from DataBase import DataRecord
 from password_strength import password_strength_checker
-
-
+import random
 
 from email_sender import email_send
 
 
-
 app = Flask(__name__)
 
-messages = []  # Store chat messages
+rooms = {}  # Dictionary to store messages for each room
 
-@app.route('/index')
-def index():
-    return render_template('index.html')
+@app.route('/index/<room_code>')
+def index(room_code):
+    return render_template('index.html', room_code=room_code)
+
+@app.route('/lobby')
+def lobby():
+    return render_template('lobby.html')
 
 @app.route('/')
 def home():
     return render_template('login.html')
+
+@app.route('/create_room', methods=['POST'])
+def create_room():
+    
+    room_code = str(random.randint(1000, 9999))
+    print(room_code)
+    if room_code in rooms:
+        return jsonify({"Feedback": "Room already exists"})
+    rooms[room_code] = []  # Create a new room with an empty message list
+    return jsonify({"Feedback": "Room created", "room_code": room_code})
+
+@app.route('/join_room', methods=['POST'])
+def join_room():
+    room_code = request.form.get('room_code')
+    if room_code in rooms:
+        return jsonify({"Feedback": "Success", "room_code": room_code})
+    return jsonify({"Feedback": "Room not found"})
+
+@app.route('/send', methods=['POST'])
+def send():
+    username = request.form.get('username')
+    message = request.form.get('message')
+    room_code = request.form.get('room_code')
+
+    if username and message and room_code in rooms:
+        rooms[room_code].append({'username': username, 'message': message, 'timestamp': time.time()})
+    return '', 204  # No content response
+
+@app.route('/messages/<room_code>')
+def get_messages(room_code):
+    return jsonify(rooms.get(room_code, []))
 
 @app.route('/insertNewUser', methods = ['POST'])
 def insert_new_user():
@@ -109,17 +142,7 @@ def email_verification():
     email_send().send_email(Title,Body,email)
     return jsonify({"Code":code})
 
-@app.route('/send', methods=['POST'])
-def send():
-    username = request.form.get('username')
-    message = request.form.get('message')
-    if username and message:
-        messages.append({'username': username, 'message': message, 'timestamp': time.time()})
-    return '', 204  # No content response
 
-@app.route('/messages')
-def get_messages():
-    return jsonify(messages)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)

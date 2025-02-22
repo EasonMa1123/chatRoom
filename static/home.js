@@ -69,7 +69,7 @@ function login(){
         if (data.check == true){
             sessionStorage.setItem("Username",Username)
             sessionStorage.setItem("Password",Password)
-            document.location.href = "/index";
+            document.location.href = "/lobby";
             Username = "";
             Password = "";
             
@@ -79,4 +79,27 @@ function login(){
     })
 
 
+}
+
+
+function joinRoom() {
+    let roomCode = $("#room-code").val();
+    $.post('/join_room', {room_code: roomCode}, function(response) {
+        if (response.Feedback === "Success") {
+            window.location.href = `/index/${roomCode}`;
+        } else {
+            alert("Room not found!");
+        }
+    });
+}
+
+function createRoom() {
+    let roomCode = $("#new-room-code").val();
+    $.post('/create_room', function(response) {
+        if (response.Feedback === "Room created") {
+            window.location.href = `/index/${response.room_code}`;
+        } else {
+            alert(response.Feedback);
+        }
+    });
 }

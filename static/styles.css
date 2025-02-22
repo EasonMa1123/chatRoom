@@ -7,7 +7,8 @@
   overflow-y: scroll;
   margin: 10px auto;
   padding: 10px;
-  background: #ffffff;
+  background: #3f3f3f;
+  color: white;
 }
 #sidebar {
   width: 250px;
@@ -54,7 +55,7 @@
   text-align: center;
   flex-direction: column;
   border-radius: 10px;
-  background-color:#5fc9f3;
+  background-color:#3f3f3f;
   overflow-y: scroll;
 }
 
@@ -66,12 +67,12 @@
   text-align: center;
   flex-direction: column;
   border-radius: 10px;
-  background-color: #4fa6c8;
+  background-color: #1e2329;
   padding: 10px;
 }
 
 #personal-setting{
-  background-color: #257291;
+  background-color: #33383d;
   border-radius: 10px;
   margin: 6px;
   padding: 3px;
@@ -110,7 +111,7 @@ body {
         
   
   height: 100vh;   
-  background-image:linear-gradient(#081f37,#0d2f53,#081f37) ;  
+  background-color: #121212 ;  
            
 }
 h1{
@@ -167,52 +168,12 @@ h1,h2 {
   border: none;
   border-radius: 8px;
   
-  background-color:#5fc9f3;
+  background-color:#2a3541;
   margin: auto;
   align-items: center;
 }
 
-#encryption:hover{
-  background-color: #56b3d8;
-}
 
-#Option_button {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.text_input{
-  text-align: center;
-  align-self:center ;
-}
-
-input[type="file"] {
-  display: none;
-}
-
-.File_upload{
-  border: 10px black;
-  background-color: #b7daf1;
-  border-radius: 10px;
-  margin:13px;
-  display: block;
-  cursor: pointer;
-}
-
-#encryption, #decryption {
-  display: none;
-}
-
-.InOutPut {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-}
-
-
-input[type="file"] {
-  text-align: center;
-}
 
 textarea, input[type="text"],input[type="password"] {
   width: 80%;              /* Adjust width to fit within the layout */
@@ -222,12 +183,12 @@ textarea, input[type="text"],input[type="password"] {
 
 button {
   padding: 10px 20px;
-  border: none;
+  border: 1px solid;
   margin: 25px;
   font-size: 16px;
   cursor: pointer;
   border-radius: 10px;
-  background-color: #2e79ba;
+  background-color: #2a3541;
   
 
 }
@@ -263,6 +224,6 @@ p span {
  cursor: pointer;
 }
 .switch-toggle input:checked + label {
- background: #1e549f;
+ background: #9a9fa5;
  border-radius: 8px;
 }
