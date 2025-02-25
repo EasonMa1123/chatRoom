@@ -31,6 +31,8 @@ body {
   min-height: 300px; /* Increase the height */
   box-shadow: 0 0 10px #575757; /* Optional shadow */
   font-size: 30px;
+  font-family: "Orbitron",serif;
+  letter-spacing: 2px;
 }
 
 input {
@@ -41,6 +43,8 @@ input {
   width: 80%; /* Make input fields wider */
   border-radius: 10px;
   background-color: #717171;
+  font-family: "Orbitron",serif;
+  letter-spacing: 3px;
 
   
 
@@ -49,7 +53,10 @@ input {
 
 ::placeholder {
   color: white;
-  font-size: 1em;}
+  font-size: 1em;
+  font-family: "Orbitron",serif;
+  letter-spacing: 3px;
+}
 
 input:focus,
 select:focus,
@@ -67,6 +74,7 @@ button {
   color: white;
   border: 1px solid #575757;
   font-size: 1em;
+  font-family: "Orbitron",serif;
   
 }
 #login-signup-switch {
@@ -93,6 +101,8 @@ button {
    float:left;
    color: #fff;
    cursor: pointer;
+   font-family: "Orbitron",serif;
+   font-size: 1em;
  }
  .signup-login-switch-toggle input:checked + label {
    background: #4dc939;
