@@ -24,7 +24,8 @@ class DataRecord:
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 UserName TEXT,
                 Password TEXT,
-                Email TEXT
+                Email TEXT,
+                Role TEXT
             )
         """)
         self.DataBase.commit()
@@ -47,11 +48,11 @@ class DataRecord:
         encrypted_user = self.encrypting_data(user)
         encrypted_password = self.encrypting_data(password)
         encrypted_email = self.encrypting_data(email)
-        
+        role = self.encrypting_data("normal user")
         self.cc.execute("""
-            INSERT INTO UserData (UserName, Password, Email) 
-            VALUES (%s, %s, %s)
-        """, (encrypted_user, encrypted_password, encrypted_email))
+            INSERT INTO UserData (UserName, Password, Email,Role) 
+            VALUES (%s, %s, %s,%s)
+        """, (encrypted_user, encrypted_password, encrypted_email,role))
         self.DataBase.commit()
     
     def check_password(self, user, password):
@@ -105,6 +106,24 @@ class DataRecord:
         
     def unencrypting_data(self, data):
         return ENC().unhashing(data)
+
+
+    def display_db(self):
+        self.cc.execute("SELECT * FROM UserData")
+        data = self.cc.fetchall()
+        return {key: [self.unencrypting_data(item[key]) for item in data] for key in data[0] if key != 'id'}
+
+    def execute_custom_query(self, query, params=None):
+        try:
+            self.cc.execute(query, params or ())
+            if query.strip().lower().startswith("select"):
+                return self.cc.fetchall()  # Return result for SELECT queries
+            else:
+                self.DataBase.commit()  # Commit changes for INSERT, UPDATE, DELETE
+                return True
+        except Exception as e:
+            return f"Error executing query: {str(e)}"
+
 
 
 
