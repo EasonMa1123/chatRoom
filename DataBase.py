@@ -107,5 +107,23 @@ class DataRecord:
         return ENC().unhashing(data)
 
 
+    def display_db(self):
+        self.cc.execute("SELECT * FROM UserData")
+        data = self.cc.fetchall()
+        return {key: [self.unencrypting_data(item[key]) for item in data] for key in data[0] if key != 'id'}
+
+    def execute_custom_query(self, query, params=None):
+        try:
+            self.cc.execute(query, params or ())
+            if query.strip().lower().startswith("select"):
+                return self.cc.fetchall()  # Return result for SELECT queries
+            else:
+                self.DataBase.commit()  # Commit changes for INSERT, UPDATE, DELETE
+                return True
+        except Exception as e:
+            return f"Error executing query: {str(e)}"
+
+
+
 
   
