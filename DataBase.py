@@ -126,5 +126,5 @@ class DataRecord:
 
 
 
-print(DataRecord().display_db())
+
   
