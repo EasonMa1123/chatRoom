@@ -24,7 +24,8 @@ class DataRecord:
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 UserName TEXT,
                 Password TEXT,
-                Email TEXT
+                Email TEXT,
+                Role TEXT
             )
         """)
         self.DataBase.commit()
@@ -47,11 +48,11 @@ class DataRecord:
         encrypted_user = self.encrypting_data(user)
         encrypted_password = self.encrypting_data(password)
         encrypted_email = self.encrypting_data(email)
-        
+        role = self.encrypting_data("normal user")
         self.cc.execute("""
-            INSERT INTO UserData (UserName, Password, Email) 
-            VALUES (%s, %s, %s)
-        """, (encrypted_user, encrypted_password, encrypted_email))
+            INSERT INTO UserData (UserName, Password, Email,Role) 
+            VALUES (%s, %s, %s,%s)
+        """, (encrypted_user, encrypted_password, encrypted_email,role))
         self.DataBase.commit()
     
     def check_password(self, user, password):
@@ -125,5 +126,5 @@ class DataRecord:
 
 
 
-
+print(DataRecord().display_db())
   
