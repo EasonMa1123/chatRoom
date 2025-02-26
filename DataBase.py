@@ -101,6 +101,15 @@ class DataRecord:
             return data if data else []
         return list(data.values()) if data else None
 
+    def user_role(self,UserName:str):
+        try:
+            self.cc.execute("SELECT Role FROM UserData WHERE UserName = %s", (self.encrypting_data(UserName)))
+            data = self.cc.fetchall()
+            return list({key: [self.unencrypting_data(item[key]) for item in data] for key in data[0] if key != 'id'}.values())[0][0]
+        except:
+            return False
+
+
     def encrypting_data(self, data):
         return ENC().hashing(data)
         
@@ -125,6 +134,3 @@ class DataRecord:
             return f"Error executing query: {str(e)}"
 
 
-
-
-  

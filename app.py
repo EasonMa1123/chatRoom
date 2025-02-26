@@ -131,7 +131,17 @@ def access_user_setting():
     else:
         return jsonify({"Theme":data[1],"Fontsize":data[2]})
 
+
+@app.route('/accessUserRole',methods = ['POST'])   
+def access_user_role():
+    username = request.form['userName']
+    data = DataRecord().user_role(username)
     
+    if data == False:
+        return 404,''
+    else:
+        return jsonify({"role":data})
+
 @app.route('/email_verification',methods = ['POST'])
 def email_verification():
     import random

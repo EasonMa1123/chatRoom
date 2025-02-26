@@ -69,9 +69,15 @@ function login(){
         if (data.check == true){
             sessionStorage.setItem("Username",Username)
             sessionStorage.setItem("Password",Password)
-            document.location.href = "/lobby";
-            Username = "";
-            Password = "";
+            
+            $.post('/accessUserRole',{userName:Username},function(data){
+                sessionStorage.setItem("role",data.role)
+                Username = "";
+                Password = "";
+                document.location.href = "/lobby";
+            })
+            
+            
             
         } else {
             alert("Incorrect Password/Username")

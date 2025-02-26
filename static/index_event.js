@@ -15,6 +15,10 @@ function setting_off() {
 function menu_open() {
     document.getElementById('sidebar').style.display = "block";
     document.getElementById('Username-display').innerHTML = sessionStorage.getItem("Username")
+    if(sessionStorage.getItem("role") != "admin"){
+        document.getElementById('admin-label').style.display = "none";
+
+    }
 
 
 }
