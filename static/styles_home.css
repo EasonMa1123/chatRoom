@@ -75,7 +75,15 @@ button {
   border: 1px solid #575757;
   font-size: 1em;
   font-family: "Orbitron",serif;
-  
+}
+
+
+
+button:hover{
+  background-color:#3f3f3f;
+  color: #20c20e;
+  border: 1px solid #575757;
+  box-shadow: #20c20e 0px 5px 15px;
 }
 #login-signup-switch {
     display: flex;
