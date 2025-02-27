@@ -25,6 +25,10 @@ def lobby():
 def home():
     return render_template('login.html')
 
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
+
 @app.route('/create_room', methods=['POST'])
 def create_room():
     
@@ -152,6 +156,16 @@ def email_verification():
     email_send().send_email(Title,Body,email)
     return jsonify({"Code":code})
 
+
+@app.route('/customSQL',methods=['POST'])
+def custom_SQL():
+    sql = request.form['sql']
+    param = str(request.form['param'])
+    param = tuple(param.split(","))
+    print(param)
+    data = DataRecord().execute_custom_query(sql,param if param else None)
+    
+    return jsonify({"log":str(data)})
 
 
 if __name__ == '__main__':

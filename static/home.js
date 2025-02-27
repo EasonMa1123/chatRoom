@@ -109,3 +109,12 @@ function createRoom() {
         }
     });
 }
+
+
+function submit_command(){
+    var command = document.getElementById("command-area").value
+    var param = document.getElementById("param-area").value
+    $.post('/customSQL',{sql:command,param:param},function(data){
+        document.getElementById("log").innerHTML= data.log
+    })
+}

@@ -124,11 +124,16 @@ class DataRecord:
 
     def execute_custom_query(self, query, params=None):
         try:
-            self.cc.execute(query, params or ())
+            # Encrypt only string parameters
+            encrypted_params = tuple(self.encrypting_data(p) if isinstance(p, str) else p for p in (params or ()))
+
+            self.cc.execute(query, encrypted_params)
             if query.strip().lower().startswith("select"):
-                return self.cc.fetchall()  # Return result for SELECT queries
+                data = self.cc.fetchall()
+                # Decrypt results if needed
+                return [{key: self.unencrypting_data(value) if isinstance(value, str) else value for key, value in row.items()} for row in data]
             else:
-                self.DataBase.commit()  # Commit changes for INSERT, UPDATE, DELETE
+                self.DataBase.commit()
                 return True
         except Exception as e:
             return f"Error executing query: {str(e)}"

@@ -9,6 +9,10 @@ function logout(){
     sessionStorage.setItem("",Password)
 }
 
+function direct_to_adminP(){
+    document.location.href = "/admin";
+}
+
 let roomCode = window.location.pathname.split("/").pop(); // Get room code from URL
 document.getElementById("room-code").textContent = roomCode; // Set room code in input field          
 function check_invalid_enter() {
