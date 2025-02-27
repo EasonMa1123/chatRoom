@@ -160,9 +160,9 @@ def email_verification():
 def custom_SQL():
     sql = request.form['sql']
     param = str(request.form['param'])
-    param = tuple(param.split(","))
-    print(param)
-    data = DataRecord().execute_custom_query(sql,param if param else None)
+    param = tuple(param.split(",")) if param!= "" else None
+
+    data = DataRecord().execute_custom_query(sql,param)
     
     return jsonify({"log":str(data)})
 
