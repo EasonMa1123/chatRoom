@@ -93,6 +93,7 @@ function joinRoom() {
     $.post('/join_room', {room_code: roomCode}, function(response) {
         if (response.Feedback === "Success") {
             window.location.href = `/index/${roomCode}`;
+            sessionStorage.setItem(roomCode,room)
         } else {
             alert("Room not found!");
         }
@@ -104,6 +105,7 @@ function createRoom() {
     $.post('/create_room', function(response) {
         if (response.Feedback === "Room created") {
             window.location.href = `/index/${response.room_code}`;
+            sessionStorage.setItem(roomCode,room)
         } else {
             alert(response.Feedback);
         }

@@ -6,6 +6,7 @@
     <title>Flask Chat Room</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
 </head>
 <body>
     <div>
@@ -66,15 +67,18 @@
         <button onclick="menu_close()" class="sidebar-item">Close &times;</button>
         
         <div style="margin: 30px;"></div>
-        <label for="setting">Setting </label>
+        <label for="setting" class="sidebar-option-item">Setting </label>
         <input type="radio" id="setting" onclick="setting_on()" style="display: none;">
         <label for="admin" id="admin-label">admin </label>
         <input type="radio" id="admin" onclick="direct_to_adminP()" style="display: none;">
 
         <div style="margin: 30px;"></div>
         
+        <label for="leave-room" class="sidebar-option-item">Leave Room</label>
+        <input type="radio" id="leave-room" onclick="leave_room()" style="display: none;">
+
         <div style="margin: 30px;"></div>
-        <label for="logout">Log out</label>
+        <label for="logout" class="sidebar-option-item">Log out</label>
         <input type="radio" id="logout" onclick="logout()" style="display: none;">
     </div>
     <div id="content-wrapper">
