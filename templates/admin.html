@@ -11,21 +11,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     
-    
 </head>
 <body>
     <div id="container">
-        <h2>Welcome to the Chat Lobby</h2>
+        
         <div class="processor">
-        <h3>Join a Room</h3>
-        <input type="text" id="room-code" placeholder="Enter room code">
-        <button onclick="joinRoom()">Join Room</button>
+            <h1>SQL</h1>
+            <textarea type="text"  class="sql-textarea" id="command-area" placeholder="SQL...."></textarea>
+            <textarea type="text" class="sql-textarea" id="param-area" placeholder="Paramenter"></textarea>
+            <button onclick="submit_command()">Submit</button>
+            <a id="log"></a>
+            <div id="log-table"></div>
         </div>
-        <div class="processor">
-        <h3>Create a Room</h3>
-        <button onclick="createRoom()">Create Room</button>
-        </div>
-
+        
+            
+        
+        <button onclick="return_room()">Back room</button>
     </div>
     <script type="text/javascript" src="{{ url_for('static', filename='home_event_script.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='home.js') }}"></script>

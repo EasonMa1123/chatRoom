@@ -69,9 +69,15 @@ function login(){
         if (data.check == true){
             sessionStorage.setItem("Username",Username)
             sessionStorage.setItem("Password",Password)
-            document.location.href = "/lobby";
-            Username = "";
-            Password = "";
+            
+            $.post('/accessUserRole',{userName:Username},function(data){
+                sessionStorage.setItem("role",data.role)
+                Username = "";
+                Password = "";
+                document.location.href = "/lobby";
+            })
+            
+            
             
         } else {
             alert("Incorrect Password/Username")
@@ -87,6 +93,7 @@ function joinRoom() {
     $.post('/join_room', {room_code: roomCode}, function(response) {
         if (response.Feedback === "Success") {
             window.location.href = `/index/${roomCode}`;
+            sessionStorage.setItem("room",roomCode)
         } else {
             alert("Room not found!");
         }
@@ -98,8 +105,91 @@ function createRoom() {
     $.post('/create_room', function(response) {
         if (response.Feedback === "Room created") {
             window.location.href = `/index/${response.room_code}`;
+            sessionStorage.setItem("room",response.room_code)
         } else {
             alert(response.Feedback);
         }
     });
+}
+
+
+function submit_command(){
+    var command = document.getElementById("command-area").value
+    var param = document.getElementById("param-area").value
+    $.post('/customSQL',{sql:command,param:param},function(data){
+        if (data.log.startsWith("Error executing query") || data.log == true){
+            document.getElementById("log").innerHTML= data.log
+            let logTableDiv = document.getElementById("log-table");
+            logTableDiv.innerHTML = ""; // Clear previous content
+        }else{
+            createTableFromString(data.log)
+            document.getElementById("log").innerHTML = ""
+        }
+    })
+}
+
+function createTableFromString(dataString) {
+    // Convert the string into a valid JSON object
+    let jsonData;
+    try {
+        jsonData = eval("(" + dataString + ")"); // Convert string to object safely
+    } catch (error) {
+        console.error("Invalid data format:", error);
+        return;
+    }
+
+    if (!Array.isArray(jsonData) || jsonData.length === 0) {
+        console.error("Invalid or empty data");
+        return;
+    }
+
+    // Create the table element
+    let table = document.createElement("table");
+    table.border = "1"; // Add border for visibility
+    table.style.borderCollapse = "collapse";
+    table.style.width = "100%";
+
+    // Create table header
+    let thead = document.createElement("thead");
+    let headerRow = document.createElement("tr");
+
+    // Get column names (keys from first object)
+    let columns = Object.keys(jsonData[0]);
+
+    columns.forEach(col => {
+        let th = document.createElement("th");
+        th.textContent = col;
+        th.style.padding = "8px";
+        th.style.backgroundColor = "#f2f2f2";
+        headerRow.appendChild(th);
+    });
+
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    // Create table body
+    let tbody = document.createElement("tbody");
+
+    jsonData.forEach(row => {
+        let tr = document.createElement("tr");
+        columns.forEach(col => {
+            let td = document.createElement("td");
+            td.textContent = row[col];
+            td.style.padding = "8px";
+            td.style.textAlign = "left";
+            tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+    });
+
+    table.appendChild(tbody);
+
+    // Append the table to the div with id "log-table"
+    let logTableDiv = document.getElementById("log-table");
+    logTableDiv.innerHTML = ""; // Clear previous content
+    logTableDiv.appendChild(table);
+}
+
+function return_room(){
+    window.location.href = `/index/${sessionStorage.getItem("room")}`;
 }

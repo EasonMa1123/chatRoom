@@ -100,6 +100,8 @@
   flex-direction: column;
 }
 
+
+
 body.active {
   margin-left: 250px;
 }
@@ -125,7 +127,9 @@ h1,h2 {
 }
 
 #sidebar {
-  background-color: white;
+  background-color: #282828;
+  color: white;
+  font-family: "Orbitron",serif;
 }
 
 
@@ -156,11 +160,7 @@ h1,h2 {
   margin: 0 auto;         
 }
 
-#encryption{
-  align-items: center;
-  margin: auto;
-  
-}
+
 
 .Processor {
   width: 300px;
@@ -181,21 +181,26 @@ textarea, input[type="text"],input[type="password"] {
   text-align: center;
 }
 
-button {
+.sidebar-option-item,button {
+  margin: 10px;
   padding: 10px 20px;
-  border: 1px solid;
-  margin: 25px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 10px;
-  background-color: #2a3541;
-  
-
+  font-family: 'Poppins', sans-serif;
+  width: 85%;
+  border-radius: 20px;
+  background-color:#282828;
+  color: white;
+  border: 1px solid #575757;
+  font-size: 1em;
+  font-family: "Orbitron",serif;
 }
 
-button:hover{
-  background-color: #13314c;
-  color: white;
+
+
+.sidebar-option-item,button:hover{
+  background-color:#3f3f3f;
+  color: #20c20e;
+  border: 1px solid #575757;
+  box-shadow: #20c20e 0px 5px 15px;
 }
 
 p span {
@@ -226,4 +231,33 @@ p span {
 .switch-toggle input:checked + label {
  background: #9a9fa5;
  border-radius: 8px;
+}
+
+input {
+  margin: 10px;
+  padding: 10px;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+  width: 80%; /* Make input fields wider */
+  border-radius: 10px;
+  background-color: #717171;
+  font-family: "Orbitron",serif;
+  letter-spacing: 3px;
+
+  
+
+  
+}
+
+::placeholder {
+  color: white;
+  font-size: 1em;
+  font-family: "Orbitron",serif;
+  letter-spacing: 3px;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    outline: none;
 }
