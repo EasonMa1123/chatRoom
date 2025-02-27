@@ -93,7 +93,7 @@ function joinRoom() {
     $.post('/join_room', {room_code: roomCode}, function(response) {
         if (response.Feedback === "Success") {
             window.location.href = `/index/${roomCode}`;
-            sessionStorage.setItem(roomCode,room)
+            sessionStorage.setItem("room",roomCode)
         } else {
             alert("Room not found!");
         }
@@ -105,7 +105,7 @@ function createRoom() {
     $.post('/create_room', function(response) {
         if (response.Feedback === "Room created") {
             window.location.href = `/index/${response.room_code}`;
-            sessionStorage.setItem(roomCode,room)
+            sessionStorage.setItem("room",response.room_code)
         } else {
             alert(response.Feedback);
         }
@@ -119,6 +119,8 @@ function submit_command(){
     $.post('/customSQL',{sql:command,param:param},function(data){
         if (data.log.startsWith("Error executing query") || data.log == true){
             document.getElementById("log").innerHTML= data.log
+            let logTableDiv = document.getElementById("log-table");
+            logTableDiv.innerHTML = ""; // Clear previous content
         }else{
             createTableFromString(data.log)
             document.getElementById("log").innerHTML = ""

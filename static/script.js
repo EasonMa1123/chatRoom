@@ -5,9 +5,9 @@
 
 function logout(){
     document.location.href = "/";
-    sessionStorage.setItem("",Username)
-    sessionStorage.setItem("",Password)
-    sessionStorage.setItem("",room)
+    sessionStorage.setItem("Username","")
+    sessionStorage.setItem("Password","")
+    sessionStorage.setItem("room","")
 }
 
 function direct_to_adminP(){
@@ -49,7 +49,7 @@ function sendMessage() {
 
 function leave_room(){
     document.location.href = "/lobby";
-    sessionStorage.setItem("",room)
+    sessionStorage.setItem("room","")
 }
 
 // Auto-refresh chat every 3 seconds

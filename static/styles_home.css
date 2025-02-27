@@ -152,3 +152,20 @@ button:hover{
   from, to { border-color: transparent }
   50% { border-color: #20c20e; }
 }
+
+table{
+  border-radius: 10px;
+  
+
+}
+
+tr:nth-child(even){
+  background-color: #575757;
+  color: white;
+}
+
+#customers tr:nth-child(odd){background-color: #3f3f3f;}
+
+.sql-textarea{
+  border-radius: 10px;
+}
