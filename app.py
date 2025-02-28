@@ -5,7 +5,7 @@ from encryption_V2 import Encrytion
 from DataBase import DataRecord
 from password_strength import password_strength_checker
 import random
-
+import datetime
 from email_sender import email_send
 
 
@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 rooms = {}  # Dictionary to store messages for each room
 
-@app.route('/index/<room_code>')
+@app.route('/room/<room_code>')
 def index(room_code):
     return render_template('index.html', room_code=room_code)
 
@@ -31,7 +31,6 @@ def admin():
 
 @app.route('/create_room', methods=['POST'])
 def create_room():
-    
     room_code = str(random.randint(10000, 99999))
     if room_code in rooms:
         return jsonify({"Feedback": "Room already exists"})
@@ -50,9 +49,11 @@ def send():
     username = request.form.get('username')
     message = request.form.get('message')
     room_code = request.form.get('room_code')
+    User_role = request.form.get('role')
+    Message_time = f'{((datetime.datetime.now()).strftime("%X"))} {((datetime.datetime.now()).strftime("%x"))}'
 
     if username and message and room_code in rooms:
-        rooms[room_code].append({'username': username, 'message': message, 'timestamp': time.time()})
+        rooms[room_code].append({'username': username, 'message': message, 'timestamp':Message_time, 'role': User_role})
     return '', 204  # No content response
 
 @app.route('/messages/<room_code>')

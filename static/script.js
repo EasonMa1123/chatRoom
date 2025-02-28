@@ -30,7 +30,8 @@ function loadMessages() {
         let chatBox = $('#chat-box');
         chatBox.html('');
         data.forEach(msg => {
-            chatBox.append(`<p><b>${msg.username}:</b> ${msg.message}</p>`);
+            
+            chatBox.append(`<p><b>[${msg.role}] </b><b>${msg.username}:</b> ${msg.message}   <b style="float: right;">${msg.timestamp}</b></p>`);
         });
     });
 }
@@ -39,7 +40,7 @@ function sendMessage() {
     let username = sessionStorage.getItem("Username");
     let message = $('#message').val();
     if (username && message) {
-        $.post('/send', {username: username, message: message, room_code: roomCode}, function() {
+        $.post('/send', {username: username, message: message, room_code: roomCode,role:sessionStorage.getItem("role")}, function() {
             $('#message').val('');
             loadMessages();
         });
