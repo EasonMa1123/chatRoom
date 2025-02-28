@@ -87,11 +87,11 @@ class DataRecord:
         if self.access_account_setting(user_id, True):
             self.cc.execute("""
                 UPDATE UserSettingData SET Theme = %s, FontSize = %s WHERE id = %s
-            """, (theme, font_size, user_id))
+            """, (self.encrypting_data(theme), self.encrypting_data(font_size), user_id))
         else:
             self.cc.execute("""
                 INSERT INTO UserSettingData (id, Theme, FontSize) VALUES (%s, %s, %s)
-            """, (user_id, theme, font_size))
+            """, (user_id, self.encrypting_data(theme), self.encrypting_data(font_size)))
         self.DataBase.commit()
 
     def access_account_setting(self, user_id, check):
@@ -99,7 +99,7 @@ class DataRecord:
         data = self.cc.fetchone()
         if check:
             return data if data else []
-        return list(data.values()) if data else None
+        return [{key: self.unencrypting_data(value) if isinstance(value, str) else value for key, value in row.items()} for row in data] if data else None
 
     def user_role(self,UserName:str):
         try:
