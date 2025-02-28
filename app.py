@@ -54,6 +54,7 @@ def send():
 
     if username and message and room_code in rooms:
         rooms[room_code].append({'username': username, 'message': message, 'timestamp':Message_time, 'role': User_role})
+        DataRecord().store_chat_message(username,User_role,str(Message_time),message,str(room_code))
     return '', 204  # No content response
 
 @app.route('/messages/<room_code>')

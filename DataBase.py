@@ -43,7 +43,7 @@ class DataRecord:
             CREATE TABLE IF NOT EXISTS ChatRoomMessage (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 UserName TEXT,
-                UserRole TEXT
+                UserRole TEXT,
                 Message TEXT,
                 Time TEXT,
                 roomCode TEXT
@@ -124,7 +124,7 @@ class DataRecord:
 
     def store_chat_message(self,username,role,time,message,chatroomID):
         self.cc.execute("""
-                INSERT INTO ChatRoomMessage (UserName,UserRole,Time,Message,roomCode ) VALUES (%s, %s, %s, %s)
+                INSERT INTO ChatRoomMessage (UserName,UserRole,Time,Message,roomCode ) VALUES (%s, %s, %s, %s, %s)
             """, (self.encrypting_data(username),self.encrypting_data(role),self.encrypting_data(time),self.encrypting_data(message),self.encrypting_data(chatroomID)))
         self.DataBase.commit()
 
