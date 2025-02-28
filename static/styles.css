@@ -261,3 +261,9 @@ select:focus,
 textarea:focus{
     outline: none;
 }
+
+
+#chat-box{
+  border-radius: 10px;
+}
+

@@ -1,11 +1,11 @@
 
 function set_dark_theme(){
-    document.body.style.backgroundImage = "linear-gradient(#081f37,#0d2f53,#081f37)";
+    document.body.style.backgroundColor = "#121212";
 
 }
 
 function set_bright_theme(){
-    document.body.style.backgroundImage = "linear-gradient(#113f70,#ffffff,#113f70)";
+    document.body.style.backgroundColor = "#575757";
 }
 
 function set_font_size(size){

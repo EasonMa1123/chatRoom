@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask Chat Room</title>
+    <title>Encrypte Chat Room</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
 </head>
-<body>
+<body onload="check_invalid_enter()">
     <div>
         <label for="open_menu_button" style="font-size: 50px;color: aliceblue; margin-left: 10px;">☰</label>
         <input type="button" onclick="menu_open()" class="sidebar-item" id="open_menu_button" style="display: none;"></button>
@@ -80,10 +80,12 @@
         <input type="radio" id="logout" onclick="logout()" style="display: none;">
     </div>
     <div id="content-wrapper">
+        
         <div id="chat-box"></div>
+        <input type="text" id="message" placeholder="Type a message">
         <div id="content_central">
         
-            <input type="text" id="message" placeholder="Type a message">
+            
             <button onclick="sendMessage()">Send</button>
         </div>
     </div>
@@ -91,6 +93,6 @@
     <script type="text/javascript" src="{{ url_for('static', filename='script.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='index_event.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='setting.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='setup.js') }}"></script>
+
 </body>
 </html>
