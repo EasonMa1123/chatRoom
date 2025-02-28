@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 rooms = {}  # Dictionary to store messages for each room
 
-@app.route('/index/<room_code>')
+@app.route('/room/<room_code>')
 def index(room_code):
     return render_template('index.html', room_code=room_code)
 
@@ -30,7 +30,6 @@ def admin():
 
 @app.route('/create_room', methods=['POST'])
 def create_room():
-    
     room_code = str(random.randint(10000, 99999))
     if room_code in rooms:
         return jsonify({"Feedback": "Room already exists"})

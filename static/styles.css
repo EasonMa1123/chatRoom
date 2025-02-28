@@ -9,6 +9,7 @@
   padding: 10px;
   background: #3f3f3f;
   color: white;
+  font-family: "Silkscreen", serif;
 }
 #sidebar {
   width: 250px;
@@ -109,7 +110,7 @@ body.active {
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Silkscreen", serif;
         
   
   height: 100vh;   
@@ -129,7 +130,7 @@ h1,h2 {
 #sidebar {
   background-color: #282828;
   color: white;
-  font-family: "Orbitron",serif;
+  font-family: "Silkscreen", serif;
 }
 
 
@@ -184,14 +185,14 @@ textarea, input[type="text"],input[type="password"] {
 .sidebar-option-item,button {
   margin: 10px;
   padding: 10px 20px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Silkscreen", serif;
   width: 85%;
   border-radius: 20px;
   background-color:#282828;
   color: white;
   border: 1px solid #575757;
   font-size: 1em;
-  font-family: "Orbitron",serif;
+  font-family: "Silkscreen", serif;
 }
 
 
@@ -236,12 +237,12 @@ p span {
 input {
   margin: 10px;
   padding: 10px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Silkscreen", serif;
   text-align: center;
   width: 80%; /* Make input fields wider */
   border-radius: 10px;
   background-color: #717171;
-  font-family: "Orbitron",serif;
+  
   letter-spacing: 3px;
 
   
@@ -252,7 +253,7 @@ input {
 ::placeholder {
   color: white;
   font-size: 1em;
-  font-family: "Orbitron",serif;
+  font-family: "Silkscreen", serif;
   letter-spacing: 3px;
 }
 

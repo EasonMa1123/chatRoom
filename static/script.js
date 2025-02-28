@@ -30,6 +30,7 @@ function loadMessages() {
         let chatBox = $('#chat-box');
         chatBox.html('');
         data.forEach(msg => {
+            
             chatBox.append(`<p><b>${msg.username}:</b> ${msg.message}</p>`);
         });
     });

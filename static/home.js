@@ -92,7 +92,7 @@ function joinRoom() {
     let roomCode = $("#room-code").val();
     $.post('/join_room', {room_code: roomCode}, function(response) {
         if (response.Feedback === "Success") {
-            window.location.href = `/index/${roomCode}`;
+            window.location.href = `/room/${roomCode}`;
             sessionStorage.setItem("room",roomCode)
         } else {
             alert("Room not found!");
@@ -101,10 +101,9 @@ function joinRoom() {
 }
 
 function createRoom() {
-    let roomCode = $("#new-room-code").val();
     $.post('/create_room', function(response) {
         if (response.Feedback === "Room created") {
-            window.location.href = `/index/${response.room_code}`;
+            window.location.href = `/room/${response.room_code}`;
             sessionStorage.setItem("room",response.room_code)
         } else {
             alert(response.Feedback);
@@ -191,7 +190,7 @@ function createTableFromString(dataString) {
 }
 
 function return_room(){
-    window.location.href = `/index/${sessionStorage.getItem("room")}`;
+    window.location.href = `/room/${sessionStorage.getItem("room")}`;
 }
 
 function check_invalid_enter() {
