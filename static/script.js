@@ -5,12 +5,19 @@
 
 function logout(){
     document.location.href = "/";
-    sessionStorage.setItem("",Username)
-    sessionStorage.setItem("",Password)
+    sessionStorage.setItem("Username","")
+    sessionStorage.setItem("Password","")
+    sessionStorage.setItem("room","")
+}
+
+function direct_to_adminP(){
+    document.location.href = "/admin";
 }
 
 let roomCode = window.location.pathname.split("/").pop(); // Get room code from URL
 document.getElementById("room-code").textContent = roomCode; // Set room code in input field          
+
+
 function check_invalid_enter() {
     if (sessionStorage.getItem("Username") == null) {
         alert("You must log in first!");
@@ -37,6 +44,12 @@ function sendMessage() {
             loadMessages();
         });
     }
+}
+
+
+function leave_room(){
+    document.location.href = "/lobby";
+    sessionStorage.setItem("room","")
 }
 
 // Auto-refresh chat every 3 seconds

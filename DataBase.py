@@ -24,7 +24,8 @@ class DataRecord:
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 UserName TEXT,
                 Password TEXT,
-                Email TEXT
+                Email TEXT,
+                Role TEXT
             )
         """)
         self.DataBase.commit()
@@ -47,11 +48,11 @@ class DataRecord:
         encrypted_user = self.encrypting_data(user)
         encrypted_password = self.encrypting_data(password)
         encrypted_email = self.encrypting_data(email)
-        
+        role = self.encrypting_data("normal user")
         self.cc.execute("""
-            INSERT INTO UserData (UserName, Password, Email) 
-            VALUES (%s, %s, %s)
-        """, (encrypted_user, encrypted_password, encrypted_email))
+            INSERT INTO UserData (UserName, Password, Email,Role) 
+            VALUES (%s, %s, %s,%s)
+        """, (encrypted_user, encrypted_password, encrypted_email,role))
         self.DataBase.commit()
     
     def check_password(self, user, password):
@@ -100,6 +101,15 @@ class DataRecord:
             return data if data else []
         return list(data.values()) if data else None
 
+    def user_role(self,UserName:str):
+        try:
+            self.cc.execute("SELECT Role FROM UserData WHERE UserName = %s", (self.encrypting_data(UserName)))
+            data = self.cc.fetchall()
+            return list({key: [self.unencrypting_data(item[key]) for item in data] for key in data[0] if key != 'id'}.values())[0][0]
+        except:
+            return False
+
+
     def encrypting_data(self, data):
         return ENC().hashing(data)
         
@@ -114,16 +124,18 @@ class DataRecord:
 
     def execute_custom_query(self, query, params=None):
         try:
-            self.cc.execute(query, params or ())
+            # Encrypt only string parameters
+            encrypted_params = tuple(self.encrypting_data(p) if isinstance(p, str) else p for p in (params or ()))
+
+            self.cc.execute(query, encrypted_params)
             if query.strip().lower().startswith("select"):
-                return self.cc.fetchall()  # Return result for SELECT queries
+                data = self.cc.fetchall()
+                # Decrypt results if needed
+                return [{key: self.unencrypting_data(value) if isinstance(value, str) else value for key, value in row.items()} for row in data]
             else:
-                self.DataBase.commit()  # Commit changes for INSERT, UPDATE, DELETE
+                self.DataBase.commit()
                 return True
         except Exception as e:
             return f"Error executing query: {str(e)}"
 
 
-
-
-  

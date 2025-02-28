@@ -25,11 +25,14 @@ def lobby():
 def home():
     return render_template('login.html')
 
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
+
 @app.route('/create_room', methods=['POST'])
 def create_room():
     
-    room_code = str(random.randint(1000, 9999))
-    print(room_code)
+    room_code = str(random.randint(10000, 99999))
     if room_code in rooms:
         return jsonify({"Feedback": "Room already exists"})
     rooms[room_code] = []  # Create a new room with an empty message list
@@ -131,7 +134,17 @@ def access_user_setting():
     else:
         return jsonify({"Theme":data[1],"Fontsize":data[2]})
 
+
+@app.route('/accessUserRole',methods = ['POST'])   
+def access_user_role():
+    username = request.form['userName']
+    data = DataRecord().user_role(username)
     
+    if data == False:
+        return 404,''
+    else:
+        return jsonify({"role":data})
+
 @app.route('/email_verification',methods = ['POST'])
 def email_verification():
     import random
@@ -142,6 +155,16 @@ def email_verification():
     email_send().send_email(Title,Body,email)
     return jsonify({"Code":code})
 
+
+@app.route('/customSQL',methods=['POST'])
+def custom_SQL():
+    sql = request.form['sql']
+    param = str(request.form['param'])
+    param = tuple(param.split(",")) if param!= "" else None
+
+    data = DataRecord().execute_custom_query(sql,param)
+    
+    return jsonify({"log":str(data)})
 
 
 if __name__ == '__main__':
