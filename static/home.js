@@ -193,3 +193,14 @@ function createTableFromString(dataString) {
 function return_room(){
     window.location.href = `/index/${sessionStorage.getItem("room")}`;
 }
+
+function check_invalid_enter() {
+    if (sessionStorage.getItem("Username") == null) {
+        alert("You must log in first!");
+        window.location.href = "/";
+    }
+    if (window.location.href = "/admin" && sessionStorage.getItem("role") != "admin"){
+        alert("Invalid Access!");
+        window.location.href = "/";
+    }
+}

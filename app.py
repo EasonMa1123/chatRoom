@@ -5,7 +5,6 @@ from encryption_V2 import Encrytion
 from DataBase import DataRecord
 from password_strength import password_strength_checker
 import random
-
 from email_sender import email_send
 
 
