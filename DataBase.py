@@ -42,10 +42,10 @@ class DataRecord:
         self.cc.execute("""
             CREATE TABLE IF NOT EXISTS ChatRoomMessage (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                UserName TEXT,
-                UserRole TEXT,
+                username TEXT,
+                role TEXT,
                 Message TEXT,
-                Time TEXT,
+                timestamp TEXT,
                 roomCode TEXT
             )
         """)
@@ -124,17 +124,19 @@ class DataRecord:
 
     def store_chat_message(self,username,role,time,message,chatroomID):
         self.cc.execute("""
-                INSERT INTO ChatRoomMessage (UserName,UserRole,Time,Message,roomCode ) VALUES (%s, %s, %s, %s, %s)
+                INSERT INTO ChatRoomMessage (username,role,Message,timestamp,roomCode) VALUES (%s, %s, %s, %s, %s)
             """, (self.encrypting_data(username),self.encrypting_data(role),self.encrypting_data(time),self.encrypting_data(message),self.encrypting_data(chatroomID)))
         self.DataBase.commit()
 
 
     def fetch_chat_message(self):
-        self.cc.execute(""" SELECT UserName,UserRole,Time,Message,roomCode FROM ChatRoomMessage
+        self.cc.execute(""" SELECT username,role,Message,timestamp,roomCode FROM ChatRoomMessage
         """)
         data = self.cc.fetchall()
-        return {key: [self.unencrypting_data(item[key]) for item in data] for key in data[0] if key != 'id'}
-
+        if data != ():
+            return self.transform_data({key: [self.unencrypting_data(item[key]) for item in data] for key in data[0] if key != 'id'})
+        else:
+            return False
     def encrypting_data(self, data):
         return ENC().hashing(data)
         
@@ -164,4 +166,23 @@ class DataRecord:
             return f"Error executing query: {str(e)}"
 
 
-print(DataRecord().fetch_chat_message())
+    def transform_data(self,data):
+        transformed_data = {}
+        keys = list(data.keys())
+        num_entries = len(data[keys[0]])
+        
+        for i in range(num_entries):
+            entry = {}
+            for key in keys:
+                if key == 'roomCode':
+                    room_code = data[key][i]
+                else:
+                    entry[key.lower()] = data[key][i]
+
+            if room_code not in transformed_data:
+                transformed_data[room_code] = []
+            
+            transformed_data[room_code].append(entry)
+        
+        return transformed_data
+

@@ -11,7 +11,9 @@ from email_sender import email_send
 
 app = Flask(__name__)
 
-rooms = {}  # Dictionary to store messages for each room
+
+rooms = DataRecord().fetch_chat_message() if DataRecord().fetch_chat_message() else {}# Dictionary to store messages for each room
+print(rooms)
 
 @app.route('/room/<room_code>')
 def index(room_code):
@@ -54,7 +56,8 @@ def send():
 
     if username and message and room_code in rooms:
         rooms[room_code].append({'username': username, 'message': message, 'timestamp':Message_time, 'role': User_role})
-        DataRecord().store_chat_message(username,User_role,str(Message_time),message,str(room_code))
+        print(rooms)
+        DataRecord().store_chat_message(username,User_role,message,str(Message_time),str(room_code))
     return '', 204  # No content response
 
 @app.route('/messages/<room_code>')
