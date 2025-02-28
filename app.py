@@ -5,6 +5,7 @@ from encryption_V2 import Encrytion
 from DataBase import DataRecord
 from password_strength import password_strength_checker
 import random
+import datetime
 from email_sender import email_send
 
 
@@ -48,9 +49,11 @@ def send():
     username = request.form.get('username')
     message = request.form.get('message')
     room_code = request.form.get('room_code')
+    User_role = request.form.get('role')
+    Message_time = f'{((datetime.datetime.now()).strftime("%X"))} {((datetime.datetime.now()).strftime("%x"))}'
 
     if username and message and room_code in rooms:
-        rooms[room_code].append({'username': username, 'message': message, 'timestamp': time.time()})
+        rooms[room_code].append({'username': username, 'message': message, 'timestamp':Message_time, 'role': User_role})
     return '', 204  # No content response
 
 @app.route('/messages/<room_code>')
