@@ -164,3 +164,4 @@ class DataRecord:
             return f"Error executing query: {str(e)}"
 
 
+print(DataRecord().fetch_chat_message())
