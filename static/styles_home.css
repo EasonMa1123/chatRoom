@@ -24,15 +24,20 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 20px;
+  margin: 50px;
   padding: 30px; /* Ensure padding is set explicitly */
   border-radius: 20px;
-  width: 400px; /* Increase the width */
+  min-width: 400px; /* Increase the width */
   min-height: 300px; /* Increase the height */
   box-shadow: 0 0 10px #575757; /* Optional shadow */
   font-size: 30px;
   font-family: "Orbitron",serif;
   letter-spacing: 2px;
+}
+
+#command-area{
+  min-width: 350px;
+  min-height: 300px;
 }
 
 input {
@@ -146,4 +151,21 @@ button:hover{
 @keyframes blink-caret {
   from, to { border-color: transparent }
   50% { border-color: #20c20e; }
+}
+
+table{
+  border-radius: 10px;
+  
+
+}
+
+tr:nth-child(even){
+  background-color: #575757;
+  color: white;
+}
+
+#customers tr:nth-child(odd){background-color: #3f3f3f;}
+
+.sql-textarea{
+  border-radius: 10px;
 }
