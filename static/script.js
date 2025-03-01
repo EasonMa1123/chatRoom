@@ -48,6 +48,13 @@ function leave_room(){
     sessionStorage.setItem("",room)
 }
 
+document.getElementById("message").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault(); // Prevent new line
+        sendMessage(); // Call sendMessage() function
+    }
+});
+
 // Auto-refresh chat every 3 seconds
 setInterval(loadMessages, 3000);
 $(document).ready(loadMessages);
