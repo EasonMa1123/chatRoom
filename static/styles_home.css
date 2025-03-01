@@ -9,6 +9,7 @@ body {
   height: 100vh; /* Full height of the viewport */
   color: #20c20e;
   font-size: 20px;
+  width: 100%;
 }
 
 .silkscreen-regular {
@@ -39,6 +40,9 @@ body {
   font-size: 30px;
   font-family: "Silkscreen", serif;
   letter-spacing: 2px;
+
+
+
 }
 
 #command-area{
@@ -162,8 +166,23 @@ button:hover{
 
 table{
   border-radius: 10px;
+  margin: 40px;
+
+}
+
+#log-table{
+
+  display: flex;
+
+  margin: 50px;
+  padding: 30px; /* Ensure padding is set explicitly */
+  border-radius: 20px;
+  overflow-x: auto;
+  max-width: 900px;
   
 
+
+  
 }
 
 tr:nth-child(even){
