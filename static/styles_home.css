@@ -11,6 +11,12 @@ body {
   font-size: 20px;
 }
 
+.silkscreen-regular {
+  font-family: "Silkscreen", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 #container {
   display: flex;
   flex-direction: column;
@@ -24,26 +30,31 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 20px;
+  margin: 50px;
   padding: 30px; /* Ensure padding is set explicitly */
   border-radius: 20px;
-  width: 400px; /* Increase the width */
+  min-width: 400px; /* Increase the width */
   min-height: 300px; /* Increase the height */
   box-shadow: 0 0 10px #575757; /* Optional shadow */
   font-size: 30px;
-  font-family: "Orbitron",serif;
+  font-family: "Silkscreen", serif;
   letter-spacing: 2px;
+}
+
+#command-area{
+  min-width: 350px;
+  min-height: 300px;
 }
 
 input {
   margin: 10px;
   padding: 10px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Silkscreen", serif;
   text-align: center;
   width: 80%; /* Make input fields wider */
   border-radius: 10px;
   background-color: #717171;
-  font-family: "Orbitron",serif;
+  
   letter-spacing: 3px;
 
   
@@ -54,7 +65,7 @@ input {
 ::placeholder {
   color: white;
   font-size: 1em;
-  font-family: "Orbitron",serif;
+  font-family: "Silkscreen", serif;
   letter-spacing: 3px;
 }
 
@@ -75,6 +86,7 @@ button {
   border: 1px solid #575757;
   font-size: 1em;
   font-family: "Orbitron",serif;
+  font-family: "Silkscreen", serif;
 }
 
 
@@ -109,7 +121,7 @@ button:hover{
    float:left;
    color: #fff;
    cursor: pointer;
-   font-family: "Orbitron",serif;
+   font-family: "Silkscreen", serif;
    font-size: 1em;
  }
  .signup-login-switch-toggle input:checked + label {
@@ -128,7 +140,7 @@ button:hover{
   white-space: nowrap; /* Keeps the content on a single line */
   margin: 0 auto; /* Gives that scrolling effect as the typing happens */
   letter-spacing: .15em; /* Adjust as needed */
-  font-family: "Orbitron",serif;
+  font-family: "Silkscreen", serif;
 
 
   animation: 
@@ -146,4 +158,21 @@ button:hover{
 @keyframes blink-caret {
   from, to { border-color: transparent }
   50% { border-color: #20c20e; }
+}
+
+table{
+  border-radius: 10px;
+  
+
+}
+
+tr:nth-child(even){
+  background-color: #575757;
+  color: white;
+}
+
+#customers tr:nth-child(odd){background-color: #3f3f3f;}
+
+.sql-textarea{
+  border-radius: 10px;
 }
