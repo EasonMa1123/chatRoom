@@ -114,9 +114,10 @@ function createRoom() {
 
 
 function submit_command(){
-    var command = document.getElementById("command-area").value
+    var field = document.getElementById("field-area").value
+    var table = document.getElementById("table-area").value
     var param = document.getElementById("param-area").value
-    $.post('/customSQL',{sql:command,param:param},function(data){
+    $.post('/customSQL',{field:field,table:table,param:param},function(data){
         if (data.log.startsWith("Error executing query") || data.log == true){
             document.getElementById("log").innerHTML= data.log
             let logTableDiv = document.getElementById("log-table");

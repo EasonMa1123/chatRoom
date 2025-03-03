@@ -132,6 +132,9 @@ class DataRecord:
                 data = self.cc.fetchall()
                 # Decrypt results if needed
                 return [{key: self.unencrypting_data(value) if isinstance(value, str) else value for key, value in row.items()} for row in data]
+            elif query.strip().lower().startswith("show"):
+                data = self.cc.fetchall()
+                return data
             else:
                 self.DataBase.commit()
                 return True
@@ -139,3 +142,4 @@ class DataRecord:
             return f"Error executing query: {str(e)}"
 
 
+print(DataRecord().execute_custom_query("SHOW tables"))

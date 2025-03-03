@@ -158,10 +158,11 @@ def email_verification():
 
 @app.route('/customSQL',methods=['POST'])
 def custom_SQL():
-    sql = request.form['sql']
+    field_name = request.form['field']
+    table = request.form['table']
     param = str(request.form['param'])
     param = tuple(param.split(",")) if param!= "" else None
-
+    sql = f'SELECT {field_name} FROM {table}'
     data = DataRecord().execute_custom_query(sql,param)
     
     return jsonify({"log":str(data)})
