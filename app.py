@@ -1,4 +1,3 @@
-from flask import Flask, render_template, request, jsonify
 import time
 from flask import Flask, render_template, request, jsonify
 from encryption_V2 import Encrytion
@@ -164,9 +163,28 @@ def custom_SQL():
     param = tuple(param.split(",")) if param!= "" else None
     sql = f'SELECT {field_name} FROM {table}'
     data = DataRecord().execute_custom_query(sql,param)
-    
     return jsonify({"log":str(data)})
 
+
+
+@app.route('/showdb')
+def showtable():
+    sql = f'SHOW tables'
+    data = DataRecord().execute_custom_query(sql)
+    data = [{value if isinstance(value, str) else value for key, value in row.items()} for row in data]
+    table = []
+    field_data = {}
+    for i in data:
+        for j in i:
+           table.append(j) 
+           sql = f'SHOW COLUMNS FROM {j} '
+           field = DataRecord().execute_custom_query(sql)
+           temp = []
+           for l in field:
+            temp.append(l['Field'])
+           field_data[j] = temp
+           print(field_data)
+    return jsonify({"table":str(table),"field":str(field_data)})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)

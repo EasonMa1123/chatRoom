@@ -142,4 +142,3 @@ class DataRecord:
             return f"Error executing query: {str(e)}"
 
 
-print(DataRecord().execute_custom_query("SHOW tables"))

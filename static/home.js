@@ -191,6 +191,13 @@ function createTableFromString(dataString) {
     logTableDiv.appendChild(table);
 }
 
+
+function showTable(){
+    $.getJSON('/showdb',function(data){
+        document.getElementById("log").innerHTML= data.field
+    })
+}
+
 function return_room(){
     window.location.href = `/index/${sessionStorage.getItem("room")}`;
 }
