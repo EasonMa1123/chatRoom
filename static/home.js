@@ -92,7 +92,7 @@ function joinRoom() {
     let roomCode = $("#room-code").val();
     $.post('/join_room', {room_code: roomCode}, function(response) {
         if (response.Feedback === "Success") {
-            window.location.href = `/index/${roomCode}`;
+            window.location.href = `/room/${roomCode}`;
             sessionStorage.setItem("room",roomCode)
         } else {
             alert("Room not found!");
@@ -101,10 +101,9 @@ function joinRoom() {
 }
 
 function createRoom() {
-    let roomCode = $("#new-room-code").val();
     $.post('/create_room', function(response) {
         if (response.Feedback === "Room created") {
-            window.location.href = `/index/${response.room_code}`;
+            window.location.href = `/room/${response.room_code}`;
             sessionStorage.setItem("room",response.room_code)
         } else {
             alert(response.Feedback);
@@ -114,9 +113,17 @@ function createRoom() {
 
 
 function submit_command(){
-    var command = document.getElementById("command-area").value
+    const username = sessionStorage.getItem("Username")
+
+    const field = document.getElementById("field-area")
+    
+    const field_values = Array.from(field.selectedOptions).map(option => option.value).join(",");
+    
+    var table = document.getElementById("table-area").value
+    var con_field = document.getElementById("con-field-area").value
+
     var param = document.getElementById("param-area").value
-    $.post('/customSQL',{sql:command,param:param},function(data){
+    $.post('/customSQL',{userName:username,field:field_values,table:table,con_field:con_field,param:param},function(data){
         if (data.log.startsWith("Error executing query") || data.log == true){
             document.getElementById("log").innerHTML= data.log
             let logTableDiv = document.getElementById("log-table");
@@ -190,6 +197,10 @@ function createTableFromString(dataString) {
     logTableDiv.appendChild(table);
 }
 
+
+
+
 function return_room(){
-    window.location.href = `/index/${sessionStorage.getItem("room")}`;
+    window.location.href = `/room/${sessionStorage.getItem("room")}`;
 }
+

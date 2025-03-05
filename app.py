@@ -1,19 +1,21 @@
-from flask import Flask, render_template, request, jsonify
 import time
 from flask import Flask, render_template, request, jsonify
 from encryption_V2 import Encrytion
 from DataBase import DataRecord
 from password_strength import password_strength_checker
 import random
-
+import datetime
+import json
 from email_sender import email_send
 
 
 app = Flask(__name__)
 
-rooms = {}  # Dictionary to store messages for each room
 
-@app.route('/index/<room_code>')
+rooms = DataRecord().fetch_chat_message() if DataRecord().fetch_chat_message() else {}# Dictionary to store messages for each room
+
+
+@app.route('/room/<room_code>')
 def index(room_code):
     return render_template('index.html', room_code=room_code)
 
@@ -31,7 +33,6 @@ def admin():
 
 @app.route('/create_room', methods=['POST'])
 def create_room():
-    
     room_code = str(random.randint(10000, 99999))
     if room_code in rooms:
         return jsonify({"Feedback": "Room already exists"})
@@ -50,9 +51,13 @@ def send():
     username = request.form.get('username')
     message = request.form.get('message')
     room_code = request.form.get('room_code')
+    User_role = request.form.get('role')
+    Message_time = f'{((datetime.datetime.now()).strftime("%X"))} {((datetime.datetime.now()).strftime("%x"))}'
 
     if username and message and room_code in rooms:
-        rooms[room_code].append({'username': username, 'message': message, 'timestamp': time.time()})
+        rooms[room_code].append({'username': username, 'message': message, 'timestamp':Message_time, 'role': User_role})
+        print(rooms)
+        DataRecord().store_chat_message(username,User_role,message,str(Message_time),str(room_code))
     return '', 204  # No content response
 
 @app.route('/messages/<room_code>')
@@ -158,14 +163,43 @@ def email_verification():
 
 @app.route('/customSQL',methods=['POST'])
 def custom_SQL():
-    sql = request.form['sql']
-    param = str(request.form['param'])
-    param = tuple(param.split(",")) if param!= "" else None
+    username = request.form['userName']
+    role = DataRecord().user_role(username)
+    if role == "admin":
+        field_name = request.form['field']
+        table = request.form['table']
+        con_field = request.form['con_field']
+        param = str(request.form['param'])
+        param = tuple(param.split(",")) if param!= "" else None
+        if con_field == "None":
+            sql = f'SELECT {field_name} FROM {table}'
+        else:
+            sql = f'SELECT {field_name} FROM {table} WHERE {con_field} = %s'
+        data = DataRecord().execute_custom_query(sql,param)
+        return jsonify({"log":str(data)})
+    else:
+        return jsonify({"log":"Error executing query : Not admin"})
 
-    data = DataRecord().execute_custom_query(sql,param)
-    
-    return jsonify({"log":str(data)})
 
+
+@app.route('/showdb')
+def showtable():
+    sql = f'SHOW tables'
+    data = DataRecord().execute_custom_query(sql)
+    data = [{value if isinstance(value, str) else value for key, value in row.items()} for row in data]
+    table = []
+    field_data = {}
+    for i in data:
+        for j in i:
+           table.append(j) 
+           sql = f'SHOW COLUMNS FROM {j} '
+           field = DataRecord().execute_custom_query(sql)
+           temp = []
+           for l in field:
+              temp.append(str(l['Field']))
+           field_data[str(j)] = temp
+
+    return jsonify({"table":",".join(table),"field":str(json.dumps(field_data))})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)

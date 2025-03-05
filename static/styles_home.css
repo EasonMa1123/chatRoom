@@ -9,6 +9,13 @@ body {
   height: 100vh; /* Full height of the viewport */
   color: #20c20e;
   font-size: 20px;
+  width: 100%;
+}
+
+.silkscreen-regular {
+  font-family: "Silkscreen", serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 #container {
@@ -17,6 +24,8 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%; /* Ensures centering works well */
+  height: 200%;
+  
 }
 
 .processor {
@@ -31,8 +40,11 @@ body {
   min-height: 300px; /* Increase the height */
   box-shadow: 0 0 10px #575757; /* Optional shadow */
   font-size: 30px;
-  font-family: "Orbitron",serif;
+  font-family: "Silkscreen", serif;
   letter-spacing: 2px;
+
+
+
 }
 
 #command-area{
@@ -43,12 +55,12 @@ body {
 input {
   margin: 10px;
   padding: 10px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Silkscreen", serif;
   text-align: center;
   width: 80%; /* Make input fields wider */
   border-radius: 10px;
   background-color: #717171;
-  font-family: "Orbitron",serif;
+  
   letter-spacing: 3px;
 
   
@@ -59,7 +71,7 @@ input {
 ::placeholder {
   color: white;
   font-size: 1em;
-  font-family: "Orbitron",serif;
+  font-family: "Silkscreen", serif;
   letter-spacing: 3px;
 }
 
@@ -80,6 +92,7 @@ button {
   border: 1px solid #575757;
   font-size: 1em;
   font-family: "Orbitron",serif;
+  font-family: "Silkscreen", serif;
 }
 
 
@@ -114,7 +127,7 @@ button:hover{
    float:left;
    color: #fff;
    cursor: pointer;
-   font-family: "Orbitron",serif;
+   font-family: "Silkscreen", serif;
    font-size: 1em;
  }
  .signup-login-switch-toggle input:checked + label {
@@ -133,7 +146,7 @@ button:hover{
   white-space: nowrap; /* Keeps the content on a single line */
   margin: 0 auto; /* Gives that scrolling effect as the typing happens */
   letter-spacing: .15em; /* Adjust as needed */
-  font-family: "Orbitron",serif;
+  font-family: "Silkscreen", serif;
 
 
   animation: 
@@ -155,8 +168,23 @@ button:hover{
 
 table{
   border-radius: 10px;
+  margin: 40px;
+
+}
+
+#log-table{
+
+  display: flex;
+
+  margin: 50px;
+  padding: 30px; /* Ensure padding is set explicitly */
+  border-radius: 20px;
+  overflow-x: auto;
+  
   
 
+
+  
 }
 
 tr:nth-child(even){
@@ -168,4 +196,10 @@ tr:nth-child(even){
 
 .sql-textarea{
   border-radius: 10px;
+}
+
+#SQL{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
