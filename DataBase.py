@@ -39,6 +39,18 @@ class DataRecord:
         """)
         self.DataBase.commit()
 
+        self.cc.execute("""
+            CREATE TABLE IF NOT EXISTS ChatRoomMessage (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                username TEXT,
+                role TEXT,
+                Message TEXT,
+                timestamp TEXT,
+                roomCode TEXT
+            )
+        """)
+        self.DataBase.commit()
+
     def check_user(self, user):
         self.cc.execute("SELECT UserName FROM UserData")
         user_in_DataBase = [row['UserName'] for row in self.cc.fetchall()]
@@ -87,11 +99,11 @@ class DataRecord:
         if self.access_account_setting(user_id, True):
             self.cc.execute("""
                 UPDATE UserSettingData SET Theme = %s, FontSize = %s WHERE id = %s
-            """, (theme, font_size, user_id))
+            """, (self.encrypting_data(theme), self.encrypting_data(font_size), user_id))
         else:
             self.cc.execute("""
                 INSERT INTO UserSettingData (id, Theme, FontSize) VALUES (%s, %s, %s)
-            """, (user_id, theme, font_size))
+            """, (user_id, self.encrypting_data(theme), self.encrypting_data(font_size)))
         self.DataBase.commit()
 
     def access_account_setting(self, user_id, check):
@@ -99,7 +111,7 @@ class DataRecord:
         data = self.cc.fetchone()
         if check:
             return data if data else []
-        return list(data.values()) if data else None
+        return [{key: self.unencrypting_data(value) if isinstance(value, str) else value for key, value in row.items()} for row in data] if data else None
 
     def user_role(self,UserName:str):
         try:
@@ -110,6 +122,21 @@ class DataRecord:
             return False
 
 
+    def store_chat_message(self,username,role,time,message,chatroomID):
+        self.cc.execute("""
+                INSERT INTO ChatRoomMessage (username,role,Message,timestamp,roomCode) VALUES (%s, %s, %s, %s, %s)
+            """, (self.encrypting_data(username),self.encrypting_data(role),self.encrypting_data(time),self.encrypting_data(message),self.encrypting_data(chatroomID)))
+        self.DataBase.commit()
+
+
+    def fetch_chat_message(self):
+        self.cc.execute(""" SELECT username,role,Message,timestamp,roomCode FROM ChatRoomMessage
+        """)
+        data = self.cc.fetchall()
+        if data != ():
+            return self.transform_data({key: [self.unencrypting_data(item[key]) for item in data] for key in data[0] if key != 'id'})
+        else:
+            return False
     def encrypting_data(self, data):
         return ENC().hashing(data)
         
@@ -141,4 +168,24 @@ class DataRecord:
         except Exception as e:
             return f"Error executing query: {str(e)}"
 
+
+    def transform_data(self,data):
+        transformed_data = {}
+        keys = list(data.keys())
+        num_entries = len(data[keys[0]])
+        
+        for i in range(num_entries):
+            entry = {}
+            for key in keys:
+                if key == 'roomCode':
+                    room_code = data[key][i]
+                else:
+                    entry[key.lower()] = data[key][i]
+
+            if room_code not in transformed_data:
+                transformed_data[room_code] = []
+            
+            transformed_data[room_code].append(entry)
+        
+        return transformed_data
 
