@@ -42,6 +42,7 @@ comfirmPassword_input.onkeyup = function(){
 
 
 function load_panel(){
+    check_invalid_enter() 
     setup_admin_sql()
     setup_field_name()
 }
@@ -74,4 +75,15 @@ function setup_field_name(){
         option.text = "*";
         field_name.add(option);
     })
+}
+
+function check_invalid_enter() {
+    if (sessionStorage.getItem("Username") == null) {
+        alert("You must log in first!");
+        window.location.href = "/";
+    }
+    if (window.location.href == "/admin" && sessionStorage.getItem("role") != "admin"){
+        alert("Invalid Access!");
+        window.location.href = "/";
+    }
 }
