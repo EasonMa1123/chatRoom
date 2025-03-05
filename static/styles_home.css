@@ -24,6 +24,8 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%; /* Ensures centering works well */
+  height: 200%;
+  
 }
 
 .processor {
@@ -178,7 +180,7 @@ table{
   padding: 30px; /* Ensure padding is set explicitly */
   border-radius: 20px;
   overflow-x: auto;
-  max-width: 900px;
+  
   
 
 

@@ -20,13 +20,17 @@
         
         <div class="processor" >
             <h1>SQL</h1>
+            
             <div id="SQL">
                 <a>SELECT</a>
                 <select class="sql-textarea" id="field-area" placeholder="SQL...." multiple></select>
                 <a>FROM</a>
                 <select class="sql-textarea" id="table-area" placeholder="SQL...." onchange="setup_field_name()"></select>
                 <a>WHERE</a>
+                <select class="sql-textarea" id="con-field-area" placeholder="SQL...." ></select>
+                <a>=</a>
                 <textarea type="text" class="sql-textarea" id="param-area" placeholder="Paramenter"></textarea>
+
             </div>
             <button onclick="submit_command()">Submit</button>
             <a id="log"></a>

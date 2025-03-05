@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 
 rooms = DataRecord().fetch_chat_message() if DataRecord().fetch_chat_message() else {}# Dictionary to store messages for each room
-print(rooms)
+
 
 @app.route('/room/<room_code>')
 def index(room_code):
@@ -163,13 +163,22 @@ def email_verification():
 
 @app.route('/customSQL',methods=['POST'])
 def custom_SQL():
-    field_name = request.form['field']
-    table = request.form['table']
-    param = str(request.form['param'])
-    param = tuple(param.split(",")) if param!= "" else None
-    sql = f'SELECT {field_name} FROM {table}'
-    data = DataRecord().execute_custom_query(sql,param)
-    return jsonify({"log":str(data)})
+    username = request.form['userName']
+    role = DataRecord().user_role(username)
+    if role == "admin":
+        field_name = request.form['field']
+        table = request.form['table']
+        con_field = request.form['con_field']
+        param = str(request.form['param'])
+        param = tuple(param.split(",")) if param!= "" else None
+        if con_field == "None":
+            sql = f'SELECT {field_name} FROM {table}'
+        else:
+            sql = f'SELECT {field_name} FROM {table} WHERE {con_field} = %s'
+        data = DataRecord().execute_custom_query(sql,param)
+        return jsonify({"log":str(data)})
+    else:
+        return jsonify({"log":"Error executing query : Not admin"})
 
 
 

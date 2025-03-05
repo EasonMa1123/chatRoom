@@ -113,13 +113,17 @@ function createRoom() {
 
 
 function submit_command(){
+    const username = sessionStorage.getItem("Username")
+
     const field = document.getElementById("field-area")
     
     const field_values = Array.from(field.selectedOptions).map(option => option.value).join(",");
     
     var table = document.getElementById("table-area").value
+    var con_field = document.getElementById("con-field-area").value
+
     var param = document.getElementById("param-area").value
-    $.post('/customSQL',{field:field_values,table:table,param:param},function(data){
+    $.post('/customSQL',{userName:username,field:field_values,table:table,con_field:con_field,param:param},function(data){
         if (data.log.startsWith("Error executing query") || data.log == true){
             document.getElementById("log").innerHTML= data.log
             let logTableDiv = document.getElementById("log-table");
