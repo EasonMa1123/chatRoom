@@ -41,6 +41,11 @@ comfirmPassword_input.onkeyup = function(){
 }
 
 
+function load_panel(){
+    setup_admin_sql()
+    setup_field_name()
+}
+
 function setup_admin_sql(){
     const table_name = document.getElementById("table-area");
     $.getJSON('/showdb',function(data){
@@ -57,6 +62,7 @@ function setup_admin_sql(){
 function setup_field_name(){
     $.getJSON('/showdb',function(data){
         const  field_name = document.getElementById("field-area");
+        field_name.innerHTML = ""
         const table_name = document.getElementById("table-area");
         var field_name_list = JSON.parse(data.field)
         for (let x of field_name_list[table_name.value]){
