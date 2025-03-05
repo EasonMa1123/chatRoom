@@ -113,9 +113,13 @@ function createRoom() {
 
 
 function submit_command(){
-    var command = document.getElementById("command-area").value
+    const field = document.getElementById("field-area")
+    
+    const field_values = Array.from(field.selectedOptions).map(option => option.value).join(",");
+    
+    var table = document.getElementById("table-area").value
     var param = document.getElementById("param-area").value
-    $.post('/customSQL',{sql:command,param:param},function(data){
+    $.post('/customSQL',{field:field_values,table:table,param:param},function(data){
         if (data.log.startsWith("Error executing query") || data.log == true){
             document.getElementById("log").innerHTML= data.log
             let logTableDiv = document.getElementById("log-table");
@@ -188,6 +192,9 @@ function createTableFromString(dataString) {
     logTableDiv.innerHTML = ""; // Clear previous content
     logTableDiv.appendChild(table);
 }
+
+
+
 
 function return_room(){
     window.location.href = `/room/${sessionStorage.getItem("room")}`;

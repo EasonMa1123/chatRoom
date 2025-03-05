@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel </title>
+    <title>Admin Panel</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/static/styles_home.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,15 +13,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
 
 </head>
-<body onload="check_invalid_enter()">
+
+<body onload="load_panel()">
+
     <div id="container">
         
-        <div class="processor">
+        <div class="processor" >
             <h1>SQL</h1>
-            <textarea type="text"  class="sql-textarea" id="command-area" placeholder="SQL...."></textarea>
-            <textarea type="text" class="sql-textarea" id="param-area" placeholder="Paramenter"></textarea>
+            <div id="SQL">
+                <a>SELECT</a>
+                <select class="sql-textarea" id="field-area" placeholder="SQL...." multiple></select>
+                <a>FROM</a>
+                <select class="sql-textarea" id="table-area" placeholder="SQL...." onchange="setup_field_name()"></select>
+                <a>WHERE</a>
+                <textarea type="text" class="sql-textarea" id="param-area" placeholder="Paramenter"></textarea>
+            </div>
             <button onclick="submit_command()">Submit</button>
             <a id="log"></a>
+            <a id="log2"></a>
             <div id="log-table"></div>
         </div>
         
@@ -34,4 +43,4 @@
 
 
 </body>
-
+</html>

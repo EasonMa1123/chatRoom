@@ -1,4 +1,3 @@
-from flask import Flask, render_template, request, jsonify
 import time
 from flask import Flask, render_template, request, jsonify
 from encryption_V2 import Encrytion
@@ -6,6 +5,7 @@ from DataBase import DataRecord
 from password_strength import password_strength_checker
 import random
 import datetime
+import json
 from email_sender import email_send
 
 
@@ -163,14 +163,34 @@ def email_verification():
 
 @app.route('/customSQL',methods=['POST'])
 def custom_SQL():
-    sql = request.form['sql']
+    field_name = request.form['field']
+    table = request.form['table']
     param = str(request.form['param'])
     param = tuple(param.split(",")) if param!= "" else None
-
+    sql = f'SELECT {field_name} FROM {table}'
     data = DataRecord().execute_custom_query(sql,param)
-    
     return jsonify({"log":str(data)})
 
+
+
+@app.route('/showdb')
+def showtable():
+    sql = f'SHOW tables'
+    data = DataRecord().execute_custom_query(sql)
+    data = [{value if isinstance(value, str) else value for key, value in row.items()} for row in data]
+    table = []
+    field_data = {}
+    for i in data:
+        for j in i:
+           table.append(j) 
+           sql = f'SHOW COLUMNS FROM {j} '
+           field = DataRecord().execute_custom_query(sql)
+           temp = []
+           for l in field:
+              temp.append(str(l['Field']))
+           field_data[str(j)] = temp
+
+    return jsonify({"table":",".join(table),"field":str(json.dumps(field_data))})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
