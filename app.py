@@ -4,6 +4,7 @@ from encryption_V2 import Encrytion
 from DataBase import DataRecord
 from password_strength import password_strength_checker
 import random
+import json
 
 from email_sender import email_send
 
@@ -181,10 +182,10 @@ def showtable():
            field = DataRecord().execute_custom_query(sql)
            temp = []
            for l in field:
-            temp.append(l['Field'])
-           field_data[j] = temp
-           print(field_data)
-    return jsonify({"table":str(table),"field":str(field_data)})
+              temp.append(str(l['Field']))
+           field_data[str(j)] = temp
+
+    return jsonify({"table":",".join(table),"field":str(json.dumps(field_data))})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)

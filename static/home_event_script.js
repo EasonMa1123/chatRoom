@@ -39,3 +39,33 @@ comfirmPassword_input.onkeyup = function(){
         }
     }
 }
+
+
+function setup_admin_sql(){
+    const table_name = document.getElementById("table-area");
+    $.getJSON('/showdb',function(data){
+        table = data.table
+        table_list = table.split(",")
+        for (let x of table_list){
+            var option = document.createElement("option");
+            option.text = x;
+            table_name.add(option);
+        }
+    })    
+}
+
+function setup_field_name(){
+    $.getJSON('/showdb',function(data){
+        const  field_name = document.getElementById("field-area");
+        const table_name = document.getElementById("table-area");
+        var field_name_list = JSON.parse(data.field)
+        for (let x of field_name_list[table_name.value]){
+            var option = document.createElement("option");
+            option.text = x;
+            field_name.add(option);
+        }
+        var option = document.createElement("option");
+        option.text = "*";
+        field_name.add(option);
+    })
+}
