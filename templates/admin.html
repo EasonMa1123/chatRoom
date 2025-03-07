@@ -21,7 +21,7 @@
         <div class="processor" >
             <h1>SQL</h1>
             
-            <div id="SQL">
+            <div class="SQL">
                 <a>SELECT</a>
                 <select class="sql-textarea" id="field-area" placeholder="SQL...." multiple></select>
                 <a>FROM</a>
@@ -30,7 +30,22 @@
                 <select class="sql-textarea" id="con-field-area" placeholder="SQL...." ></select>
                 <a>=</a>
                 <textarea type="text" class="sql-textarea" id="param-area" placeholder="Paramenter"></textarea>
+                
 
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="join-SQL-toggle" onclick="toggle_join()">
+                <span class="slider round"></span>
+            </label>
+            <div class="SQL" id="join-SQL" style="display: none;">
+                <a>JOIN</a>
+                <select class="sql-textarea" id="join-table-area" placeholder="SQL...."  onchange="join_table_update()"></select>
+                <a>ON</a>
+                <a id="current-table"></a>
+                <select class="sql-textarea" id="field-area" placeholder="SQL...." ></select>
+                <a>=</a>
+                <a id="join-table"></a>
+                <select class="sql-textarea" id="join-field-area" placeholder="SQL...."></select>
             </div>
             <button onclick="submit_command()">Submit</button>
             <a id="log"></a>

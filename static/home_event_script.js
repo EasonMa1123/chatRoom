@@ -49,6 +49,7 @@ function load_panel(){
 
 function setup_admin_sql(){
     const table_name = document.getElementById("table-area");
+    const current_table_name = document.getElementById("join-table-area");
     $.getJSON('/showdb',function(data){
         table = data.table
         table_list = table.split(",")
@@ -56,6 +57,9 @@ function setup_admin_sql(){
             var option = document.createElement("option");
             option.text = x;
             table_name.add(option);
+            var option = document.createElement("option");
+            option.text = x;
+            current_table_name.add(option);
         }
     })    
 }
@@ -93,5 +97,22 @@ function check_invalid_enter() {
     if (window.location.href == "/admin" && sessionStorage.getItem("role") != "admin"){
         alert("Invalid Access!");
         window.location.href = "/";
+    }
+}
+
+function join_table_update(){
+    const join_table = document.getElementById("join-table-area")
+    var join_table_display = document.getElementById("join-table")
+    join_table_display.innerHTML = join_table.value
+}
+
+
+function toggle_join(){
+    const join_sql = document.getElementById("join-SQL")
+    const toggle = document.getElementById("join-SQL-toggle")
+    if (toggle.checked == true){
+        join_sql.style.display = "flex"
+    } else {
+        join_sql.style.display = "none"
     }
 }
