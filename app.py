@@ -175,10 +175,20 @@ def custom_SQL():
         else: 
             param = int(request.form['param'])
             param = (param,)if param!= "" else None
+
+        
         if con_field == "None":
             sql = f'SELECT {field_name} FROM {table}'
         else:
             sql = f'SELECT {field_name} FROM {table} WHERE {con_field} = %s'
+
+
+        join_command = request.form['join_toggle']
+        join_table = request.form['join_table']
+        match_field = request.form['match_field']
+        join_field = request.form['join_field']
+        if join_command.lower() == "true":
+            sql += f' JOIN {join_table} ON {table}.{match_field} = {join_table}.{join_field}'
         data = DataRecord().execute_custom_query(sql,param)
         return jsonify({"log":str(data)})
     else:

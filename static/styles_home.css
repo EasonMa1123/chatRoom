@@ -42,6 +42,7 @@ body {
   font-size: 30px;
   font-family: "Silkscreen", serif;
   letter-spacing: 2px;
+  
 
 
 
@@ -175,8 +176,9 @@ table{
 #log-table{
   display: flex;
   margin: 50px;
-  padding: 30px; /* Ensure padding is set explicitly */
+  padding: 10px; /* Ensure padding is set explicitly */
   border-radius: 20px;
+  max-width: 1200px;
   overflow-x: auto;  
 }
 

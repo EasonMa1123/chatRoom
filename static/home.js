@@ -122,8 +122,16 @@ function submit_command(){
     var table = document.getElementById("table-area").value
     var con_field = document.getElementById("con-field-area").value
 
+    const join_table = document.getElementById("join-table-area").value
+    const match_field = document.getElementById("current-field-area").value
+    const join_field = document.getElementById("join-field-area").value
+    const join_toggle = document.getElementById("join-SQL-toggle").checked
+
     var param = document.getElementById("param-area").value
-    $.post('/customSQL',{userName:username,field:field_values,table:table,con_field:con_field,param:param},function(data){
+    $.post('/customSQL',{userName:username,field:field_values,table:table,
+        con_field:con_field,param:param,join_toggle:join_toggle,
+        join_table:join_table,match_field:match_field,join_field:join_field},
+        function(data){
         if (data.log.startsWith("Error executing query") || data.log == true){
             document.getElementById("log").innerHTML= data.log
             let logTableDiv = document.getElementById("log-table");
