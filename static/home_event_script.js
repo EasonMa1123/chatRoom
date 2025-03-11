@@ -71,6 +71,8 @@ function setup_field_name(){
         field_name.innerHTML = ""
         con_field_name.innerHTML = ""
         const table_name = document.getElementById("table-area");
+        const join_current_field_name = document.getElementById("current-field-area");
+        join_current_field_name.innerHTML = ""
         var field_name_list = JSON.parse(data.field)
         for (let x of field_name_list[table_name.value]){
             var option = document.createElement("option");
@@ -79,6 +81,9 @@ function setup_field_name(){
             var option = document.createElement("option");
             option.text = x;
             field_name.add(option);
+            var option = document.createElement("option");
+            option.text = x;
+            join_current_field_name.add(option);
         }
         var option = document.createElement("option");
         option.text = "*";
@@ -86,6 +91,7 @@ function setup_field_name(){
         var option = document.createElement("option");
         option.text = "None";
         con_field_name.add(option);
+        document.getElementById("current-table").innerHTML = ` ${table_name.value}. `
     })
 }
 
@@ -104,15 +110,31 @@ function join_table_update(){
     const join_table = document.getElementById("join-table-area")
     var join_table_display = document.getElementById("join-table")
     join_table_display.innerHTML = join_table.value
+
+    const join_field = document.getElementById("join-field-area")
+    
+    $.getJSON('/showdb',function(data){
+        var field_name_list = JSON.parse(data.field)
+        for (let x of field_name_list[join_table.value]){
+            var option = document.createElement("option");
+            option.text = x;
+            join_field.add(option);
+        }
+    })
+
 }
 
 
 function toggle_join(){
-    const join_sql = document.getElementById("join-SQL")
+    const join_sql = document.getElementsByClassName("join-SQL")
     const toggle = document.getElementById("join-SQL-toggle")
-    if (toggle.checked == true){
-        join_sql.style.display = "flex"
-    } else {
-        join_sql.style.display = "none"
+    for (let i = 0; i < join_sql.length; i++) {
+        
+      
+        if (toggle.checked == true){
+            join_sql[i].style.display = "flex"
+        } else {
+            join_sql[i].style.display = "none"
+        }
     }
 }

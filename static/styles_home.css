@@ -199,6 +199,11 @@ tr:nth-child(even){
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-left: 10px;
+}
+
+.join-SQL{
+  display: none;
 }
 
 .switch {
