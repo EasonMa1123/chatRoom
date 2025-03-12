@@ -45,6 +45,7 @@ function load_panel(){
     check_invalid_enter() 
     setup_admin_sql()
     setup_field_name()
+
 }
 
 function setup_admin_sql(){
@@ -61,6 +62,30 @@ function setup_admin_sql(){
             option.text = x;
             current_table_name.add(option);
         }
+
+    current_table_name.remove(table_name.value)
+    })    
+}
+
+
+function update_join_table_name(){
+    const table_name = document.getElementById("table-area");
+    const current_table_name = document.getElementById("join-table-area");
+    current_table_name.innerHTML = ""
+    $.getJSON('/showdb',function(data){
+        table = data.table
+        table_list = table.split(",")
+        for (let x of table_list){
+            var option = document.createElement("option");
+            option.text = x;
+            current_table_name.add(option);
+        }
+
+    current_table_name.remove(table_name.selectedIndex)
+    const join_table = document.getElementById("join-table-area")
+    var join_table_display = document.getElementById("join-table")
+    join_table_display.innerHTML = join_table.value
+    
     })    
 }
 
@@ -92,6 +117,8 @@ function setup_field_name(){
         option.text = "None";
         con_field_name.add(option);
         document.getElementById("current-table").innerHTML = ` ${table_name.value}. `
+        update_join_table_name()
+        join_table_update()
     })
 }
 
@@ -110,9 +137,9 @@ function join_table_update(){
     const join_table = document.getElementById("join-table-area")
     var join_table_display = document.getElementById("join-table")
     join_table_display.innerHTML = join_table.value
-
-    const join_field = document.getElementById("join-field-area")
     
+    const join_field = document.getElementById("join-field-area")
+    join_field.innerHTML = ""
     $.getJSON('/showdb',function(data){
         var field_name_list = JSON.parse(data.field)
         for (let x of field_name_list[join_table.value]){

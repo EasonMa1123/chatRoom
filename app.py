@@ -169,12 +169,15 @@ def custom_SQL():
         field_name = request.form['field']
         table = request.form['table']
         con_field = request.form['con_field']
-        if con_field.lower() != "id":
-            param = str(request.form['param'])
-            param = tuple(param.split(",")) if param!= "" else None
-        else: 
-            param = int(request.form['param'])
-            param = (param,)if param!= "" else None
+        try:
+            if con_field.lower() != "id":
+                param = str(request.form['param'])
+                param = tuple(param.split(",")) if param!= "" else None
+            else: 
+                param = int(request.form['param'])
+                param = (param,)if param!= "" else None
+        except:
+            return jsonify({"log":"Error executing query : Invilad Parameter request"})
 
         
         if con_field == "None":
