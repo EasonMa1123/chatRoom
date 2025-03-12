@@ -179,19 +179,17 @@ def custom_SQL():
         except:
             return jsonify({"log":"Error executing query : Invilad Parameter request"})
 
-        
-        if con_field == "None":
-            sql = f'SELECT {field_name} FROM {table}'
-        else:
-            sql = f'SELECT {field_name} FROM {table} WHERE {con_field} = %s'
-
+        sql = f'SELECT {field_name} FROM {table}'
 
         join_command = request.form['join_toggle']
         join_table = request.form['join_table']
         match_field = request.form['match_field']
         join_field = request.form['join_field']
+
         if join_command.lower() == "true":
             sql += f' JOIN {join_table} ON {table}.{match_field} = {join_table}.{join_field}'
+        if con_field != "None":
+            sql += f' WHERE {table}.{con_field} = %s'
         data = DataRecord().execute_custom_query(sql,param)
         return jsonify({"log":str(data)})
     else:
