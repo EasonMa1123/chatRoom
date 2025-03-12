@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 
 rooms = DataRecord().fetch_chat_message() if DataRecord().fetch_chat_message() else {}# Dictionary to store messages for each room
-print(rooms)
+
 
 @app.route('/room/<room_code>')
 def index(room_code):
@@ -56,8 +56,8 @@ def send():
 
     if username and message and room_code in rooms:
         rooms[room_code].append({'username': username, 'message': message, 'timestamp':Message_time, 'role': User_role})
-        print(rooms)
-        DataRecord().store_chat_message(username,User_role,message,str(Message_time),str(room_code))
+
+        DataRecord().store_chat_message(username,message,str(Message_time),str(room_code))
     return '', 204  # No content response
 
 @app.route('/messages/<room_code>')
@@ -163,13 +163,37 @@ def email_verification():
 
 @app.route('/customSQL',methods=['POST'])
 def custom_SQL():
-    field_name = request.form['field']
-    table = request.form['table']
-    param = str(request.form['param'])
-    param = tuple(param.split(",")) if param!= "" else None
-    sql = f'SELECT {field_name} FROM {table}'
-    data = DataRecord().execute_custom_query(sql,param)
-    return jsonify({"log":str(data)})
+    username = request.form['userName']
+    role = DataRecord().user_role(username)
+    if role == "admin":
+        field_name = request.form['field']
+        table = request.form['table']
+        con_field = request.form['con_field']
+        try:
+            if con_field.lower() != "id":
+                param = str(request.form['param'])
+                param = tuple(param.split(",")) if param!= "" else None
+            else: 
+                param = int(request.form['param'])
+                param = (param,)if param!= "" else None
+        except:
+            return jsonify({"log":"Error executing query : Invilad Parameter request"})
+
+        sql = f'SELECT {field_name} FROM {table}'
+
+        join_command = request.form['join_toggle']
+        join_table = request.form['join_table']
+        match_field = request.form['match_field']
+        join_field = request.form['join_field']
+
+        if join_command.lower() == "true":
+            sql += f' JOIN {join_table} ON {table}.{match_field} = {join_table}.{join_field}'
+        if con_field != "None":
+            sql += f' WHERE {table}.{con_field} = %s'
+        data = DataRecord().execute_custom_query(sql,param)
+        return jsonify({"log":str(data)})
+    else:
+        return jsonify({"log":"Error executing query : Not admin"})
 
 
 

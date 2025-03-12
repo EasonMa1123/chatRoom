@@ -20,13 +20,36 @@
         
         <div class="processor" >
             <h1>SQL</h1>
-            <div id="SQL">
+            
+            <div class="SQL">
                 <a>SELECT</a>
                 <select class="sql-textarea" id="field-area" placeholder="SQL...." multiple></select>
                 <a>FROM</a>
                 <select class="sql-textarea" id="table-area" placeholder="SQL...." onchange="setup_field_name()"></select>
+            </div>
+            <div class="SQL">
                 <a>WHERE</a>
+                <select class="sql-textarea" id="con-field-area" placeholder="SQL...." ></select>
+                <a>=</a>
                 <textarea type="text" class="sql-textarea" id="param-area" placeholder="Paramenter"></textarea>
+                
+
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="join-SQL-toggle" onclick="toggle_join()">
+                <span class="slider round"></span>
+            </label>
+            <div class="SQL join-SQL" >
+                <a>JOIN&nbsp</a>
+                <select class="sql-textarea" id="join-table-area" placeholder="SQL...."  onchange="join_table_update()"></select>
+                <a>&nbspON&nbsp</a>
+            </div>
+            <div class="SQL join-SQL" >
+                <a id="current-table"></a>
+                <select class="sql-textarea" id="current-field-area" placeholder="SQL...." ></select>
+                <a>&nbsp=&nbsp</a>
+                <a id="join-table"></a>
+                <select class="sql-textarea" id="join-field-area" placeholder="SQL...."></select>
             </div>
             <button onclick="submit_command()">Submit</button>
             <a id="log"></a>

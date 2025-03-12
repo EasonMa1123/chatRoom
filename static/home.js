@@ -113,13 +113,25 @@ function createRoom() {
 
 
 function submit_command(){
+    const username = sessionStorage.getItem("Username")
+
     const field = document.getElementById("field-area")
     
     const field_values = Array.from(field.selectedOptions).map(option => option.value).join(",");
     
     var table = document.getElementById("table-area").value
+    var con_field = document.getElementById("con-field-area").value
+
+    const join_table = document.getElementById("join-table-area").value
+    const match_field = document.getElementById("current-field-area").value
+    const join_field = document.getElementById("join-field-area").value
+    const join_toggle = document.getElementById("join-SQL-toggle").checked
+
     var param = document.getElementById("param-area").value
-    $.post('/customSQL',{field:field_values,table:table,param:param},function(data){
+    $.post('/customSQL',{userName:username,field:field_values,table:table,
+        con_field:con_field,param:param,join_toggle:join_toggle,
+        join_table:join_table,match_field:match_field,join_field:join_field},
+        function(data){
         if (data.log.startsWith("Error executing query") || data.log == true){
             document.getElementById("log").innerHTML= data.log
             let logTableDiv = document.getElementById("log-table");
@@ -200,13 +212,3 @@ function return_room(){
     window.location.href = `/room/${sessionStorage.getItem("room")}`;
 }
 
-function check_invalid_enter() {
-    if (sessionStorage.getItem("Username") == null) {
-        alert("You must log in first!");
-        window.location.href = "/";
-    }
-    if (window.location.href == "/admin" && sessionStorage.getItem("role") != "admin"){
-        alert("Invalid Access!");
-        window.location.href = "/";
-    }
-}
