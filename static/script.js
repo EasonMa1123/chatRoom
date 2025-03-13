@@ -1,13 +1,9 @@
-
-
-
-
-
 function logout(){
     document.location.href = "/";
     sessionStorage.setItem("Username","")
     sessionStorage.setItem("Password","")
     sessionStorage.setItem("room","")
+    sessionStorage.setItem("role","")
 }
 
 function direct_to_adminP(){

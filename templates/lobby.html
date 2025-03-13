@@ -20,12 +20,14 @@
             <h3>Join a Room</h3>
             <input type="text" id="room-code" placeholder="Enter room code">
             <button onclick="joinRoom()">Join Room</button>
+            <p>Current Live Chat Room</p>
+            <div id="chat-room-list"></div>
         </div>
         <div class="processor">
             <h3>Create a Room</h3>
             <button onclick="createRoom()">Create Room</button>
         </div>
-
+        <button onclick="logout()">Log Out</button>
     </div>
     <script type="text/javascript" src="{{ url_for('static', filename='home_event_script.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='home.js') }}"></script>
