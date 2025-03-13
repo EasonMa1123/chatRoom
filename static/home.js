@@ -212,3 +212,25 @@ function return_room(){
     window.location.href = `/room/${sessionStorage.getItem("room")}`;
 }
 
+
+function join_room(code){
+    window.location.href = `/room/${code}`;
+}
+
+
+
+function load_live_chat_room(){
+    $.getJSON(`/room_list`, function(data) {
+        let chatBox = $('#chat-room-list');
+        chatBox.html('');
+        data.forEach(msg => {
+            
+            chatBox.append(`<label for="room-${msg}" class="Chat-room-code">${msg}</label>
+                <input type="radio" id="room-${msg}" style="display: none;" onclick="join_room(${msg})"></input>`);
+        });
+        })
+}
+
+
+setInterval(load_live_chat_room, 3000);
+$(document).ready(load_live_chat_room);

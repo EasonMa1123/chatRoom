@@ -46,6 +46,10 @@ def join_room():
         return jsonify({"Feedback": "Success", "room_code": room_code})
     return jsonify({"Feedback": "Room not found"})
 
+@app.route('/room_list')
+def chat_room_list():
+    return jsonify([key for key in rooms])
+
 @app.route('/send', methods=['POST'])
 def send():
     username = request.form.get('username')

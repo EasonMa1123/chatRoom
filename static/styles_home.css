@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Silkscreen', serif;
   background-color: #121212;
   display: flex;
   justify-content: center;
@@ -28,6 +28,10 @@ body {
   margin: 15px;
 }
 
+h2{
+  font-size: 50px;
+}
+
 .processor {
   background-color: #282828;
   display: flex;
@@ -42,10 +46,6 @@ body {
   font-size: 30px;
   font-family: "Silkscreen", serif;
   letter-spacing: 2px;
-  
-
-
-
 }
 
 #command-area{
@@ -58,15 +58,10 @@ input {
   padding: 10px;
   font-family: "Silkscreen", serif;
   text-align: center;
-  width: 80%; /* Make input fields wider */
+  width: 90%; /* Make input fields wider */
   border-radius: 10px;
   background-color: #717171;
-  
   letter-spacing: 3px;
-
-  
-
-  
 }
 
 ::placeholder {
@@ -266,4 +261,29 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+#chat-room-list{
+  display: flex;
+  max-height: 240px;
+  min-width: 240px;
+  overflow-y: auto;
+  
+  align-items: center;
+  flex-direction: column;
+  border-radius: 10px;
+  overflow-x: hidden;
+  width:95%
+}
+.Chat-room-code{
+  background-color: #575757;
+  border: 1px solid #282828;
+  margin: 2px;
+  border-radius: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.Chat-room-code:hover{
+  background-color: #717171;
 }

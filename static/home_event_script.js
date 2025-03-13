@@ -138,7 +138,8 @@ function check_invalid_enter() {
         alert("You must log in first!");
         window.location.href = "/";
     }
-    if (window.location.href == "/admin" && sessionStorage.getItem("role") != "admin"){
+
+    if (window.location.href.includes("/admin") && sessionStorage.getItem("role") != "admin"){
         alert("Invalid Access!");
         window.location.href = "/";
     }
