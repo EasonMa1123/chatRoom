@@ -50,6 +50,15 @@ class DataRecord:
         """)
         self.DataBase.commit()
 
+        self.cc.execute("""
+            CREATE TABLE IF NOT EXISTS ChatRoom (
+                id INT PRIMARY KEY,
+                roomAdmin TEXT,
+                roomPassword TEXT
+            )
+        """)
+        self.DataBase.commit()
+
     def check_user(self, user):
         self.cc.execute("SELECT UserName FROM UserData")
         user_in_DataBase = [row['UserName'] for row in self.cc.fetchall()]
@@ -120,6 +129,19 @@ class DataRecord:
         except:
             return False
 
+    def room_registe(self,room_code,admin,password):
+        self.cc.execute("""
+                INSERT INTO ChatRoom (id,roomAdmin,roomPassword) VALUES (%s, %s, %s)
+            """, (room_code,self.encrypting_data(admin),self.encrypting_data(password)))
+        self.DataBase.commit()
+
+    def fetch_room_data(self):
+        self.cc.execute("""SELECT * FROM ChatRoom""")
+        data = self.cc.fetchall()
+        if data != ():
+            return self.transform_data({key: [self.unencrypting_data(item[key]) for item in data] for key in data[0] if key != 'id'})
+        else:
+            return False
 
     def store_chat_message(self,username,time,message,chatroomID):
         self.cc.execute("""
