@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
     
 </head>
-<body onload="check_invalid_enter()">
+<body>
     <div id="container">
         <h2>Welcome to the Chat Lobby</h2>
         <div class="processor">
@@ -28,6 +28,9 @@
         <button onclick="logout()">Log Out</button>
     </div>
     <script type="text/javascript" src="{{ url_for('static', filename='home_event_script.js') }}"></script>
+    <script>
+         check_invalid_enter()
+    </script>
     <script type="text/javascript" src="{{ url_for('static', filename='home.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='script.js') }}"></script>
 

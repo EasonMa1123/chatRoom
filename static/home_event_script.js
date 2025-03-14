@@ -94,7 +94,6 @@ function setup_field_name(){
 }
 
 function check_invalid_enter() {
-    alert(sessionStorage.getItem("Username"))
     if (sessionStorage.getItem("Username") == null || sessionStorage.getItem("Username") == "") {
         alert("You must log in first!");
         window.location.href = "/";
