@@ -33,17 +33,23 @@ def admin():
 
 @app.route('/create_room', methods=['POST'])
 def create_room():
+    admin = request.form.get('admin')
+    password = request.form.get('password')
     room_code = str(random.randint(10000, 99999))
     if room_code in rooms:
         return jsonify({"Feedback": "Room already exists"})
+    DataRecord().room_registration(int(room_code),admin,password)
     rooms[room_code] = []  # Create a new room with an empty message list
     return jsonify({"Feedback": "Room created", "room_code": room_code})
 
 @app.route('/join_room', methods=['POST'])
 def join_room():
     room_code = request.form.get('room_code')
-    if room_code in rooms:
-        return jsonify({"Feedback": "Success", "room_code": room_code})
+    data = DataRecord().fetch_room_data(room_code)
+    
+    if str(room_code) in list(rooms.keys()):
+        data.update({"Feedback": "Success", "room_code": room_code})
+        return jsonify(data)
     return jsonify({"Feedback": "Room not found"})
 
 @app.route('/room_list')

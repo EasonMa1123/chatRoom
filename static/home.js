@@ -88,12 +88,18 @@ function login(){
 }
 
 
-function joinRoom() {
-    let roomCode = $("#room-code").val();
+function joinRoom(roomCode) {
+    
     $.post('/join_room', {room_code: roomCode}, function(response) {
         if (response.Feedback === "Success") {
-            window.location.href = `/room/${roomCode}`;
-            sessionStorage.setItem("room",roomCode)
+            const Room_password= response.roomPassword
+            let user_password = prompt("Enter Room Password:")
+            if (Room_password == user_password){
+                window.location.href = `/room/${roomCode}`;
+                sessionStorage.setItem("room",roomCode)
+            } else {
+                alert("Incorrect Password")
+            }
         } else {
             alert("Room not found!");
         }
@@ -101,14 +107,21 @@ function joinRoom() {
 }
 
 function createRoom() {
-    $.post('/create_room', function(response) {
-        if (response.Feedback === "Room created") {
-            window.location.href = `/room/${response.room_code}`;
-            sessionStorage.setItem("room",response.room_code)
-        } else {
-            alert(response.Feedback);
-        }
-    });
+    const admin_name = sessionStorage.getItem("Username")
+    
+    const room_password = document.getElementById("room-password").value
+    if (room_password != null){
+        $.post('/create_room', {admin:admin_name,password:room_password},function(response) {
+            if (response.Feedback === "Room created") {
+                window.location.href = `/room/${response.room_code}`;
+                sessionStorage.setItem("room",response.room_code)
+            } else {
+                alert(response.Feedback);
+            }
+        });
+    } else {
+        alert("Invalid Room Password")
+    }
 }
 
 
@@ -213,9 +226,6 @@ function return_room(){
 }
 
 
-function join_room(code){
-    window.location.href = `/room/${code}`;
-}
 
 
 
@@ -226,11 +236,12 @@ function load_live_chat_room(){
         data.forEach(msg => {
             
             chatBox.append(`<label for="room-${msg}" class="Chat-room-code">${msg}</label>
-                <input type="radio" id="room-${msg}" style="display: none;" onclick="join_room(${msg})"></input>`);
+                <input type="radio" id="room-${msg}" style="display: none;" onclick=" joinRoom(${msg})"></input>`);
         });
         })
 }
 
-
-setInterval(load_live_chat_room, 3000);
-$(document).ready(load_live_chat_room);
+if (window.location.href.includes("/lobby")){
+    setInterval(load_live_chat_room, 3000);
+    $(document).ready(load_live_chat_room);
+}

@@ -17,15 +17,13 @@
     <div id="container">
         <h2>Welcome to the Chat Lobby</h2>
         <div class="processor">
-            <h3>Join a Room</h3>
-            <input type="text" id="room-code" placeholder="Enter room code">
-            <button onclick="joinRoom()">Join Room</button>
-            <p>Current Live Chat Room</p>
+            <p>Current Live Chat Room(Click to join)</p>
             <div id="chat-room-list"></div>
         </div>
         <div class="processor">
             <h3>Create a Room</h3>
             <button onclick="createRoom()">Create Room</button>
+            <input type="password" id="room-password" placeholder="Enter room Password">
         </div>
         <button onclick="logout()">Log Out</button>
     </div>

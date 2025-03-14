@@ -45,7 +45,7 @@ class DataRecord:
                 username TEXT,
                 Message TEXT,
                 timestamp TEXT,
-                roomCode TEXT
+                roomCode INT
             )
         """)
         self.DataBase.commit()
@@ -125,28 +125,32 @@ class DataRecord:
         try:
             self.cc.execute("SELECT Role FROM UserData WHERE UserName = %s", (self.encrypting_data(UserName)))
             data = self.cc.fetchall()
-            return list({key: [self.unencrypting_data(item[key]) for item in data] for key in data[0] if key != 'id'}.values())[0][0]
+            return list({key: [self.unencrypting_data(item[key]) for item in data] for key in data[0] if key != 'id' and key != 'roomCode'  }.values())[0][0]
         except:
             return False
 
-    def room_registe(self,room_code,admin,password):
+    def room_registration(self,room_code,admin,password):
         self.cc.execute("""
                 INSERT INTO ChatRoom (id,roomAdmin,roomPassword) VALUES (%s, %s, %s)
             """, (room_code,self.encrypting_data(admin),self.encrypting_data(password)))
         self.DataBase.commit()
 
-    def fetch_room_data(self):
-        self.cc.execute("""SELECT * FROM ChatRoom""")
+    def fetch_room_data(self,room_code):
+        self.cc.execute("""SELECT * FROM ChatRoom WHERE id= %s""",room_code)
+
         data = self.cc.fetchall()
         if data != ():
-            return self.transform_data({key: [self.unencrypting_data(item[key]) for item in data] for key in data[0] if key != 'id'})
+            return {
+                key: [self.unencrypting_data(item[key]) for item in data] if key != 'id' and key != 'roomCode'  
+                else [item[key] for item in data] 
+                for key in data[0]}
         else:
             return False
 
     def store_chat_message(self,username,time,message,chatroomID):
         self.cc.execute("""
                 INSERT INTO ChatRoomMessage (username,Message,timestamp,roomCode) VALUES (%s, %s, %s, %s)
-            """, (self.encrypting_data(username),self.encrypting_data(time),self.encrypting_data(message),self.encrypting_data(chatroomID)))
+            """, (self.encrypting_data(username),self.encrypting_data(time),self.encrypting_data(message),int(chatroomID)))
         self.DataBase.commit()
 
 
@@ -155,7 +159,7 @@ class DataRecord:
         """)
         data = self.cc.fetchall()
         if data != ():
-            return self.transform_data({key: [self.unencrypting_data(item[key]) for item in data] for key in data[0] if key != 'id'})
+            return self.transform_data({key: [self.unencrypting_data(item[key]) if key !='roomCode' else str(item[key]) for item in data] for key in data[0] if key != 'id'   })
         else:
             return False
     def encrypting_data(self, data):
@@ -168,7 +172,7 @@ class DataRecord:
     def display_db(self):
         self.cc.execute("SELECT * FROM ChatRoomMessage")
         data = self.cc.fetchall()
-        return {key: [self.unencrypting_data(item[key]) for item in data] for key in data[0] if key != 'id'}
+        return {key: [self.unencrypting_data(item[key]) for item in data] for key in data[0] if key != 'id' and key != 'roomCode'  }
 
     def execute_custom_query(self, query, params=None):
         try:
@@ -202,7 +206,7 @@ class DataRecord:
                     room_code = data[key][i]
                 else:
                     entry[key.lower()] = data[key][i]
-
+            
             if room_code not in transformed_data:
                 transformed_data[room_code] = []
             
