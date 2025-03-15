@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Silkscreen', serif;
   background-color: #121212;
   display: flex;
   justify-content: center;
@@ -28,6 +28,10 @@ body {
   margin: 15px;
 }
 
+h2{
+  font-size: 50px;
+}
+
 .processor {
   background-color: #282828;
   display: flex;
@@ -42,9 +46,6 @@ body {
   font-size: 30px;
   font-family: "Silkscreen", serif;
   letter-spacing: 2px;
-
-
-
 }
 
 #command-area{
@@ -57,15 +58,10 @@ input {
   padding: 10px;
   font-family: "Silkscreen", serif;
   text-align: center;
-  width: 80%; /* Make input fields wider */
+  width: 90%; /* Make input fields wider */
   border-radius: 10px;
   background-color: #717171;
-  
   letter-spacing: 3px;
-
-  
-
-  
 }
 
 ::placeholder {
@@ -175,8 +171,9 @@ table{
 #log-table{
   display: flex;
   margin: 50px;
-  padding: 30px; /* Ensure padding is set explicitly */
+  padding: 10px; /* Ensure padding is set explicitly */
   border-radius: 20px;
+  max-width: 1200px;
   overflow-x: auto;  
 }
 
@@ -195,8 +192,98 @@ tr:nth-child(even){
   font-size: 25px;
 }
 
-#SQL{
+.SQL{
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-left: 10px;
+}
+
+.join-SQL{
+  display: none;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+#chat-room-list{
+  display: flex;
+  max-height: 240px;
+  min-width: 240px;
+  overflow-y: auto;
+  
+  align-items: center;
+  flex-direction: column;
+  border-radius: 10px;
+  overflow-x: hidden;
+  width:95%
+}
+.Chat-room-code{
+  background-color: #575757;
+  border: 1px solid #282828;
+  margin: 2px;
+  border-radius: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.Chat-room-code:hover{
+  background-color: #717171;
 }

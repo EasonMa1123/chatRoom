@@ -88,12 +88,18 @@ function login(){
 }
 
 
-function joinRoom() {
-    let roomCode = $("#room-code").val();
+function joinRoom(roomCode) {
+    
     $.post('/join_room', {room_code: roomCode}, function(response) {
         if (response.Feedback === "Success") {
-            window.location.href = `/room/${roomCode}`;
-            sessionStorage.setItem("room",roomCode)
+            const Room_password= response.roomPassword
+            let user_password = prompt("Enter Room Password:")
+            if (Room_password == user_password){
+                window.location.href = `/room/${roomCode}`;
+                sessionStorage.setItem("room",roomCode)
+            } else {
+                alert("Incorrect Password")
+            }
         } else {
             alert("Room not found!");
         }
@@ -101,14 +107,21 @@ function joinRoom() {
 }
 
 function createRoom() {
-    $.post('/create_room', function(response) {
-        if (response.Feedback === "Room created") {
-            window.location.href = `/room/${response.room_code}`;
-            sessionStorage.setItem("room",response.room_code)
-        } else {
-            alert(response.Feedback);
-        }
-    });
+    const admin_name = sessionStorage.getItem("Username")
+    
+    const room_password = document.getElementById("room-password").value
+    if (room_password != null){
+        $.post('/create_room', {admin:admin_name,password:room_password},function(response) {
+            if (response.Feedback === "Room created") {
+                window.location.href = `/room/${response.room_code}`;
+                sessionStorage.setItem("room",response.room_code)
+            } else {
+                alert(response.Feedback);
+            }
+        });
+    } else {
+        alert("Invalid Room Password")
+    }
 }
 
 
@@ -122,8 +135,16 @@ function submit_command(){
     var table = document.getElementById("table-area").value
     var con_field = document.getElementById("con-field-area").value
 
+    const join_table = document.getElementById("join-table-area").value
+    const match_field = document.getElementById("current-field-area").value
+    const join_field = document.getElementById("join-field-area").value
+    const join_toggle = document.getElementById("join-SQL-toggle").checked
+
     var param = document.getElementById("param-area").value
-    $.post('/customSQL',{userName:username,field:field_values,table:table,con_field:con_field,param:param},function(data){
+    $.post('/customSQL',{userName:username,field:field_values,table:table,
+        con_field:con_field,param:param,join_toggle:join_toggle,
+        join_table:join_table,match_field:match_field,join_field:join_field},
+        function(data){
         if (data.log.startsWith("Error executing query") || data.log == true){
             document.getElementById("log").innerHTML= data.log
             let logTableDiv = document.getElementById("log-table");
@@ -204,3 +225,23 @@ function return_room(){
     window.location.href = `/room/${sessionStorage.getItem("room")}`;
 }
 
+
+
+
+
+function load_live_chat_room(){
+    $.getJSON(`/room_list`, function(data) {
+        let chatBox = $('#chat-room-list');
+        chatBox.html('');
+        data.forEach(msg => {
+            
+            chatBox.append(`<label for="room-${msg}" class="Chat-room-code">${msg}</label>
+                <input type="radio" id="room-${msg}" style="display: none;" onclick=" joinRoom(${msg})"></input>`);
+        });
+        })
+}
+
+if (window.location.href.includes("/lobby")){
+    setInterval(load_live_chat_room, 3000);
+    $(document).ready(load_live_chat_room);
+}

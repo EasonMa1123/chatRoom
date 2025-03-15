@@ -33,18 +33,28 @@ def admin():
 
 @app.route('/create_room', methods=['POST'])
 def create_room():
+    admin = request.form.get('admin')
+    password = request.form.get('password')
     room_code = str(random.randint(10000, 99999))
     if room_code in rooms:
         return jsonify({"Feedback": "Room already exists"})
+    DataRecord().room_registration(int(room_code),admin,password)
     rooms[room_code] = []  # Create a new room with an empty message list
     return jsonify({"Feedback": "Room created", "room_code": room_code})
 
 @app.route('/join_room', methods=['POST'])
 def join_room():
     room_code = request.form.get('room_code')
-    if room_code in rooms:
-        return jsonify({"Feedback": "Success", "room_code": room_code})
+    data = DataRecord().fetch_room_data(room_code)
+    
+    if str(room_code) in list(rooms.keys()):
+        data.update({"Feedback": "Success", "room_code": room_code})
+        return jsonify(data)
     return jsonify({"Feedback": "Room not found"})
+
+@app.route('/room_list')
+def chat_room_list():
+    return jsonify([key for key in rooms])
 
 @app.route('/send', methods=['POST'])
 def send():
@@ -169,16 +179,27 @@ def custom_SQL():
         field_name = request.form['field']
         table = request.form['table']
         con_field = request.form['con_field']
-        if con_field.lower() != "id":
-            param = str(request.form['param'])
-            param = tuple(param.split(",")) if param!= "" else None
-        else: 
-            param = int(request.form['param'])
-            param = (param,)if param!= "" else None
-        if con_field == "None":
-            sql = f'SELECT {field_name} FROM {table}'
-        else:
-            sql = f'SELECT {field_name} FROM {table} WHERE {con_field} = %s'
+        try:
+            if con_field.lower() != "id":
+                param = str(request.form['param'])
+                param = tuple(param.split(",")) if param!= "" else None
+            else: 
+                param = int(request.form['param'])
+                param = (param,)if param!= "" else None
+        except:
+            return jsonify({"log":"Error executing query : Invilad Parameter request"})
+
+        sql = f'SELECT {field_name} FROM {table}'
+
+        join_command = request.form['join_toggle']
+        join_table = request.form['join_table']
+        match_field = request.form['match_field']
+        join_field = request.form['join_field']
+
+        if join_command.lower() == "true":
+            sql += f' JOIN {join_table} ON {table}.{match_field} = {join_table}.{join_field}'
+        if con_field != "None":
+            sql += f' WHERE {table}.{con_field} = %s'
         data = DataRecord().execute_custom_query(sql,param)
         return jsonify({"log":str(data)})
     else:
