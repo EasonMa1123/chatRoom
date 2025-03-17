@@ -288,6 +288,6 @@ input:checked + .slider:before {
   background-color: #717171;
 }
 
-#room-password-container:button{
+#room-password-container button{
   width: auto;
 }

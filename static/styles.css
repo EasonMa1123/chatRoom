@@ -28,12 +28,9 @@
 #overlay-setting {
   position: fixed; /* Sit on top of the page content */
   display: none; /* Hidden by default */
-  width: 100%; /* Full width (cover the whole page) */
-  height: 100%; /* Full height (cover the whole page) */
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  
+  
+
   background-color: rgba(0,0,0,0.5); /* Black background with opacity */
   z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
   cursor: pointer; /* Add a pointer on hover */
@@ -41,8 +38,8 @@
 }
 
 #setting-layer{
-  vertical-align: middle;
-  width: 300px;
+  
+
   margin: auto;
   border: black;
 
@@ -50,30 +47,34 @@
 
 #setting-layout{
   display: flex;
-  justify-content: center;  
-  align-items: center;      
+    
   margin: 15px;
   text-align: center;
-  flex-direction: column;
+
   border-radius: 10px;
   background-color:#3f3f3f;
-  overflow-y: scroll;
+
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    outline: none;
 }
 
 .setting-section{
-  display: flex;
-  justify-content: center;  
-  align-items: center;      
+
+   
   margin: 15px;
   text-align: center;
-  flex-direction: column;
+
   border-radius: 10px;
-  background-color: #1e2329;
+  background-color: #575757;
   padding: 10px;
 }
 
 #personal-setting{
-  background-color: #33383d;
+  background-color: #575757;
   border-radius: 10px;
   margin: 6px;
   padding: 3px;
@@ -83,7 +84,7 @@
 #sidebar button {
   padding: 10px;
   text-align: left;
-  width: 100%;
+  
   background-color: #ccc;
   border: none;
   outline: none;
