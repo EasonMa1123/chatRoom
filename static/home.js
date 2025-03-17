@@ -88,12 +88,24 @@ function login(){
 }
 
 
-function joinRoom(roomCode) {
-    
-    $.post('/join_room', {room_code: roomCode}, function(response) {
+function close_room_password(){
+    document.getElementById("room-password-container").style.display = "none"
+}
+
+function joinRoom(roomCode){
+    document.getElementById("room-password-container").style.display = "flex"
+    document.getElementById("selected-room-code").innerHTML = `Selected Room: ${roomCode}`
+    sessionStorage.setItem("SelectRoom",roomCode)
+}
+
+
+function JoinRoomCode() {
+    const roomCode = sessionStorage.getItem("SelectRoom")
+    $.post('/join_room', {room_code:roomCode }, function(response) {
         if (response.Feedback === "Success") {
             const Room_password= response.roomPassword
-            let user_password = prompt("Enter Room Password:")
+            document.getElementById("room-password-container").style.display = "none"
+            const user_password = document.getElementById("Room-password").value
             if (Room_password == user_password){
                 window.location.href = `/room/${roomCode}`;
                 sessionStorage.setItem("room",roomCode)

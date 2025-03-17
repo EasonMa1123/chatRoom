@@ -12,6 +12,7 @@ function direct_to_adminP(){
 
 let roomCode = window.location.pathname.split("/").pop(); // Get room code from URL
 document.getElementById("room-code").textContent = roomCode; // Set room code in input field          
+document.getElementById("Chat-Room-Title").innerText = `Room: ${roomCode}`
 
 
 function check_invalid_enter() {
