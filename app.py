@@ -147,7 +147,7 @@ def access_user_setting():
     if data ==  None:
         return jsonify({"Theme":None,"Fontsize":None})
     else:
-        return jsonify({"Theme":data[1],"Fontsize":data[2]})
+        return jsonify({"Theme":data[0]["Theme"],"Fontsize":data[0]["FontSize"]})
 
 
 @app.route('/accessUserRole',methods = ['POST'])   

@@ -116,7 +116,7 @@ class DataRecord:
 
     def access_account_setting(self, user_id, check):
         self.cc.execute("SELECT * FROM UserSettingData WHERE id = %s", (user_id,))
-        data = self.cc.fetchone()
+        data = self.cc.fetchall()
         if check:
             return data if data else []
         return [{key: self.unencrypting_data(value) if isinstance(value, str) else value for key, value in row.items()} for row in data] if data else None
