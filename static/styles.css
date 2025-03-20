@@ -27,34 +27,13 @@
 
 #overlay-setting {
   position: fixed; /* Sit on top of the page content */
-  display: none; /* Hidden by default */
   
-  
-
   background-color: rgba(0,0,0,0.5); /* Black background with opacity */
-  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+  /* Specify a stack order in case you're using a different order for other elements */
   cursor: pointer; /* Add a pointer on hover */
   overflow: scroll;
 }
 
-#setting-layer{
-  
-
-  margin: auto;
-  border: black;
-
-}
-
-#setting-layout{
-  display: flex;
-    
-  margin: 15px;
-  text-align: center;
-
-  border-radius: 10px;
-  background-color:#3f3f3f;
-
-}
 
 input:focus,
 select:focus,
@@ -63,21 +42,26 @@ textarea:focus{
 }
 
 .setting-section{
-
-   
+  display:flex;
   margin: 15px;
   text-align: center;
-
+  align-items: center;
   border-radius: 10px;
   background-color: #575757;
   padding: 10px;
+
 }
 
 #personal-setting{
+  display:flex;
   background-color: #575757;
   border-radius: 10px;
   margin: 6px;
   padding: 3px;
+}
+
+.setting-section button{
+  width: 100%;
 }
 
 /* Button inside the sidebar */
@@ -150,7 +134,7 @@ h1,h2 {
   margin: 15px;
   border-radius: 10px;
   text-align: center;
-  flex-direction: row;
+
 }
 
 .switch-toggle {
@@ -183,17 +167,44 @@ textarea, input[type="text"],input[type="password"] {
   text-align: center;
 }
 
+
+@keyframes sidebar_colour{
+  0%   {box-shadow: #20c20e 0px 5px 15px;}
+  12%  {box-shadow: #20c20e 0px 7px 16px;}
+  25%  {box-shadow: #1db10c 0px 9px 17px;}
+  50% {box-shadow: #20c20e 0px 11px 18px;}
+  62%  {box-shadow: #20c20e 0px 9px 16px;}
+  75%  {box-shadow: #20c20e 0px 7px 16px;}
+}
+
+.sidebar-option-item{
+  animation-name: sidebar_colour;
+  animation-duration: 8s;
+  animation-iteration-count:infinite;
+}
+
+button{
+  margin: 10px;
+  width: 100%;
+  border-radius: 20px;
+  background-color:#282828;
+  color: white;
+  border: 1px solid #575757;
+  font-size: 1em;
+  font-family: "Silkscreen", serif;}
+
 .sidebar-option-item,button {
   margin: 10px;
   padding: 10px 20px;
   font-family: "Silkscreen", serif;
-  width: 85%;
+  width: 100%;
   border-radius: 20px;
   background-color:#282828;
   color: white;
   border: 1px solid #575757;
   font-size: 1em;
   font-family: "Silkscreen", serif;
+  
 }
 
 
@@ -256,6 +267,7 @@ input {
   font-size: 1em;
   font-family: "Silkscreen", serif;
   letter-spacing: 3px;
+  width: 100%;
 }
 
 input:focus,
@@ -264,6 +276,15 @@ textarea:focus{
     outline: none;
 }
 
+
+#account-detail{
+  background-color: #575757;
+  width: 85%;
+  border-radius: 20px;
+  margin-left: 10px;
+  align-self: center;
+  align-content: center;
+}
 
 #chat-box{
   border-radius: 10px;

@@ -31,6 +31,10 @@ def home():
 def admin():
     return render_template('admin.html')
 
+@app.route('/setting')
+def setting():
+    return render_template('setting.html')
+
 @app.route('/create_room', methods=['POST'])
 def create_room():
     admin = request.form.get('admin')
