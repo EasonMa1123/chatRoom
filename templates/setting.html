@@ -15,25 +15,26 @@
     
 </head>
 <body onload="access_setting()">
-
-    <div class="setting-section">
-        <a>Theme setting</a>
-        <div class="switch-toggle">
-            <input id="dark-theme" name="theme-setting-button" class="setting-button" type="radio" style="display: none;" onclick="set_dark_theme()" checked>
-            <label for="dark-theme" class="setting-button">dark</label>
-            
-            <input id="bright-theme" name="theme-setting-button"  class="setting-button" type="radio" style="display: none;" onclick="set_bright_theme()">
-            <label for="bright-theme"class="setting-button">bright</label>
+    <h1>Setting</h1>
+    <div id="personal-setting">
+        <div class="setting-section">
+            <a>Theme setting</a>
+            <div class="switch-toggle">
+                <input id="dark-theme" name="theme-setting-button" class="setting-button" type="radio" style="display: none;" onclick="set_dark_theme()" checked>
+                <label for="dark-theme" class="setting-button">dark</label>
+                
+                <input id="bright-theme" name="theme-setting-button"  class="setting-button" type="radio" style="display: none;" onclick="set_bright_theme()">
+                <label for="bright-theme"class="setting-button">bright</label>
+            </div>
         </div>
+        
+        <div id="font-size-setting" class="setting-section">
+            <a>Font size setting</a>
+            <label></label>
+            <input id="font-size" type="number" max="30" min="13" onchange="set_font_size(document.getElementById('font-size').value)" value="18">
+        </div>
+        <button onclick="save_setting()">Save Change</button>
     </div>
-    
-    <div id="font-size-setting" class="setting-section">
-        <a>Font size setting</a>
-        <label></label>
-        <input id="font-size" type="number" max="30" min="13" onchange="set_font_size(document.getElementById('font-size').value)" value="18">
-    </div>
-    <button onclick="save_setting()">Save Change</button>
-    
     <div id="change-username" class="setting-section" autocomplete="off">
         <a>Change Username</a>
         <input type="text"  id="Current-username" placeholder="Current Username" autocomplete="off" readonly onclick="this.removeAttribute('readonly');">
