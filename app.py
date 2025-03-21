@@ -12,6 +12,7 @@ from email_sender import email_send
 app = Flask(__name__)
 
 
+
 rooms = DataRecord().fetch_chat_message() if DataRecord().fetch_chat_message() else {}# Dictionary to store messages for each room
 
 
@@ -67,11 +68,11 @@ def send():
     room_code = request.form.get('room_code')
     User_role = request.form.get('role')
     Message_time = f'{((datetime.datetime.now()).strftime("%X"))} {((datetime.datetime.now()).strftime("%x"))}'
-
+    encrypted_message,key = Encrytion().encryption(message,str(room_code))
     if username and message and room_code in rooms:
-        rooms[room_code].append({'username': username, 'message': message, 'timestamp':Message_time, 'role': User_role})
+        rooms[room_code].append({'username': username, 'message': encrypted_message, "MessageKey":key,'timestamp':Message_time, 'role': User_role})
 
-        DataRecord().store_chat_message(username,message,str(Message_time),str(room_code))
+        DataRecord().store_chat_message(username,encrypted_message,str(key),str(Message_time),str(room_code))
     return '', 204  # No content response
 
 @app.route('/messages/<room_code>')
