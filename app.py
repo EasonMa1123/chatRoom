@@ -13,8 +13,20 @@ app = Flask(__name__)
 
 
 
-rooms = DataRecord().fetch_chat_message() if DataRecord().fetch_chat_message() else {}# Dictionary to store messages for each room
+rooms = {}  # Dictionary to store messages for each room
 
+def decrypt_messages(messages, room_code):
+    decrypted_messages = []
+    for msg in messages:
+        try:
+            decrypted_message = Encrytion().unencryption(msg['message'], msg['messagekey'], str(room_code))
+            print(decrypted_message)
+            if decrypted_message != "Invalid Password,unable to decrypte":
+                msg['message'] = decrypted_message
+                decrypted_messages.append(msg)
+        except:
+            continue
+    return decrypted_messages
 
 @app.route('/room/<room_code>')
 def index(room_code):
@@ -70,13 +82,28 @@ def send():
     Message_time = f'{((datetime.datetime.now()).strftime("%X"))} {((datetime.datetime.now()).strftime("%x"))}'
     encrypted_message,key = Encrytion().encryption(message,str(room_code))
     if username and message and room_code in rooms:
-        rooms[room_code].append({'username': username, 'message': encrypted_message, "MessageKey":key,'timestamp':Message_time, 'role': User_role})
-
+        # Store encrypted message in database
         DataRecord().store_chat_message(username,encrypted_message,str(key),str(Message_time),str(room_code))
+        
+        # Decrypt message for display in rooms dictionary
+        decrypted_message = Encrytion().unencryption(encrypted_message, str(key), str(room_code))
+        if decrypted_message != "Invalid Password,unable to decrypte":
+            rooms[room_code].append({
+                'username': username, 
+                'message': decrypted_message, 
+                "MessageKey": key,
+                'timestamp': Message_time, 
+                'role': User_role
+            })
     return '', 204  # No content response
 
 @app.route('/messages/<room_code>')
 def get_messages(room_code):
+    if room_code not in rooms:
+        # Fetch messages from database if not in memory
+        messages = DataRecord().fetch_chat_message()
+        if messages and room_code in messages:
+            rooms[room_code] = decrypt_messages(messages[room_code], room_code)
     return jsonify(rooms.get(room_code, []))
 
 @app.route('/insertNewUser', methods = ['POST'])
