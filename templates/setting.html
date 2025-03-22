@@ -3,60 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Room Login </title>
+    <title>Chat Room Settings</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
-    
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body onload="access_setting()">
-    <h1>Setting</h1>
-    <div id="personal-setting">
-        <div class="setting-section">
-            <a>Theme setting</a>
-            <div class="switch-toggle">
-                <input id="dark-theme" name="theme-setting-button" class="setting-button" type="radio" style="display: none;" onclick="set_dark_theme()" checked>
-                <label for="dark-theme" class="setting-button">dark</label>
-                
-                <input id="bright-theme" name="theme-setting-button"  class="setting-button" type="radio" style="display: none;" onclick="set_bright_theme()">
-                <label for="bright-theme"class="setting-button">bright</label>
+    <h1><i class="fas fa-cog icon"></i>Settings</h1>
+    
+    <div class="settings-container">
+        <div class="setting-card">
+            <div class="setting-section">
+                <a><i class="fas fa-palette icon"></i>Theme Setting</a>
+                <div class="switch-toggle">
+                    <input id="dark-theme" name="theme-setting-button" type="radio" style="display: none;" onclick="set_dark_theme()" checked>
+                    <label for="dark-theme" class="setting-button"><i class="fas fa-moon"></i> Dark</label>
+                    
+                    <input id="bright-theme" name="theme-setting-button" type="radio" style="display: none;" onclick="set_bright_theme()">
+                    <label for="bright-theme" class="setting-button"><i class="fas fa-sun"></i> Bright</label>
+                </div>
+            </div>
+            
+            <div id="font-size-setting" class="setting-section">
+                <a><i class="fas fa-text-height icon"></i>Font Size</a>
+                <input id="font-size" type="number" max="30" min="13" onchange="set_font_size(document.getElementById('font-size').value)" value="18">
+            </div>
+            <button onclick="save_setting()"><i class="fas fa-save icon"></i>Save Changes</button>
+        </div>
+
+        <div class="setting-card">
+            <div id="change-username" class="setting-section">
+                <a><i class="fas fa-user icon"></i>Change Username</a>
+                <input type="text" id="Current-username" placeholder="Current Username" autocomplete="off" readonly onclick="this.removeAttribute('readonly');">
+                <input type="text" id="New-username" placeholder="New Username" autocomplete="off" readonly onclick="this.removeAttribute('readonly');">
+                <button id="Username-change-button" onclick="ChangeUserName()"><i class="fas fa-check icon"></i>Save Change</button>
             </div>
         </div>
-        
-        <div id="font-size-setting" class="setting-section">
-            <a>Font size setting</a>
-            <label></label>
-            <input id="font-size" type="number" max="30" min="13" onchange="set_font_size(document.getElementById('font-size').value)" value="18">
+
+        <div class="setting-card">
+            <div id="change-password" class="setting-section">
+                <a><i class="fas fa-lock icon"></i>Change Password</a>
+                <input type="password" id="Current-password" placeholder="Current Password" autocomplete="off" readonly onclick="this.removeAttribute('readonly');">
+                <input type="password" id="New-password" placeholder="New Password" autocomplete="off" readonly onclick="this.removeAttribute('readonly');">
+                <button id="Password-change-button" onclick="ChangePassword()"><i class="fas fa-check icon"></i>Save Change</button>
+            </div>
         </div>
-        <button onclick="save_setting()">Save Change</button>
-    </div>
-    <div id="change-username" class="setting-section" autocomplete="off">
-        <a>Change Username</a>
-        <input type="text"  id="Current-username" placeholder="Current Username" autocomplete="off" readonly onclick="this.removeAttribute('readonly');">
-        <input type="text" id="New-username" placeholder="New Username" autocomplete="off" readonly onclick="this.removeAttribute('readonly');">
-        <button id="Username-change-button" onclick="ChangeUserName()">Save change</button>
 
-    </div>
-    <div id="change-password" class="setting-section">
-        <a>Change Password</a>
-        <input type="password"  id="Current-password" placeholder="Current Password" autocomplete="off" readonly onclick="this.removeAttribute('readonly');">
-        <input type="password" id="New-password" placeholder="New Password" autocomplete="off" readonly onclick="this.removeAttribute('readonly');">
-        <button id="Password-change-button" onclick="ChangePassword()">Save change</button>
+        <div class="setting-card">
+            <div id="change-email" class="setting-section">
+                <a><i class="fas fa-envelope icon"></i>Change Email</a>
+                <input type="email" id="New-email" placeholder="New Email" autocomplete="off" readonly onclick="this.removeAttribute('readonly');">
+                <button id="Email-change-button" onclick="send_ver_email()"><i class="fas fa-paper-plane icon"></i>Send Verification Code</button>
+                <input id="Verification-code" placeholder="Enter the code" style="display: none;">
+                <button id="email-confirmation-button" onclick="check_ver_code()" style="display: none;"><i class="fas fa-check icon"></i>Save Change</button>
+            </div>
+        </div>
 
+        <button id="danger-button" onclick="setting_off()"><i class="fas fa-times icon"></i>Exit</button>
     </div>
-    <div id="change-email" class="setting-section">
-        <a>Change Email</a>
-        <input type="email" id="New-email" placeholder="New Email" autocomplete="off" readonly onclick="this.removeAttribute('readonly');">
-        <button id="Email-change-button" onclick="send_ver_email()">Send Verification Code</button>
-        <input id="Verification-code" placeholder="Enter the code" style="display: none;">
-        <button id="email-confirmation-button"onclick="check_ver_code()" style="display: none;">Save Change</button>
-    </div>
-    <button onclick="setting_off() ">Exit</button>
             
     <script type="text/javascript" src="{{ url_for('static', filename='script.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='index_event.js') }}"></script>
