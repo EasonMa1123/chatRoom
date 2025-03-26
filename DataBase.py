@@ -215,5 +215,4 @@ class DataRecord:
         
         return transformed_data
 
-print(DataRecord().display_db())
 

@@ -71,6 +71,7 @@ def join_room():
 
 @app.route('/room_list')
 def chat_room_list():
+    rooms = DataRecord().fetch_chat_message()
     return jsonify([key for key in rooms])
 
 @app.route('/send', methods=['POST'])
@@ -99,11 +100,14 @@ def send():
 
 @app.route('/messages/<room_code>')
 def get_messages(room_code):
+
     if room_code not in rooms:
         # Fetch messages from database if not in memory
         messages = DataRecord().fetch_chat_message()
         if messages and room_code in messages:
             rooms[room_code] = decrypt_messages(messages[room_code], room_code)
+
+    
     return jsonify(rooms.get(room_code, []))
 
 @app.route('/insertNewUser', methods = ['POST'])
