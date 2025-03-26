@@ -20,7 +20,7 @@ def decrypt_messages(messages, room_code):
     for msg in messages:
         try:
             decrypted_message = Encrytion().unencryption(msg['message'], msg['messagekey'], str(room_code))
-            print(decrypted_message)
+
             if decrypted_message != "Invalid Password,unable to decrypte":
                 msg['message'] = decrypted_message
                 decrypted_messages.append(msg)
@@ -64,15 +64,15 @@ def join_room():
     room_code = request.form.get('room_code')
     data = DataRecord().fetch_room_data(room_code)
     
-    if str(room_code) in list(rooms.keys()):
+    if int(room_code) in data['id']:
         data.update({"Feedback": "Success", "room_code": room_code})
         return jsonify(data)
     return jsonify({"Feedback": "Room not found"})
 
 @app.route('/room_list')
 def chat_room_list():
-    rooms = DataRecord().fetch_chat_message()
-    return jsonify([key for key in rooms])
+    rooms_code = DataRecord().fetch_chat_message()
+    return jsonify([key for key in rooms_code])
 
 @app.route('/send', methods=['POST'])
 def send():
