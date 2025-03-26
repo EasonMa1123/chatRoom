@@ -1,3 +1,16 @@
+/*
+Main Chat Room Script
+This script handles the core chat room functionality including:
+- User authentication
+- Message sending and receiving
+- Room management
+- Auto-refresh functionality
+*/
+
+/**
+ * Logs out the current user and clears session storage
+ * Redirects to the login page
+ */
 function logout(){
     document.location.href = "/";
     sessionStorage.setItem("Username","")
@@ -6,16 +19,23 @@ function logout(){
     sessionStorage.setItem("role","")
 }
 
+/**
+ * Redirects the user to the admin panel
+ */
 function direct_to_adminP(){
     document.location.href = "/admin";
 }
 
+// Get room code from URL and update UI
 let roomCode = window.location.pathname.split("/").pop(); // Get room code from URL
 console.log("Room Code:", roomCode); // Debug log
 document.getElementById("room-code").textContent = roomCode; // Set room code in input field          
 document.getElementById("Chat-Room-Title").innerText = `Room: ${roomCode}`
 
-
+/**
+ * Checks if user is properly authenticated
+ * Redirects to login page if not authenticated
+ */
 function check_invalid_enter() {
     if (sessionStorage.getItem("Username") == null) {
         alert("You must log in first!");
@@ -23,6 +43,10 @@ function check_invalid_enter() {
     }
 }
 
+/**
+ * Loads and displays chat messages for the current room
+ * Fetches messages from server and updates the chat box
+ */
 function loadMessages() {
     console.log("Loading messages for room:", roomCode); // Debug log
     $.getJSON(`/messages/${roomCode}`, function(data) {
@@ -42,6 +66,10 @@ function loadMessages() {
     });
 }
 
+/**
+ * Sends a new message to the chat room
+ * Includes username, message content, room code, and user role
+ */
 function sendMessage() {
     let username = sessionStorage.getItem("Username");
     let message = $('#message').val();
@@ -64,12 +92,16 @@ function sendMessage() {
     }
 }
 
-
+/**
+ * Allows user to leave the current chat room
+ * Redirects to the lobby and clears room data
+ */
 function leave_room(){
     document.location.href = "/lobby";
     sessionStorage.setItem("room","")
 }
 
+// Add event listener for Enter key in message input
 document.getElementById("message").addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
         event.preventDefault(); // Prevent new line

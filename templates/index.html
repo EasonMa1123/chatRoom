@@ -1,55 +1,86 @@
+<!--
+Main chat room interface template.
+This template provides the user interface for the encrypted chat room, including:
+- Chat message display
+- Message input
+- User settings
+- Room management
+- Navigation menu
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags for proper character encoding and responsive design -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="Chat-Room-Title">Encrypte Chat Room</title>
+    
+    <!-- External resources -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Custom fonts for retro-style UI -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
 </head>
 <body onload="access_setting()">
+    <!-- Navigation menu toggle button -->
     <div>
         <label for="open_menu_button" style="font-size: 50px;color: aliceblue; margin-left: 10px;">☰</label>
-        <input type="button" onclick="menu_open()" class="sidebar-item" id="open_menu_button" style="display: none;"></button>
+        <input type="button" onclick="menu_open()" class="sidebar-item" id="open_menu_button" style="display: none;"></input>
     </div>
+    
+    <!-- Room information display -->
     <h1>ECR</h1>
     <h1>Room Code: <span id="room-code"></span></h1>
 
+    <!-- Sidebar navigation menu -->
     <div id="sidebar" class="w3-sidebar">
+        <!-- User account information -->
         <div id="account-detail">
             <label>User:</label>
             <label id="Username-display">Username</label>
         </div>
+        
+        <!-- Menu close button -->
         <button onclick="menu_close()" class="sidebar-item">Close &times;</button>
         
         <div style="margin: 30px;"></div>
+        
+        <!-- Navigation options -->
         <label for="setting" class="sidebar-option-item">Setting </label>
         <input type="radio" id="setting" onclick="setting_on()" style="display: none;">
+        
+        <!-- Admin panel access (shown only for admin users) -->
         <label for="admin" class="sidebar-option-item" id="admin-label">Admin</label>
         <input type="radio" id="admin" onclick="direct_to_adminP()" style="display: none;">
 
         <div style="margin: 30px;"></div>
         
+        <!-- Room management options -->
         <label for="leave-room" class="sidebar-option-item">Leave Room</label>
         <input type="radio" id="leave-room" onclick="leave_room()" style="display: none;">
 
         <div style="margin: 30px;"></div>
+        
+        <!-- Account management -->
         <label for="logout" class="sidebar-option-item">Log out</label>
         <input type="radio" id="logout" onclick="logout()" style="display: none;">
     </div>
+
+    <!-- Main chat interface -->
     <div id="content-wrapper">
-        
+        <!-- Chat message display area -->
         <div id="chat-box"></div>
+        
+        <!-- Message input area -->
         <input type="text" id="message" placeholder="Type a message">
         <div id="content_central">
-        
-            
             <button onclick="sendMessage()">Send</button>
         </div>
     </div>
     
+    <!-- JavaScript files for functionality -->
     <script type="text/javascript" src="{{ url_for('static', filename='script.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='index_event.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='setting.js') }}"></script>

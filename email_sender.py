@@ -1,15 +1,42 @@
+"""
+Email sender module for the chat room system.
+This module handles sending HTML-formatted emails using Gmail's SMTP server.
+Used primarily for sending verification codes to users.
+"""
+
 import smtplib
 from email.mime.text import MIMEText
 from email.message import EmailMessage
 
 class email_send:
+    """
+    Email sender class that handles sending HTML-formatted emails.
+    Uses Gmail's SMTP server for sending emails.
+    """
+    
     def __init__(self):
+        """
+        Initialize the email sender with Gmail credentials.
+        Note: In a production environment, these credentials should be stored securely
+        and not hardcoded in the source code.
+        """
         self.sender = "emencryption@gmail.com"
-        self.password = "kpfo ebfp cmqv lfem"
-
+        self.password = "kpfo ebfp cmqv lfem"  # Gmail app-specific password
 
     def send_email(self,subject:str,message:str,recipient:str):
-
+        """
+        Send an HTML-formatted email to a recipient.
+        
+        Args:
+            subject (str): Email subject line
+            message (str): Main content of the email
+            recipient (str): Recipient's email address
+            
+        Note:
+            The email is sent using a pre-formatted HTML template with custom styling.
+            The message is displayed in a large, centered format with a green background.
+        """
+        # HTML email template with custom styling
         email_message = '''
 	<!DOCTYPE html>
 	<html>
@@ -45,11 +72,14 @@ class email_send:
 	</html>
 '''
 
+        # Create and configure email message
         msg = EmailMessage()
         msg['Subject'] = subject
         msg['From'] = self.sender
         msg['To'] = recipient
         msg.set_content(email_message, subtype='html')
+        
+        # Send email using Gmail's SMTP server
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp_server:
             smtp_server.login(self.sender, self.password)
             smtp_server.sendmail(self.sender, recipient, msg.as_string())

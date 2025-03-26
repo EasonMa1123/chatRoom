@@ -1,20 +1,39 @@
+/*
+User Settings Management Script
+This script handles all user settings functionality including:
+- Theme switching (dark/bright mode)
+- Font size adjustment
+- Username changes
+- Password updates
+- Email verification
+*/
 
+/**
+ * Sets the application theme to dark mode
+ */
 function set_dark_theme(){
     document.body.style.backgroundColor = "#121212";
-
 }
 
+/**
+ * Sets the application theme to bright mode
+ */
 function set_bright_theme(){
     document.body.style.backgroundColor = "#575757";
 }
 
+/**
+ * Updates the font size across the application
+ * @param {string} size - The new font size in pixels
+ */
 function set_font_size(size){
     document.body.style.fontSize = `${size}px`
 }
 
-
-
-
+/**
+ * Handles username change requests
+ * Validates input and updates username in database
+ */
 function ChangeUserName(){
     const old_username = document.getElementById("Current-username").value;
     const new_username = document.getElementById("New-username").value;
@@ -34,7 +53,10 @@ function ChangeUserName(){
     }
 }
 
-
+/**
+ * Handles password change requests
+ * Validates current password and checks strength of new password
+ */
 function ChangePassword(){
     const old_Password = document.getElementById("Current-password").value;
     const new_Password = document.getElementById("New-password").value;
@@ -59,31 +81,35 @@ function ChangePassword(){
     }
 }
 
-
+/**
+ * Saves current user settings to database
+ * Includes theme preference and font size
+ */
 function save_setting(){
     $.post('/access_account_detail',{Username:sessionStorage.getItem("Username")},function(data){
         const ID = data.ID
 
-
+        // Determine current theme
         if (document.body.style.backgroundColor == "rgb(87, 87, 87)"){
             var Theme = "bright"
-            
         }else {            
             var Theme = "dark"
         }
 
+        // Get current font size or use default
         if (document.body.style.fontSize == null ||document.body.style.fontSize == ""){
             var FontSize = "18px"
         } else{
             var FontSize = document.body.style.fontSize;
         }
         $.post('/update_user_setting',{id:ID,theme:Theme,fontSize:FontSize});
-        
-        
     })
 }
 
-
+/**
+ * Loads user settings from database
+ * Applies saved theme and font size preferences
+ */
 function access_setting(){
     check_invalid_enter()
     $.post('/access_account_detail',{Username:sessionStorage.getItem("Username")},function(data){
@@ -99,32 +125,35 @@ function access_setting(){
                     document.getElementById('dark-theme').checked = true;
                 }
                 document.body.style.fontSize = FontSize
-                
                 document.getElementById("font-size").value = Number(FontSize.substring(2,-2))
-                
-                
             }
         })
     })
 }
 
-
+/**
+ * Initiates email change process
+ * Sends verification code to new email address
+ */
 function send_ver_email(){
     var new_email=document.getElementById("New-email").value.toLowerCase()
     $.post('/access_account_detail',{Username:sessionStorage.getItem("Username")},function(data){
         if (data.email.toLowerCase() == new_email.toLowerCase()){
             alert("Same Email,Invalid Request!")
-
-        }else{ 
+        }else { 
             $.post('/email_verification',{Email:new_email},function(data){
                 const code = data.Code
                 document.getElementById("Verification-code").style.display = "flex";
                 document.getElementById("email-confirmation-button").style.display = "flex";
                 alert("Code sent!\nPlease Check email! ")
                 sessionStorage.setItem("ver_code",code)
-            })}})
+            })})
 }
 
+/**
+ * Verifies email change verification code
+ * Updates email if code is correct
+ */
 function check_ver_code(){
     var ver_code = sessionStorage.getItem("ver_code")
     var user_code = document.getElementById("Verification-code").value

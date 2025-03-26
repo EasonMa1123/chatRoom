@@ -1,73 +1,88 @@
+<!--
+Login and registration page template.
+This template provides the user interface for:
+- User login
+- New user registration
+- Email verification
+- Password strength checking
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags for proper character encoding and responsive design -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Room Login </title>
+    
+    <!-- External resources -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/static/styles_home.css">
+    
+    <!-- Font preloading for better performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Custom fonts for UI -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
-    
-    
 </head>
 <body>
-    
+    <!-- Main container for login/signup forms -->
     <div id="container">
+        <!-- Animated title -->
         <div class="typewriter">
             <h1>Encrypte Chat Room</h1>
         </div>
+        
+        <!-- Toggle switch between login and signup forms -->
         <div class="signup-login-switch-toggle" id="login-signup-switch">
-            
             <input id="login-button" name="state-d" type="radio" style="display: none;" onclick="login_open()" checked/>
             <label for="login-button">Login</label>
             
             <input id="signup-button" name="state-d" type="radio" style="display: none;" onclick="signup_open()"/>
             <label for="signup-button">Signup</label>
-
-
         </div>
-        <div id="login-form" class="processor" autocomplete="off">
 
+        <!-- Login form -->
+        <div id="login-form" class="processor" autocomplete="off">
             <label>Login</label>
             <input id="login-Username" placeholder="Username" autocomplete="off">
             <input id="login-Password" placeholder="Password" type="password" autocomplete="off" readonly onclick="this.removeAttribute('readonly');" >
             <button onclick="login()">Login</button>
-
         </div>
+
+        <!-- Signup form -->
         <div id="signup-form" class="processor" style="display: none;" autocomplete="off">
             <label> Signup</label>
 
+            <!-- Username input with validation -->
             <input id="signup-Username" placeholder="Username" autocomplete="off" readonly onclick="this.removeAttribute('readonly');">
             <label id="Username-warning"></label>
 
+            <!-- Password input with strength checking -->
             <input id="signup-Password" placeholder="Password" type="password" autocomplete="off">
-
-            
-
             <label id="Password-warning-1"></label>
             <label id="Password-warning-2"></label>
 
+            <!-- Password confirmation -->
             <input id="ConfirmPassword" placeholder="Confirm Password" type="password" autocomplete="off" readonly onclick="this.removeAttribute('readonly');">
             <label id="ConfirmPassword-warning"></label>
 
+            <!-- Email input with verification -->
             <input id="signup-email" placeholder="Email" autocomplete="off">
             <button id="Confirm-email-button" onclick="confirm_new_user_data()">Confirm Information</button>
             <input id="code-input" type="text" style="display: none;">
 
+            <!-- Final signup button (shown after email verification) -->
             <button id="Submit-button" onclick="submit_new_user_data()" style="display: none;">Sign Up</button>
         </div>
-
-
     </div>
+
+    <!-- JavaScript files for functionality -->
     <script type="text/javascript" src="{{ url_for('static', filename='home_event_script.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='password.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='home.js') }}"></script>
-
-
-
 </body>
 </html>
