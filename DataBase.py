@@ -44,6 +44,7 @@ class DataRecord:
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 username TEXT,
                 Message TEXT,
+                MessageKey TEXT,
                 timestamp TEXT,
                 roomCode INT
             )
@@ -116,7 +117,7 @@ class DataRecord:
 
     def access_account_setting(self, user_id, check):
         self.cc.execute("SELECT * FROM UserSettingData WHERE id = %s", (user_id,))
-        data = self.cc.fetchone()
+        data = self.cc.fetchall()
         if check:
             return data if data else []
         return [{key: self.unencrypting_data(value) if isinstance(value, str) else value for key, value in row.items()} for row in data] if data else None
@@ -147,15 +148,15 @@ class DataRecord:
         else:
             return False
 
-    def store_chat_message(self,username,time,message,chatroomID):
+    def store_chat_message(self,username,time,message,messageKey,chatroomID):
         self.cc.execute("""
-                INSERT INTO ChatRoomMessage (username,Message,timestamp,roomCode) VALUES (%s, %s, %s, %s)
-            """, (self.encrypting_data(username),self.encrypting_data(time),self.encrypting_data(message),int(chatroomID)))
+                INSERT INTO ChatRoomMessage (username,Message,MessageKey,timestamp,roomCode) VALUES (%s, %s, %s, %s,%s)
+            """, (self.encrypting_data(username),self.encrypting_data(time),self.encrypting_data(message),self.encrypting_data(messageKey),int(chatroomID)))
         self.DataBase.commit()
 
 
     def fetch_chat_message(self):
-        self.cc.execute(""" SELECT ChatRoomMessage.username,UserData.role,ChatRoomMessage.Message,ChatRoomMessage.timestamp,ChatRoomMessage.roomCode FROM ChatRoomMessage JOIN UserData ON ChatRoomMessage.username = UserData.username
+        self.cc.execute(""" SELECT ChatRoomMessage.username,ChatRoomMessage.MessageKey,UserData.role,ChatRoomMessage.Message,ChatRoomMessage.timestamp,ChatRoomMessage.roomCode FROM ChatRoomMessage JOIN UserData ON ChatRoomMessage.username = UserData.username
         """)
         data = self.cc.fetchall()
         if data != ():
@@ -170,7 +171,7 @@ class DataRecord:
 
 
     def display_db(self):
-        self.cc.execute("SELECT * FROM ChatRoomMessage")
+        self.cc.execute("SELECT * FROM UserData")
         data = self.cc.fetchall()
         return {key: [self.unencrypting_data(item[key]) for item in data] for key in data[0] if key != 'id' and key != 'roomCode'  }
 
@@ -213,6 +214,5 @@ class DataRecord:
             transformed_data[room_code].append(entry)
         
         return transformed_data
-
 
 

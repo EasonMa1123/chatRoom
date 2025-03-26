@@ -287,3 +287,7 @@ input:checked + .slider:before {
 .Chat-room-code:hover{
   background-color: #717171;
 }
+
+#room-password-container button{
+  width: auto;
+}

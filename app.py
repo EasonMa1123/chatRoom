@@ -12,8 +12,21 @@ from email_sender import email_send
 app = Flask(__name__)
 
 
-rooms = DataRecord().fetch_chat_message() if DataRecord().fetch_chat_message() else {}# Dictionary to store messages for each room
 
+rooms = {}  # Dictionary to store messages for each room
+
+def decrypt_messages(messages, room_code):
+    decrypted_messages = []
+    for msg in messages:
+        try:
+            decrypted_message = Encrytion().unencryption(msg['message'], msg['messagekey'], str(room_code))
+            print(decrypted_message)
+            if decrypted_message != "Invalid Password,unable to decrypte":
+                msg['message'] = decrypted_message
+                decrypted_messages.append(msg)
+        except:
+            continue
+    return decrypted_messages
 
 @app.route('/room/<room_code>')
 def index(room_code):
@@ -30,6 +43,10 @@ def home():
 @app.route('/admin')
 def admin():
     return render_template('admin.html')
+
+@app.route('/setting')
+def setting():
+    return render_template('setting.html')
 
 @app.route('/create_room', methods=['POST'])
 def create_room():
@@ -54,6 +71,7 @@ def join_room():
 
 @app.route('/room_list')
 def chat_room_list():
+    rooms = DataRecord().fetch_chat_message()
     return jsonify([key for key in rooms])
 
 @app.route('/send', methods=['POST'])
@@ -63,15 +81,33 @@ def send():
     room_code = request.form.get('room_code')
     User_role = request.form.get('role')
     Message_time = f'{((datetime.datetime.now()).strftime("%X"))} {((datetime.datetime.now()).strftime("%x"))}'
-
+    encrypted_message,key = Encrytion().encryption(message,str(room_code))
     if username and message and room_code in rooms:
-        rooms[room_code].append({'username': username, 'message': message, 'timestamp':Message_time, 'role': User_role})
-
-        DataRecord().store_chat_message(username,message,str(Message_time),str(room_code))
+        # Store encrypted message in database
+        DataRecord().store_chat_message(username,encrypted_message,str(key),str(Message_time),str(room_code))
+        
+        # Decrypt message for display in rooms dictionary
+        decrypted_message = Encrytion().unencryption(encrypted_message, str(key), str(room_code))
+        if decrypted_message != "Invalid Password,unable to decrypte":
+            rooms[room_code].append({
+                'username': username, 
+                'message': decrypted_message, 
+                "MessageKey": key,
+                'timestamp': Message_time, 
+                'role': User_role
+            })
     return '', 204  # No content response
 
 @app.route('/messages/<room_code>')
 def get_messages(room_code):
+
+    if room_code not in rooms:
+        # Fetch messages from database if not in memory
+        messages = DataRecord().fetch_chat_message()
+        if messages and room_code in messages:
+            rooms[room_code] = decrypt_messages(messages[room_code], room_code)
+
+    
     return jsonify(rooms.get(room_code, []))
 
 @app.route('/insertNewUser', methods = ['POST'])
@@ -147,7 +183,7 @@ def access_user_setting():
     if data ==  None:
         return jsonify({"Theme":None,"Fontsize":None})
     else:
-        return jsonify({"Theme":data[1],"Fontsize":data[2]})
+        return jsonify({"Theme":data[0]["Theme"],"Fontsize":data[0]["FontSize"]})
 
 
 @app.route('/accessUserRole',methods = ['POST'])   

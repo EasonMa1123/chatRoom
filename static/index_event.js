@@ -2,13 +2,15 @@
 
 
 function setting_on() {
-    document.getElementById("overlay-setting").style.display = "block";
+    document.location.href = "/setting";
     menu_close();
 
 }
   
 function setting_off() {
-    document.getElementById("overlay-setting").style.display = "none";
+    window.location.href = `/room/${sessionStorage.getItem("room")}`;
+    
+    
 } 
 
 

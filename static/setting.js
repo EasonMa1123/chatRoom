@@ -64,16 +64,20 @@ function save_setting(){
     $.post('/access_account_detail',{Username:sessionStorage.getItem("Username")},function(data){
         const ID = data.ID
 
-    
-        if (document.body.style.backgroundImage == "linear-gradient(rgb(17, 63, 112), rgb(255, 255, 255), rgb(17, 63, 112))"){
-            const Theme = "bright"
-            const FontSize = document.body.style.fontSize;
-            $.post('/update_user_setting',{id:ID,theme:Theme,fontSize:FontSize});
+
+        if (document.body.style.backgroundColor == "rgb(87, 87, 87)"){
+            var Theme = "bright"
+            
         }else {            
-            const Theme = "dark"
-            const FontSize = document.body.style.fontSize;
-            $.post('/update_user_setting',{id:ID,theme:Theme,fontSize:FontSize});
-        } 
+            var Theme = "dark"
+        }
+
+        if (document.body.style.fontSize == null ||document.body.style.fontSize == ""){
+            var FontSize = "18px"
+        } else{
+            var FontSize = document.body.style.fontSize;
+        }
+        $.post('/update_user_setting',{id:ID,theme:Theme,fontSize:FontSize});
         
         
     })

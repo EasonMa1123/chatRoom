@@ -11,7 +11,9 @@ function direct_to_adminP(){
 }
 
 let roomCode = window.location.pathname.split("/").pop(); // Get room code from URL
+console.log("Room Code:", roomCode); // Debug log
 document.getElementById("room-code").textContent = roomCode; // Set room code in input field          
+document.getElementById("Chat-Room-Title").innerText = `Room: ${roomCode}`
 
 
 function check_invalid_enter() {
@@ -22,23 +24,42 @@ function check_invalid_enter() {
 }
 
 function loadMessages() {
+    console.log("Loading messages for room:", roomCode); // Debug log
     $.getJSON(`/messages/${roomCode}`, function(data) {
+        console.log("Received messages:", data); // Debug log
         let chatBox = $('#chat-box');
         chatBox.html('');
-        data.forEach(msg => {
-            
-            chatBox.append(`<p><b>[${msg.role}] </b><b>${msg.username}:</b> ${msg.message}   <b style="float: right;">${msg.timestamp}</b></p>`);
-        });
+        if (data && data.length > 0) {
+            data.forEach(msg => {
+                console.log("Processing message:", msg); // Debug log
+                chatBox.append(`<p><b>[${msg.role}] </b><b>${msg.username}:</b> ${msg.message}   <b style="float: right;">${msg.timestamp}</b></p>`);
+            });
+        } else {
+            console.log("No messages found"); // Debug log
+        }
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        console.error("Error loading messages:", textStatus, errorThrown); // Debug log
     });
 }
 
 function sendMessage() {
     let username = sessionStorage.getItem("Username");
     let message = $('#message').val();
+    let role = sessionStorage.getItem("role");
+    console.log("Sending message:", {username, message, roomCode, role}); // Debug log
+    
     if (username && message) {
-        $.post('/send', {username: username, message: message, room_code: roomCode,role:sessionStorage.getItem("role")}, function() {
+        $.post('/send', {
+            username: username, 
+            message: message, 
+            room_code: roomCode,
+            role: role
+        }, function() {
+            console.log("Message sent successfully"); // Debug log
             $('#message').val('');
             loadMessages();
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            console.error("Error sending message:", textStatus, errorThrown); // Debug log
         });
     }
 }
