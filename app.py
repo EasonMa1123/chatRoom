@@ -194,20 +194,7 @@ def insert_new_user():
         DataRecord().insert_new_user(userName,password,Email)
         return jsonify({"Feedback":"Success"})
 
-@app.route('/password_strength', methods = ['POST'])
-def password_strength_check():
-    """
-    Checks the strength of a password.
-    
-    Expected form data:
-    - Password: Password to check
-    
-    Returns:
-        JSON response with password strength score
-    """
-    password = request.form['Password']
-    score = password_strength_checker().password_check(password)
-    return jsonify({"score":score})
+
 
 @app.route('/access_account_detail', methods = ['POST'])
 def access_account_detail():
