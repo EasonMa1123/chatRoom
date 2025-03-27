@@ -7,7 +7,6 @@ import time
 from flask import Flask, render_template, request, jsonify
 from encryption_V2 import Encrytion
 from DataBase import DataRecord
-from password_strength import password_strength_checker
 import random
 import datetime
 import json
