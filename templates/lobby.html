@@ -33,29 +33,34 @@ This template provides the interface for:
     <div id="container">
         <!-- Welcome message -->
         <h2>Welcome to the Chat Lobby</h2>
-        
-        <!-- Available chat rooms section -->
-        <div class="processor">
-            <p>Current Live Chat Room(Click to join)</p>
-            <!-- Dynamic list of available chat rooms -->
-            <div id="chat-room-list"></div>
+        <div id="lobby-container">
+            <!-- Available chat rooms section -->
+            <div class="processor">
+                <p>Current Live Chat Room(Click to join/Enter the code)</p>
+                <div id="manual-join-room">
+                    <input id="room-code" type="number">
+                    <button onclick="joinRoom(document.getElementById('room-code').value)">Submit Room Code</button>
+                </div>
+                <div style="margin: 30px;"></div>
+                <!-- Dynamic list of available chat rooms -->
+                <div id="chat-room-list"></div>
+                
+                <!-- Password entry modal for protected rooms -->
+                <div id="room-password-container" style="display: none;">
+                    <a id="selected-room-code"></a>
+                    <input type="password" id="Room-password" autocomplete="off"></input>
+                    <button onclick="JoinRoomCode()">Enter Room</button>
+                    <button onclick="close_room_password()">Exit</button>
+                </div>
+            </div>
             
-            <!-- Password entry modal for protected rooms -->
-            <div id="room-password-container" style="display: none;">
-                <a id="selected-room-code"></a>
-                <input type="password" id="Room-password" autocomplete="off"></input>
-                <button onclick="JoinRoomCode()">Enter Room</button>
-                <button onclick="close_room_password()">Exit</button>
+            <!-- Room creation section -->
+            <div class="processor">
+                <h3>Create a Room</h3>
+                <button onclick="createRoom()">Create Room</button>
+                <input type="password" id="room-password" placeholder="Enter room Password">
             </div>
         </div>
-        
-        <!-- Room creation section -->
-        <div class="processor">
-            <h3>Create a Room</h3>
-            <button onclick="createRoom()">Create Room</button>
-            <input type="password" id="room-password" placeholder="Enter room Password">
-        </div>
-        
         <!-- User logout button -->
         <button onclick="logout()">Log Out</button>
     </div>
