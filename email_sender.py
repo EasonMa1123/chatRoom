@@ -83,5 +83,5 @@ class email_send:
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp_server:
             smtp_server.login(self.sender, self.password)
             smtp_server.sendmail(self.sender, recipient, msg.as_string())
-            print("Message sent!")
+            
 

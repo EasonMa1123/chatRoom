@@ -111,8 +111,8 @@ def join_room():
 @app.route('/room_list')
 def chat_room_list():
     """Returns a list of all available chat rooms."""
-    rooms_code = DataRecord().fetch_chat_message()
-    return jsonify([key for key in rooms_code])
+    rooms_code = DataRecord().execute_custom_query("SELECT id FROM ChatRoom")
+    return jsonify([list(key.values()) for key in rooms_code])
 
 # Message handling endpoints
 @app.route('/send', methods=['POST'])
@@ -351,7 +351,7 @@ def email_verification():
     """
     import random
     email = request.form['Email']
-    code = random.randint(10000,99999)
+    code = random.randint(100000,999999)
     Title = "email Verification"
     Body = f'{code}'
     email_send().send_email(Title,Body,email)
