@@ -42,6 +42,8 @@ function confirm_new_user_data(){
         alert("Please enter a password")
     }else if (Password != Confirm_password){
         alert("Invalid Password confirmation!")
+    }else if(Password.includes("DROP")){
+        alert("Invalid Password")
     }else{
         // Send verification email
         $.post('/email_verification',{Email:Confirm_email}, function(data) {

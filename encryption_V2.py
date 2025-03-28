@@ -17,7 +17,7 @@ class Encrytion:
     Uses character mapping and key-based encryption for secure message transmission.
     """
     
-    def __init__(self,split_amount = 6):
+    def __init__(self,split_amount = 100):
         """
         Initialize the encryption system.
         

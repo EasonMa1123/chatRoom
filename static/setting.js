@@ -147,7 +147,9 @@ function send_ver_email(){
                 document.getElementById("email-confirmation-button").style.display = "flex";
                 alert("Code sent!\nPlease Check email! ")
                 sessionStorage.setItem("ver_code",code)
-            })})
+            })
+        }})
+
 }
 
 /**
