@@ -54,8 +54,14 @@ def lobby():
 
 @app.route('/')
 def home():
+    """Renders the redirect page."""
+    return render_template('redirect.html')
+
+@app.route('/login')
+def login():
     """Renders the login page."""
     return render_template('login.html')
+
 
 @app.route('/admin')
 def admin():
