@@ -440,5 +440,18 @@ def showtable():
 
     return jsonify({"table":",".join(table),"field":str(json.dumps(field_data))})
 
+@app.route('/ip')
+def get_client_ip():
+    # Get the IP address from request headers (for cases behind proxies)
+    ip = request.headers.get('X-Forwarded-For')
+    if ip:
+        ip = ip.split(',')[0]  # In case of multiple IPs, take the first one
+    else:
+        ip = request.remote_addr  # Default to remote address
+    print(ip)
+
+    return jsonify()
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
