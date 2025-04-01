@@ -1,23 +1,47 @@
+<!--
+User Settings Template
+This template provides the interface for users to:
+- Change theme (dark/bright mode)
+- Adjust font size
+- Update username
+- Change password
+- Manage account settings
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags for proper character encoding and responsive design -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Room Settings</title>
+    
+    <!-- External resources -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    
+    <!-- Font preloading for better performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Custom fonts for UI -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body onload="access_setting()">
+    <!-- Page title with settings icon -->
     <h1><i class="fas fa-cog icon"></i>Settings</h1>
     
+    <!-- Main settings container -->
     <div class="settings-container">
+        <!-- Theme and display settings card -->
         <div class="setting-card">
+            <!-- Theme selection section -->
             <div class="setting-section">
                 <a><i class="fas fa-palette icon"></i>Theme Setting</a>
                 <div class="switch-toggle">
@@ -29,13 +53,16 @@
                 </div>
             </div>
             
+            <!-- Font size adjustment section -->
             <div id="font-size-setting" class="setting-section">
                 <a><i class="fas fa-text-height icon"></i>Font Size</a>
                 <input id="font-size" type="number" max="30" min="13" onchange="set_font_size(document.getElementById('font-size').value)" value="18">
             </div>
+            <!-- Save display settings button -->
             <button onclick="save_setting()"><i class="fas fa-save icon"></i>Save Changes</button>
         </div>
 
+        <!-- Username change card -->
         <div class="setting-card">
             <div id="change-username" class="setting-section">
                 <a><i class="fas fa-user icon"></i>Change Username</a>
@@ -45,6 +72,7 @@
             </div>
         </div>
 
+        <!-- Password change card -->
         <div class="setting-card">
             <div id="change-password" class="setting-section">
                 <a><i class="fas fa-lock icon"></i>Change Password</a>

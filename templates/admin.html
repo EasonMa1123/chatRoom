@@ -1,52 +1,74 @@
+<!--
+Admin Panel Template
+This template provides a SQL query builder interface for administrators to:
+- Construct SELECT queries with multiple fields
+- Add WHERE clauses for filtering
+- Perform JOIN operations between tables
+- Execute and view query results
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags for proper character encoding and responsive design -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
+    
+    <!-- External resources -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/static/styles_home.css">
+    
+    <!-- Font preloading for better performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Custom fonts for UI -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
-
 </head>
 
 <body onload="load_panel()">
-
+    <!-- Main container for admin interface -->
     <div id="container">
-        
-        <div class="processor" >
+        <!-- SQL Query Builder Section -->
+        <div class="processor">
             <h1>SQL</h1>
             
+            <!-- SELECT clause builder -->
             <div class="SQL">
                 <a>SELECT</a>
                 <select class="sql-textarea" id="field-area" placeholder="SQL...." multiple></select>
                 <a>FROM</a>
                 <select class="sql-textarea" id="table-area" placeholder="SQL...." onchange="setup_field_name()"></select>
             </div>
+            
+            <!-- WHERE clause builder -->
             <div class="SQL">
                 <a>WHERE</a>
-                <select class="sql-textarea" id="con-field-area" placeholder="SQL...." ></select>
+                <select class="sql-textarea" id="con-field-area" placeholder="SQL...."></select>
                 <a>=</a>
                 <textarea type="text" class="sql-textarea" id="param-area" placeholder="Paramenter"></textarea>
-                
-
             </div>
+            
+            <!-- JOIN clause toggle switch -->
             <label class="switch">
                 <input type="checkbox" id="join-SQL-toggle" onclick="toggle_join()">
                 <span class="slider round"></span>
             </label>
-            <div class="SQL join-SQL" >
+            
+            <!-- JOIN clause builder (hidden by default) -->
+            <div class="SQL join-SQL">
                 <a>JOIN&nbsp</a>
-                <select class="sql-textarea" id="join-table-area" placeholder="SQL...."  onchange="join_table_update()"></select>
+                <select class="sql-textarea" id="join-table-area" placeholder="SQL...." onchange="join_table_update()"></select>
                 <a>&nbspON&nbsp</a>
             </div>
-            <div class="SQL join-SQL" >
+            
+            <!-- JOIN condition builder -->
+            <div class="SQL join-SQL">
                 <a id="current-table"></a>
-                <select class="sql-textarea" id="current-field-area" placeholder="SQL...." ></select>
+                <select class="sql-textarea" id="current-field-area" placeholder="SQL...."></select>
                 <a>&nbsp=&nbsp</a>
                 <a id="join-table"></a>
                 <select class="sql-textarea" id="join-field-area" placeholder="SQL...."></select>

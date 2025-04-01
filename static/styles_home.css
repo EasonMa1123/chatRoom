@@ -19,6 +19,16 @@ body {
   font-style: normal;
 }
 
+
+#lobby-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Ensures centering works well */
+  margin: 15px
+}
+
 #container {
   display: flex;
   flex-direction: column;
