@@ -5,12 +5,13 @@ This file handles all the routing and core functionality of the chat application
 
 import time
 from flask import Flask, render_template, request, jsonify
-from encryption_V2 import Encrytion
+
 from DataBase import DataRecord
 import random
 import datetime
 import json
 from email_sender import email_send
+from Encryption import encryption_V2
 
 # Initialize Flask application
 app = Flask(__name__)
@@ -32,7 +33,7 @@ def decrypt_messages(messages, room_code):
     decrypted_messages = []
     for msg in messages:
         try:
-            decrypted_message = Encrytion().unencryption(msg['message'], msg['messagekey'], str(room_code))
+            decrypted_message = encryption_V2.Encrytion().unencryption(msg['message'], msg['messagekey'], str(room_code))
 
             if decrypted_message != "Invalid Password,unable to decrypte":
                 msg['message'] = decrypted_message
@@ -140,13 +141,13 @@ def send():
     room_code = request.form.get('room_code')
     User_role = request.form.get('role')
     Message_time = f'{((datetime.datetime.now()).strftime("%X"))} {((datetime.datetime.now()).strftime("%x"))}'
-    encrypted_message,key = Encrytion().encryption(message,str(room_code))
+    encrypted_message,key = encryption_V2.Encrytion().encryption(message,str(room_code))
     if username and message and room_code in rooms:
         # Store encrypted message in database
         DataRecord().store_chat_message(username,encrypted_message,str(key),str(Message_time),str(room_code))
         
         # Decrypt message for display in rooms dictionary
-        decrypted_message = Encrytion().unencryption(encrypted_message, str(key), str(room_code))
+        decrypted_message = encryption_V2.Encrytion().unencryption(encrypted_message, str(key), str(room_code))
         if decrypted_message != "Invalid Password,unable to decrypte":
             rooms[room_code].append({
                 'username': username, 
