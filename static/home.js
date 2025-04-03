@@ -274,7 +274,7 @@ function createTableFromString(dataString) {
  * Returns to the current chat room
  */
 function return_room(){
-    window.location.href = `/room/${sessionStorage.getItem("room")}`;
+    window.location.href = `/lobby`;
 }
 
 /**

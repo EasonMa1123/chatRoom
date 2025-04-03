@@ -23,17 +23,19 @@ This stylesheet defines the visual appearance of the chat room interface, includ
 
 /* Sidebar navigation panel */
 #sidebar {
-  width: 250px;
+  height: 100%;
+  width: 0;
   position: fixed;
+  z-index: 1;
   top: 0;
   left: 0;
-  height: 100%;
-  background-color: #f1f1f1;
-  display: none;
-  z-index: 1000; /* Ensure it stays on top */
+  background-color: #111;
   overflow-x: hidden;
-  padding-top: 20px;
+  transition: 0.5s;
+  padding-top: 60px;
   box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+
+  transition: 1s;
 }
 
 /* Overlay for settings panel */

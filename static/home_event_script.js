@@ -1,5 +1,11 @@
 
-
+function check_user_role(){
+    if (sessionStorage.getItem("role") == "admin"){
+        document.getElementById("lobby-admin-portal").style.display = "block"
+    } else {
+        document.getElementById("lobby-admin-portal").style.display = "none" 
+    }
+}
 
 function load_panel(){
     check_invalid_enter() 

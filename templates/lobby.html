@@ -36,7 +36,7 @@ This template provides the interface for:
         <div id="lobby-container">
             <!-- Available chat rooms section -->
             <div class="processor">
-                <p>Current Live Chat Room(Click to join/Enter the code)</p>
+                <p>Current Live Chat Room<br></br>(Click to join/Enter the code)</p>
                 <div id="manual-join-room">
                     <input id="room-code" type="number">
                     <button onclick="joinRoom(document.getElementById('room-code').value)">Submit Room Code</button>
@@ -47,10 +47,14 @@ This template provides the interface for:
                 
                 <!-- Password entry modal for protected rooms -->
                 <div id="room-password-container" style="display: none;">
-                    <a id="selected-room-code"></a>
-                    <input type="password" id="Room-password" autocomplete="off"></input>
-                    <button onclick="JoinRoomCode()">Enter Room</button>
-                    <button onclick="close_room_password()">Exit</button>
+                    <div class="room-password-contain-2">
+                        <a id="selected-room-code"></a>
+                        <input type="password" id="Room-password" autocomplete="off"></input>
+                    </div>
+                    <div class="room-password-contain-2">
+                        <button onclick="JoinRoomCode()">Enter Room</button>
+                        <button onclick="close_room_password()">Exit</button>
+                    </div>
                 </div>
             </div>
             
@@ -58,9 +62,10 @@ This template provides the interface for:
             <div class="processor">
                 <h3>Create a Room</h3>
                 <button onclick="createRoom()">Create Room</button>
-                <input type="password" id="room-password" placeholder="Enter room Password">
+                <input  id="room-password">
             </div>
         </div>
+        <button id="lobby-admin-portal" onclick="document.location.href = '/admin';">
         <!-- User logout button -->
         <button onclick="logout()">Log Out</button>
     </div>
@@ -70,6 +75,7 @@ This template provides the interface for:
     <!-- Check if user is properly authenticated -->
     <script>
          check_invalid_enter()
+         check_user_role()
     </script>
     <script type="text/javascript" src="{{ url_for('static', filename='home.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='script.js') }}"></script>

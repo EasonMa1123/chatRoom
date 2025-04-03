@@ -298,6 +298,13 @@ input:checked + .slider:before {
   background-color: #717171;
 }
 
+
+#room-password-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 #room-password-container button{
   width: auto;
 }
+

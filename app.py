@@ -3,7 +3,7 @@ Main Flask application for the chat room system.
 This file handles all the routing and core functionality of the chat application.
 """
 
-import time
+
 from flask import Flask, render_template, request, jsonify
 
 from DataBase import DataRecord
