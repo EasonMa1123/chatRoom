@@ -5,7 +5,7 @@ and message storage with encryption support.
 """
 
 import pymysql
-from Encryption import encryption_V2
+from ExponEncryption import Encrytion
 
 class DataRecord:
     """
@@ -314,7 +314,7 @@ class DataRecord:
         Returns:
             str: Encrypted data
         """
-        return encryption_V2.Encrytion().hashing(data)
+        return Encrytion().hashing(data)
         
     def unencrypting_data(self, data):
         """
@@ -326,7 +326,7 @@ class DataRecord:
         Returns:
             str: Decrypted data
         """
-        return encryption_V2.Encrytion().unhashing(data)
+        return Encrytion().unhashing(data)
 
     def display_db(self):
         """
