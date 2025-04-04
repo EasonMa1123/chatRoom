@@ -112,6 +112,7 @@ function save_setting(){
  */
 function access_setting(){
     check_invalid_enter()
+    get_username()
     $.post('/access_account_detail',{Username:sessionStorage.getItem("Username")},function(data){
         const ID = data.ID
         $.post('/access_user_setting',{id:ID},function(data){
@@ -170,5 +171,29 @@ function check_ver_code(){
             })
     })}else{
         alert("Incorrect Code")
+    }
+}
+
+function get_username(){
+    $.getJSON(`/getAllusername`, function(data) {
+        const username_field = document.getElementById("username-select")
+
+        username_field.innerHTML = ""
+
+        for (let x of data.usernames){
+
+            var option = document.createElement("option");
+            option.text = x;
+            username_field.add(option);
+    }})
+}
+
+function ban_user(){
+    const banning_user = document.getElementById("username-select").value
+    var confirm_user = prompt("Enter the username")
+    if (banning_user == confirm_user){
+        $.post('/banUser',{username:banning_user},function(data){
+            alert(`${banning_user} is banned` )
+        })
     }
 }

@@ -449,3 +449,11 @@ input:focus {
     }
 }
 
+
+.sql-textarea{
+  border-radius: 10px;
+  background-color: #282828;
+  color: white;
+  font-family:  "Silkscreen", serif;;
+  font-size: 25px;
+}
