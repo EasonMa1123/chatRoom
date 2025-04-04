@@ -22,6 +22,7 @@ class DataRecord:
         - UserSettingData: Stores user preferences
         - ChatRoomMessage: Stores chat messages
         - ChatRoom: Stores chat room information
+        - UserRoomBan: Stores Banned user 
         """
         timeout = 10
         # Connect to the MySQL database
@@ -77,6 +78,16 @@ class DataRecord:
                 id INT PRIMARY KEY,
                 roomAdmin TEXT,
                 roomPassword TEXT
+            )
+        """)
+        self.DataBase.commit()
+
+
+        self.cc.execute("""
+            CREATE TABLE IF NOT EXISTS UserRoomBan (
+                id INT PRIMARY KEY,
+                room TEXT,
+                Username TEXT
             )
         """)
         self.DataBase.commit()
@@ -367,6 +378,19 @@ class DataRecord:
                 return True
         except Exception as e:
             return f"Error executing query: {str(e)}"
+        
+    def appear_ban_user(self,username,room):
+
+        """
+        Add banned user to the table
+        """
+        self.cc.execute("""
+                INSERT INTO UserRoomBan (room,Username) VALUES (%s, %s)
+            """, (self.encrypting_data(username),self.encrypting_data(room),self.encrypting_data(username))
+            )
+        self.DataBase.commit()
+
+
 
     def transform_data(self,data):
         """

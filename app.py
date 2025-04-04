@@ -356,13 +356,14 @@ def getAllusername():
     return jsonify({"usernames":[list(key.values()) for key in data]})
 
 
-@app.route('/banUser',method=['POST'])
+@app.route('/banUser',methods=['POST'])
 def banUser():
     """
     Appear user to the banned user table in db
     """
     username = request.form['username']
-    return 200,''
+    room_code = request.form['room_code']
+    return jsonify({})
 
 @app.route('/email_verification',methods = ['POST'])
 def email_verification():
