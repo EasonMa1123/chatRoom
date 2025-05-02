@@ -18,6 +18,9 @@ app = Flask(__name__)
 
 # Dictionary to store chat messages for each room in memory
 rooms = {}  
+session_list = []
+
+session_storage = {}
 
 def decrypt_messages(messages, room_code):
     """
@@ -41,6 +44,23 @@ def decrypt_messages(messages, room_code):
         except:
             continue
     return decrypted_messages
+
+
+@app.route('/get_Session_ID')
+def get_session_ID():
+    '''
+    create a custom session code for further storage
+    '''
+    slot = "abcdefghijklmnMNOPQRSTUVWXYZopqrstuvwxyzABCDEFGHIJKL!@#$%^&*()_+-=[]{|\;}:',./<>?`~1234567890 "
+    code = ""
+    while True:
+        for i in range(50):
+            code+=random.choice(slot)
+        if code not in session_list:
+            session_list.append(code)
+            break
+    
+    return jsonify({"Code":code})
 
 # Route handlers for different pages
 @app.route('/room/<room_code>')
@@ -473,6 +493,14 @@ def get_client_ip():
 
     return jsonify()
 
+
+@app.route('Store_session_data',methods=['POST'])
+def store_session_data():
+    session_ID = request.form['Session_ID']
+    item_name = request.form['Item_Name']
+    item_value = request.form['Item_Value']
+    session_storage[session_ID][item_name] = item_value
+    return jsonify({"Feedback":True})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
