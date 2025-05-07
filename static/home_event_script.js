@@ -1,10 +1,11 @@
 
 function check_user_role(){
-    if (sessionStorage.getItem("role") == "admin"){
-        document.getElementById("lobby-admin-portal").style.display = "block"
-    } else {
-        document.getElementById("lobby-admin-portal").style.display = "none" 
-    }
+    $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"role"},function(data){
+        if (data.item_value == "admin"){
+            document.getElementById("lobby-admin-portal").style.display = "block"
+        } else {
+            document.getElementById("lobby-admin-portal").style.display = "none" 
+        }})
 }
 
 function load_panel(){
@@ -100,15 +101,16 @@ function setup_field_name(){
 }
 
 function check_invalid_enter() {
-    if (sessionStorage.getItem("Username") == null || sessionStorage.getItem("Username") == "") {
-        alert("You must log in first!");
-        window.location.href = "/";
-    }
-
-    if (window.location.href.includes("/admin") && sessionStorage.getItem("role") != "admin"){
-        alert("Invalid Access!");
-        window.location.href = "/";
-    }
+    $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"Username"},function(data){
+        if (data.item_Value == null || data.item_Value == "") {
+            alert("You must log in first!");
+            window.location.href = "/";
+        }})
+    $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"role"},function(data){
+        if (window.location.href.includes("/admin") &&  data.item_Value != "admin"){
+            alert("Invalid Access!");
+            window.location.href = "/";
+        }})
 }
 
 function join_table_update(){

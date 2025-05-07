@@ -494,12 +494,30 @@ def get_client_ip():
     return jsonify()
 
 
-@app.route('Store_session_data',methods=['POST'])
+@app.route('/Store_session_data',methods=['POST'])
 def store_session_data():
-    session_ID = request.form['Session_ID']
+    session_ID = str(request.form['Session_ID'])
     item_name = request.form['Item_Name']
     item_value = request.form['Item_Value']
+    
+    if session_ID not in session_storage:
+        session_storage[session_ID] = {}
     session_storage[session_ID][item_name] = item_value
+
+    return jsonify({"Feedback":True})
+
+
+@app.route('/access_session_data',methods=['POST'])
+def access_session_data():
+    session_ID = request.form['Session_ID']
+    item_name = request.form['Item_Name']
+    return jsonify({"item_Value":session_storage[session_ID][item_name]})
+
+
+@app.route('/remove_session_data',methods=['POST'])
+def remove_session_data():
+    session_ID = request.form['Session_ID']
+    session_storage.pop(str(session_ID))
     return jsonify({"Feedback":True})
 
 if __name__ == '__main__':
