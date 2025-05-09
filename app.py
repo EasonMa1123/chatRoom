@@ -366,24 +366,7 @@ def access_user_role():
         return jsonify({"role":data})
     
 
-@app.route('/getAllusername')
-def getAllusername():
-    """
-    return all username in database
-    """
-    data = DataRecord().execute_custom_query("SELECT username FROM  UserData")
-    
-    return jsonify({"usernames":[list(key.values()) for key in data]})
 
-
-@app.route('/banUser',methods=['POST'])
-def banUser():
-    """
-    Appear user to the banned user table in db
-    """
-    username = request.form['username']
-    room_code = request.form['room_code']
-    return jsonify({})
 
 @app.route('/email_verification',methods = ['POST'])
 def email_verification():

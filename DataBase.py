@@ -83,15 +83,6 @@ class DataRecord:
         self.DataBase.commit()
 
 
-        self.cc.execute("""
-            CREATE TABLE IF NOT EXISTS UserRoomBan (
-                id INT PRIMARY KEY,
-                room TEXT,
-                Username TEXT
-            )
-        """)
-        self.DataBase.commit()
-
     def check_user(self, user):
         """
         Check if a username already exists in the database.
@@ -378,18 +369,6 @@ class DataRecord:
                 return True
         except Exception as e:
             return f"Error executing query: {str(e)}"
-        
-    def appear_ban_user(self,username,room):
-
-        """
-        Add banned user to the table
-        """
-        self.cc.execute("""
-                INSERT INTO UserRoomBan (room,Username) VALUES (%s, %s)
-            """, (self.encrypting_data(username),self.encrypting_data(room),self.encrypting_data(username))
-            )
-        self.DataBase.commit()
-
 
 
     def transform_data(self,data):
@@ -420,5 +399,4 @@ class DataRecord:
             transformed_data[room_code].append(entry)
         
         return transformed_data
-
 

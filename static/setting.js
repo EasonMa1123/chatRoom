@@ -125,7 +125,7 @@ function save_setting(){
  */
 function access_setting(){
     check_invalid_enter()
-    get_username()
+
     $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"Username"},function(data){
         $.post('/access_account_detail',{Username:data.item_Value},function(data){
             const ID = data.ID
@@ -187,29 +187,5 @@ function check_ver_code(){
             })
     })}else{
         alert("Incorrect Code")
-    }
-}
-
-function get_username(){
-    $.getJSON(`/getAllusername`, function(data) {
-        const username_field = document.getElementById("username-select")
-
-        username_field.innerHTML = ""
-
-        for (let x of data.usernames){
-
-            var option = document.createElement("option");
-            option.text = x;
-            username_field.add(option);
-    }})
-}
-
-function ban_user(){
-    const banning_user = document.getElementById("username-select").value
-    var confirm_user = prompt("Enter the username")
-    if (banning_user == confirm_user){
-        $.post('/banUser',{username:banning_user},function(data){
-            alert(`${banning_user} is banned` )
-        })
     }
 }
