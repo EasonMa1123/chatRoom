@@ -144,7 +144,6 @@ function joinRoom(roomCode){
 function JoinRoomCode() {
     $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"SelectRoom"},function(data){
         const roomCode = data.item_Value
-        alert(roomCode)
         $.post('/join_room', {room_code:roomCode }, function(response) {
             if (response.Feedback === "Success") {
                 const Room_password= response.roomPassword
