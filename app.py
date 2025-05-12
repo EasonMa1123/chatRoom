@@ -35,13 +35,16 @@ def decrypt_messages(messages, room_code):
     """
     decrypted_messages = []
     for msg in messages:
+        
         try:
             decrypted_message = Encrytion().decryption(msg['message'], msg['messagekey'], str(room_code))
 
             if decrypted_message != "Invalid Password,unable to decrypte":
                 msg['message'] = decrypted_message
                 decrypted_messages.append(msg)
+            
         except:
+            
             continue
     return decrypted_messages
 
@@ -193,9 +196,16 @@ def get_messages(room_code):
         # Fetch messages from database if not in memory
         messages = DataRecord().fetch_chat_message()
         if messages and room_code in messages:
-            rooms[room_code] = decrypt_messages(messages[room_code], room_code)
+            rooms[room_code] = messages[room_code]
+            
+    return jsonify(rooms)
 
-    return jsonify(rooms.get(room_code, []))
+@app.route('/decrypting_message',methods=['POST'])
+def decrypting_message():
+    message_data = request.form['message']
+    room_code = request.form['room_code']
+    
+    return jsonify(decrypt_messages(eval(message_data)[room_code],room_code))
 
 # User management endpoints
 @app.route('/insertNewUser', methods = ['POST'])

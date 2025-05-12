@@ -48,17 +48,19 @@ function check_invalid_enter() {
 function loadMessages() {
     console.log("Loading messages for room:", roomCode); // Debug log
     $.getJSON(`/messages/${roomCode}`, function(data) {
-        console.log("Received messages:", data); // Debug log
-        let chatBox = $('#chat-box');
-        chatBox.html('');
-        if (data && data.length > 0) {
-            data.forEach(msg => {
-                console.log("Processing message:", msg); // Debug log
-                chatBox.append(`<p><b>[${msg.role}] </b><b>${msg.username}:</b> ${msg.message}   <b style="float: right;">${msg.timestamp}</b></p>`);
-            });
-        } else {
-            console.log("No messages found"); // Debug log
-        }
+        var message_data = data
+        $.post('/decrypting_message',{message:JSON.stringify(message_data),room_code:roomCode},function(data){
+            console.log("Received messages:", data); // Debug log
+            let chatBox = $('#chat-box');
+            chatBox.html('');
+            if (data && data.length > 0) {
+                data.forEach(msg => {
+                    console.log("Processing message:", msg); // Debug log
+                    chatBox.append(`<p><b>[${msg.role}] </b><b>${msg.username}:</b> ${msg.message}   <b style="float: right;">${msg.timestamp}</b></p>`);
+                });
+            } else {
+                console.log("No messages found"); // Debug log
+            }})
     }).fail(function(jqXHR, textStatus, errorThrown) {
         console.error("Error loading messages:", textStatus, errorThrown); // Debug log
     });
