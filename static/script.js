@@ -77,7 +77,9 @@ function sendMessage() {
         $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"role"},function(data){
             let role =  data.item_Value
             console.log("Sending message:", {username, message, roomCode, role}); // Debug log
-           
+            var chatBox = document.getElementById("chat-box");
+            
+            
             if (username && message) {
                 $.post('/send', {
                     username: username, 
@@ -87,7 +89,7 @@ function sendMessage() {
                 }, function() {
                     console.log("Message sent successfully"); // Debug log
                     $('#message').val('');
-                    loadMessages();
+                    loadMessages()
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     console.error("Error sending message:", textStatus, errorThrown); // Debug log
                 });

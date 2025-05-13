@@ -170,15 +170,9 @@ def send():
         DataRecord().store_chat_message(username,encrypted_message,str(key),str(Message_time),str(room_code))
         
         # Decrypt message for display in rooms dictionary
-        decrypted_message = Encrytion().decryption(encrypted_message, str(key), str(room_code))
-        if decrypted_message != "Invalid Password,unable to decrypte":
-            rooms[room_code].append({
-                'username': username, 
-                'message': decrypted_message, 
-                "MessageKey": key,
-                'timestamp': Message_time, 
-                'role': User_role
-            })
+        messages = DataRecord().fetch_chat_message()
+        if messages and room_code in messages:
+            rooms[room_code] = messages[room_code]
     return '', 204  # No content response
 
 @app.route('/messages/<room_code>')
