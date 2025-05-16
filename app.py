@@ -22,6 +22,9 @@ session_list = []
 
 session_storage = {}
 
+
+Encrypt_processor = Encrytion(request_key="encryption_ChatRoom")
+
 def decrypt_messages(messages, room_code):
     """
     Decrypts a list of messages for a specific room.
@@ -37,7 +40,7 @@ def decrypt_messages(messages, room_code):
     for msg in messages:
         
         try:
-            decrypted_message = Encrytion().decryption(msg['message'], msg['messagekey'], str(room_code))
+            decrypted_message = Encrypt_processor.decryption(msg['message'], msg['messagekey'], str(room_code))
 
             if decrypted_message != "Invalid Password,unable to decrypte":
                 msg['message'] = decrypted_message
@@ -164,9 +167,14 @@ def send():
     room_code = request.form.get('room_code')
     User_role = request.form.get('role')
     Message_time = f'{((datetime.datetime.now()).strftime("%X"))} {((datetime.datetime.now()).strftime("%x"))}'
-    encrypted_message,key = Encrytion().encryption(message,str(room_code))
-    if username and message and room_code in rooms:
-        # Store encrypted message in database
+    encrypted_message,key = Encrypt_processor.encryption(message,str(room_code))
+    rooms_list = [list(item.values())[0] for item in DataRecord().execute_custom_query("SELECT id FROM ChatRoom")]
+    
+    if (room_code not in rooms) and (int(room_code) in rooms_list):
+        rooms[room_code] = []
+    if username and message and (room_code in rooms and int(room_code) in rooms_list):
+        
+    # Store encrypted message in database
         DataRecord().store_chat_message(username,encrypted_message,str(key),str(Message_time),str(room_code))
         
         # Decrypt message for display in rooms dictionary
@@ -191,14 +199,15 @@ def get_messages(room_code):
         messages = DataRecord().fetch_chat_message()
         if messages and room_code in messages:
             rooms[room_code] = messages[room_code]
-            
+       
     return jsonify(rooms)
 
 @app.route('/decrypting_message',methods=['POST'])
 def decrypting_message():
     message_data = request.form['message']
     room_code = request.form['room_code']
-    
+    if message_data == {} or message_data == '{}':
+        return jsonify(rooms)
     return jsonify(decrypt_messages(eval(message_data)[room_code],room_code))
 
 # User management endpoints

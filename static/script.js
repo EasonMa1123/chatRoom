@@ -49,6 +49,7 @@ function loadMessages() {
     console.log("Loading messages for room:", roomCode); // Debug log
     $.getJSON(`/messages/${roomCode}`, function(data) {
         var message_data = data
+        
         $.post('/decrypting_message',{message:JSON.stringify(message_data),room_code:roomCode},function(data){
             console.log("Received messages:", data); // Debug log
             let chatBox = $('#chat-box');
