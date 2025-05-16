@@ -13,10 +13,7 @@ This script handles the core chat room functionality including:
  */
 function logout(){
     document.location.href = "/";
-    sessionStorage.setItem("Username","")
-    sessionStorage.setItem("Password","")
-    sessionStorage.setItem("room","")
-    sessionStorage.setItem("role","")
+    $.post('/remove_session_data',{Session_ID:sessionStorage.getItem("Session_ID")})
 }
 
 /**
@@ -37,10 +34,11 @@ document.getElementById("Chat-Room-Title").innerText = `Room: ${roomCode}`
  * Redirects to login page if not authenticated
  */
 function check_invalid_enter() {
-    if (sessionStorage.getItem("Username") == null) {
-        alert("You must log in first!");
-        window.location.href = "/";
-    }
+    $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"Username"},function(data){
+        if (data.item_Value == null) {
+            alert("You must log in first!");
+            window.location.href = "/";
+        }})
 }
 
 /**
@@ -50,17 +48,20 @@ function check_invalid_enter() {
 function loadMessages() {
     console.log("Loading messages for room:", roomCode); // Debug log
     $.getJSON(`/messages/${roomCode}`, function(data) {
-        console.log("Received messages:", data); // Debug log
-        let chatBox = $('#chat-box');
-        chatBox.html('');
-        if (data && data.length > 0) {
-            data.forEach(msg => {
-                console.log("Processing message:", msg); // Debug log
-                chatBox.append(`<p><b>[${msg.role}] </b><b>${msg.username}:</b> ${msg.message}   <b style="float: right;">${msg.timestamp}</b></p>`);
-            });
-        } else {
-            console.log("No messages found"); // Debug log
-        }
+        var message_data = data
+        
+        $.post('/decrypting_message',{message:JSON.stringify(message_data),room_code:roomCode},function(data){
+            console.log("Received messages:", data); // Debug log
+            let chatBox = $('#chat-box');
+            chatBox.html('');
+            if (data && data.length > 0) {
+                data.forEach(msg => {
+                    console.log("Processing message:", msg); // Debug log
+                    chatBox.append(`<p><b>[${msg.role}] </b><b>${msg.username}:</b> ${msg.message}   <b style="float: right;">${msg.timestamp}</b></p>`);
+                });
+            } else {
+                console.log("No messages found"); // Debug log
+            }})
     }).fail(function(jqXHR, textStatus, errorThrown) {
         console.error("Error loading messages:", textStatus, errorThrown); // Debug log
     });
@@ -71,25 +72,29 @@ function loadMessages() {
  * Includes username, message content, room code, and user role
  */
 function sendMessage() {
-    let username = sessionStorage.getItem("Username");
-    let message = $('#message').val();
-    let role = sessionStorage.getItem("role");
-    console.log("Sending message:", {username, message, roomCode, role}); // Debug log
-    
-    if (username && message) {
-        $.post('/send', {
-            username: username, 
-            message: message, 
-            room_code: roomCode,
-            role: role
-        }, function() {
-            console.log("Message sent successfully"); // Debug log
-            $('#message').val('');
-            loadMessages();
-        }).fail(function(jqXHR, textStatus, errorThrown) {
-            console.error("Error sending message:", textStatus, errorThrown); // Debug log
-        });
-    }
+    $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"Username"},function(data){
+        let username = data.item_Value
+        let message = $('#message').val();
+        $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"role"},function(data){
+            let role =  data.item_Value
+            console.log("Sending message:", {username, message, roomCode, role}); // Debug log
+            var chatBox = document.getElementById("chat-box");
+            
+            
+            if (username && message) {
+                $.post('/send', {
+                    username: username, 
+                    message: message, 
+                    room_code: roomCode,
+                    role: role
+                }, function() {
+                    console.log("Message sent successfully"); // Debug log
+                    $('#message').val('');
+                    loadMessages()
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    console.error("Error sending message:", textStatus, errorThrown); // Debug log
+                });
+            }})})
 }
 
 /**

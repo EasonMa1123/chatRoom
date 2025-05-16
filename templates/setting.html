@@ -33,7 +33,7 @@ This template provides the interface for users to:
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
-<body onload="access_setting()">
+<body onload="access_setting();">
     <!-- Page title with settings icon -->
     <h1><i class="fas fa-cog icon"></i>Settings</h1>
     
@@ -91,10 +91,13 @@ This template provides the interface for users to:
                 <button id="email-confirmation-button" onclick="check_ver_code()" style="display: none;"><i class="fas fa-check icon"></i>Save Change</button>
             </div>
         </div>
+        
 
         <button id="danger-button" onclick="setting_off()"><i class="fas fa-times icon"></i>Exit</button>
     </div>
-            
+    <script>
+       
+    </script>
     <script type="text/javascript" src="{{ url_for('static', filename='script.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='index_event.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='setting.js') }}"></script>

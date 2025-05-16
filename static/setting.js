@@ -43,15 +43,26 @@ function ChangeUserName(){
     }
     else if (old_username == new_username){
         alert("Same Username!")
-    } else if(old_username == sessionStorage.getItem("Username")){
-        $.post("/access_account_detail",{Username:old_username},function(data){
-            const id = data.ID
-            $.post("/update_account_username",{id:id,New_username:new_username})
-            sessionStorage.setItem("Username",new_username)
-            alert("UserName Changed")
-        })
+    } else{
+        $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"Username"},function(data){
+            if(old_username == data.item_Value){
+            $.post("/access_account_detail",{Username:old_username},function(data){
+                const id = data.ID
+                $.post("/update_account_username",{id:id,New_username:new_username})
+                store_data(sessionStorage.getItem("Session_ID"),"Username",new_username)
+                alert("UserName Changed")
+        })}})
     }
 }
+
+/**
+ * Store Data to custom Json
+ */
+function store_data(session_ID,item_name,item_value){
+    
+    $.post('/Store_session_data',{Session_ID:session_ID,Item_Name:item_name,Item_Value:item_value})
+}
+
 
 /**
  * Handles password change requests
@@ -68,11 +79,12 @@ function ChangePassword(){
             if (data.score < 20){
                 alert("Password is not Strong enough")
             }else {
-                $.post("/access_account_detail",{Username:sessionStorage.getItem("Username")},function(data){
-                    $.post("/password_Update",{id:data.ID,New_password:new_Password})
-                    sessionStorage.setItem("Password",new_Password)
-                    alert("Password Changed")
-                })
+                $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"Username"},function(data){
+                    $.post("/access_account_detail",{Username:data.item_Value},function(data){
+                        $.post("/password_Update",{id:data.ID,New_password:new_Password})
+                        sessionStorage.setItem("Password",new_Password)
+                        alert("Password Changed")
+                    })})
         
             }
         })
@@ -86,24 +98,25 @@ function ChangePassword(){
  * Includes theme preference and font size
  */
 function save_setting(){
-    $.post('/access_account_detail',{Username:sessionStorage.getItem("Username")},function(data){
-        const ID = data.ID
+    $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"Username"},function(data){
+        $.post('/access_account_detail',{Username:data.item_Value},function(data){
+            const ID = data.ID
 
-        // Determine current theme
-        if (document.body.style.backgroundColor == "rgb(87, 87, 87)"){
-            var Theme = "bright"
-        }else {            
-            var Theme = "dark"
-        }
+            // Determine current theme
+            if (document.body.style.backgroundColor == "rgb(87, 87, 87)"){
+                var Theme = "bright"
+            }else {            
+                var Theme = "dark"
+            }
 
-        // Get current font size or use default
-        if (document.body.style.fontSize == null ||document.body.style.fontSize == ""){
-            var FontSize = "18px"
-        } else{
-            var FontSize = document.body.style.fontSize;
-        }
-        $.post('/update_user_setting',{id:ID,theme:Theme,fontSize:FontSize});
-    })
+            // Get current font size or use default
+            if (document.body.style.fontSize == null ||document.body.style.fontSize == ""){
+                var FontSize = "18px"
+            } else{
+                var FontSize = document.body.style.fontSize;
+            }
+            $.post('/update_user_setting',{id:ID,theme:Theme,fontSize:FontSize});
+        })})
 }
 
 /**
@@ -112,21 +125,24 @@ function save_setting(){
  */
 function access_setting(){
     check_invalid_enter()
-    $.post('/access_account_detail',{Username:sessionStorage.getItem("Username")},function(data){
-        const ID = data.ID
-        $.post('/access_user_setting',{id:ID},function(data){
-            if(data.Theme != null){
-                const Theme = data.Theme
-                const FontSize = data.Fontsize
-                if (Theme == "bright"){
-                    set_bright_theme()
-                    document.getElementById('bright-theme').checked = true;
-                } else{
-                    document.getElementById('dark-theme').checked = true;
+
+    $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"Username"},function(data){
+        $.post('/access_account_detail',{Username:data.item_Value},function(data){
+            const ID = data.ID
+            $.post('/access_user_setting',{id:ID},function(data){
+                if(data.Theme != null){
+                    const Theme = data.Theme
+                    const FontSize = data.Fontsize
+                    if (Theme == "bright"){
+                        set_bright_theme()
+                        document.getElementById('bright-theme').checked = true;
+                    } else{
+                        document.getElementById('dark-theme').checked = true;
+                    }
+                    document.body.style.fontSize = FontSize
+                    document.getElementById("font-size").value = Number(FontSize.substring(2,-2))
                 }
-                document.body.style.fontSize = FontSize
-                document.getElementById("font-size").value = Number(FontSize.substring(2,-2))
-            }
+            })
         })
     })
 }
@@ -137,19 +153,20 @@ function access_setting(){
  */
 function send_ver_email(){
     var new_email=document.getElementById("New-email").value.toLowerCase()
-    $.post('/access_account_detail',{Username:sessionStorage.getItem("Username")},function(data){
-        if (data.email.toLowerCase() == new_email.toLowerCase()){
-            alert("Same Email,Invalid Request!")
-        }else { 
-            $.post('/email_verification',{Email:new_email},function(data){
-                const code = data.Code
-                document.getElementById("Verification-code").style.display = "flex";
-                document.getElementById("email-confirmation-button").style.display = "flex";
-                alert("Code sent!\nPlease Check email! ")
-                sessionStorage.setItem("ver_code",code)
-            })
-        }})
-
+    $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"Username"},function(data){
+        $.post('/access_account_detail',{Username:data.item_Value},function(data){
+            if (data.email.toLowerCase() == new_email.toLowerCase()){
+                alert("Same Email,Invalid Request!")
+            }else { 
+                $.post('/email_verification',{Email:new_email},function(data){
+                    const code = data.Code
+                    document.getElementById("Verification-code").style.display = "flex";
+                    document.getElementById("email-confirmation-button").style.display = "flex";
+                    alert("Code sent!\nPlease Check email! ")
+                    sessionStorage.setItem("ver_code",code)
+                })
+            }})
+        })
 }
 
 /**

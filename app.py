@@ -3,20 +3,27 @@ Main Flask application for the chat room system.
 This file handles all the routing and core functionality of the chat application.
 """
 
-import time
+
 from flask import Flask, render_template, request, jsonify
-from encryption_V2 import Encrytion
+
 from DataBase import DataRecord
 import random
 import datetime
 import json
 from email_sender import email_send
+from ExponEncryption import Encrytion
 
 # Initialize Flask application
 app = Flask(__name__)
 
 # Dictionary to store chat messages for each room in memory
 rooms = {}  
+session_list = []
+
+session_storage = {}
+
+
+Encrypt_processor = Encrytion(request_key="encryption_ChatRoom")
 
 def decrypt_messages(messages, room_code):
     """
@@ -31,15 +38,35 @@ def decrypt_messages(messages, room_code):
     """
     decrypted_messages = []
     for msg in messages:
+        
         try:
-            decrypted_message = Encrytion().unencryption(msg['message'], msg['messagekey'], str(room_code))
+            decrypted_message = Encrypt_processor.decryption(msg['message'], msg['messagekey'], str(room_code))
 
             if decrypted_message != "Invalid Password,unable to decrypte":
                 msg['message'] = decrypted_message
                 decrypted_messages.append(msg)
+            
         except:
+            
             continue
     return decrypted_messages
+
+
+@app.route('/get_Session_ID')
+def get_session_ID():
+    '''
+    create a custom session code for further storage
+    '''
+    slot = "abcdefghijklmnMNOPQRSTUVWXYZopqrstuvwxyzABCDEFGHIJKL!@#$%^&*()_+-=[]{|\;}:',./<>?`~1234567890 "
+    code = ""
+    while True:
+        for i in range(50):
+            code+=random.choice(slot)
+        if code not in session_list:
+            session_list.append(code)
+            break
+    
+    return jsonify({"Code":code})
 
 # Route handlers for different pages
 @app.route('/room/<room_code>')
@@ -140,21 +167,20 @@ def send():
     room_code = request.form.get('room_code')
     User_role = request.form.get('role')
     Message_time = f'{((datetime.datetime.now()).strftime("%X"))} {((datetime.datetime.now()).strftime("%x"))}'
-    encrypted_message,key = Encrytion().encryption(message,str(room_code))
-    if username and message and room_code in rooms:
-        # Store encrypted message in database
+    encrypted_message,key = Encrypt_processor.encryption(message,str(room_code))
+    rooms_list = [list(item.values())[0] for item in DataRecord().execute_custom_query("SELECT id FROM ChatRoom")]
+    
+    if (room_code not in rooms) and (int(room_code) in rooms_list):
+        rooms[room_code] = []
+    if username and message and (room_code in rooms and int(room_code) in rooms_list):
+        
+    # Store encrypted message in database
         DataRecord().store_chat_message(username,encrypted_message,str(key),str(Message_time),str(room_code))
         
         # Decrypt message for display in rooms dictionary
-        decrypted_message = Encrytion().unencryption(encrypted_message, str(key), str(room_code))
-        if decrypted_message != "Invalid Password,unable to decrypte":
-            rooms[room_code].append({
-                'username': username, 
-                'message': decrypted_message, 
-                "MessageKey": key,
-                'timestamp': Message_time, 
-                'role': User_role
-            })
+        messages = DataRecord().fetch_chat_message()
+        if messages and room_code in messages:
+            rooms[room_code] = messages[room_code]
     return '', 204  # No content response
 
 @app.route('/messages/<room_code>')
@@ -172,9 +198,17 @@ def get_messages(room_code):
         # Fetch messages from database if not in memory
         messages = DataRecord().fetch_chat_message()
         if messages and room_code in messages:
-            rooms[room_code] = decrypt_messages(messages[room_code], room_code)
+            rooms[room_code] = messages[room_code]
+       
+    return jsonify(rooms)
 
-    return jsonify(rooms.get(room_code, []))
+@app.route('/decrypting_message',methods=['POST'])
+def decrypting_message():
+    message_data = request.form['message']
+    room_code = request.form['room_code']
+    if message_data == {} or message_data == '{}':
+        return jsonify(rooms)
+    return jsonify(decrypt_messages(eval(message_data)[room_code],room_code))
 
 # User management endpoints
 @app.route('/insertNewUser', methods = ['POST'])
@@ -343,6 +377,9 @@ def access_user_role():
         return 404,''
     else:
         return jsonify({"role":data})
+    
+
+
 
 @app.route('/email_verification',methods = ['POST'])
 def email_verification():
@@ -452,6 +489,32 @@ def get_client_ip():
 
     return jsonify()
 
+
+@app.route('/Store_session_data',methods=['POST'])
+def store_session_data():
+    session_ID = str(request.form['Session_ID'])
+    item_name = request.form['Item_Name']
+    item_value = request.form['Item_Value']
+    
+    if session_ID not in session_storage:
+        session_storage[session_ID] = {}
+    session_storage[session_ID][item_name] = item_value
+
+    return jsonify({"Feedback":True})
+
+
+@app.route('/access_session_data',methods=['POST'])
+def access_session_data():
+    session_ID = request.form['Session_ID']
+    item_name = request.form['Item_Name']
+    return jsonify({"item_Value":session_storage[session_ID][item_name]})
+
+
+@app.route('/remove_session_data',methods=['POST'])
+def remove_session_data():
+    session_ID = request.form['Session_ID']
+    session_storage.pop(str(session_ID))
+    return jsonify({"Feedback":True})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)

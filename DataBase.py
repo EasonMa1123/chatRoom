@@ -5,7 +5,7 @@ and message storage with encryption support.
 """
 
 import pymysql
-from encryption_V2 import Encrytion as ENC
+from ExponEncryption import Encrytion
 
 class DataRecord:
     """
@@ -22,6 +22,7 @@ class DataRecord:
         - UserSettingData: Stores user preferences
         - ChatRoomMessage: Stores chat messages
         - ChatRoom: Stores chat room information
+        - UserRoomBan: Stores Banned user 
         """
         timeout = 10
         # Connect to the MySQL database
@@ -80,6 +81,7 @@ class DataRecord:
             )
         """)
         self.DataBase.commit()
+
 
     def check_user(self, user):
         """
@@ -314,7 +316,7 @@ class DataRecord:
         Returns:
             str: Encrypted data
         """
-        return ENC().hashing(data)
+        return Encrytion().hashing(data)
         
     def unencrypting_data(self, data):
         """
@@ -326,7 +328,7 @@ class DataRecord:
         Returns:
             str: Decrypted data
         """
-        return ENC().unhashing(data)
+        return Encrytion().unhashing(data)
 
     def display_db(self):
         """
@@ -368,6 +370,7 @@ class DataRecord:
         except Exception as e:
             return f"Error executing query: {str(e)}"
 
+
     def transform_data(self,data):
         """
         Transform flat data structure into room-based message structure.
@@ -396,5 +399,4 @@ class DataRecord:
             transformed_data[room_code].append(entry)
         
         return transformed_data
-
 

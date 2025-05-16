@@ -8,25 +8,28 @@ function setting_on() {
 }
   
 function setting_off() {
-    window.location.href = `/room/${sessionStorage.getItem("room")}`;
+    $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"room"},function(data){
+        window.location.href = `/room/${data.item_Value}`;
+    })
     
     
 } 
 
 
 function menu_open() {
-    document.getElementById('sidebar').style.display = "block";
-    document.getElementById('Username-display').innerHTML = sessionStorage.getItem("Username")
-    if(sessionStorage.getItem("role") != "admin"){
-        document.getElementById('admin-label').style.display = "none";
+    document.getElementById('sidebar').style.width = "250px";
+    $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"Username"},function(data){
+        document.getElementById('Username-display').innerHTML = data.item_Value
+        $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"role"},function(data){
+            if(data.item_Value != "admin"){
+                document.getElementById('admin-label').style.display = "none";
 
-    }
-
-
+            }})
+    })
 }
 
 function menu_close() {
-    document.getElementById('sidebar').style.display = "None";
+    document.getElementById('sidebar').style.width = "0";
     document.getElementById('Username-display').innerHTML = ""
 
 
