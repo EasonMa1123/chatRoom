@@ -71,12 +71,11 @@ function store_data(session_ID,item_name,item_value){
 function ChangePassword(){
     const old_Password = document.getElementById("Current-password").value;
     const new_Password = document.getElementById("New-password").value;
-
-    if (old_Password == new_Password){
-        alert("Same Password!")
-    } else if(old_Password == sessionStorage.getItem("Password")){
-        $.post('/password_strength',{Password:new_Password},function(data){
-            if (data.score < 20){
+    $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"Password"},function(data){
+        if (old_Password == new_Password){
+            alert("Same Password!")
+        } else if(old_Password == data.item_Value){
+            if (password_strength(new_Password) < 40){
                 alert("Password is not Strong enough")
             }else {
                 $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"Username"},function(data){
@@ -87,10 +86,32 @@ function ChangePassword(){
                     })})
         
             }
-        })
-            } else{
-        alert("Invalid Password change")
-    }
+        } else{
+            alert("Invalid Password change")
+        }
+    })
+}
+
+function password_strength(password) {
+    let score = 0;
+    
+    // Length check (0-20 points)
+    if (password.length >= 8) score += 10;
+    if (password.length >= 12) score += 10;
+    
+    // Character type checks (0-40 points)
+    if (/[a-z]/.test(password)) score += 10;
+    if (/[A-Z]/.test(password)) score += 10;
+    if (/[0-9]/.test(password)) score += 10;
+    if (/[^a-zA-Z0-9]/.test(password)) score += 10;
+    
+    // Complexity checks (0-40 points)
+    if (password !== password.toLowerCase()) score += 10;
+    if (password !== password.toUpperCase()) score += 10;
+    if (/\d/.test(password)) score += 10;
+    if (/[^a-zA-Z0-9]/.test(password)) score += 10;
+    
+    return score;
 }
 
 /**
@@ -119,6 +140,19 @@ function save_setting(){
         })})
 }
 
+function check_invalid_enter() {
+    $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"Username"},function(data){
+        if (data.item_Value == null || data.item_Value == "") {
+            alert("You must log in first!");
+            window.location.href = "/";
+        }})
+    $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"role"},function(data){
+        if (window.location.href.includes("/admin") &&  data.item_Value != "admin"){
+            alert("Invalid Access!");
+            window.location.href = "/";
+        }})
+}
+
 /**
  * Loads user settings from database
  * Applies saved theme and font size preferences
@@ -133,11 +167,15 @@ function access_setting(){
                 if(data.Theme != null){
                     const Theme = data.Theme
                     const FontSize = data.Fontsize
-                    if (Theme == "bright"){
+                    if (Theme == "bright" && window.location.href.includes("/setting") ){
                         set_bright_theme()
                         document.getElementById('bright-theme').checked = true;
-                    } else{
-                        document.getElementById('dark-theme').checked = true;
+                    } else if (Theme == "bright" ){
+                        set_bright_theme()
+                    }else{
+                        if (window.location.href.includes("/setting") ){
+                            document.getElementById('dark-theme').checked = true;
+                        }
                     }
                     document.body.style.fontSize = FontSize
                     document.getElementById("font-size").value = Number(FontSize.substring(2,-2))
@@ -181,11 +219,14 @@ function check_ver_code(){
         var new_email=document.getElementById("New-email").value
         document.getElementById("Verification-code").style.display = "none";
         document.getElementById("email-confirmation-button").style.display = "none";
-        $.post('/access_account_detail',{Username:sessionStorage.getItem("Username")},function(data){
-            const ID = data.ID
-            $.post("/update_user_email",{id:ID,email:new_email},function(data){
+        $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"Username"},function(data){
+            $.post('/access_account_detail',{Username:data.item_Value},function(data){
+                const ID = data.ID
+                $.post("/update_user_email",{id:ID,email:new_email},function(data){
+                })
             })
-    })}else{
+        })
+    }else{
         alert("Incorrect Code")
     }
 }

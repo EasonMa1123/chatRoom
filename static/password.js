@@ -17,8 +17,8 @@ function password_strength(password) {
     let score = 0;
     
     // Length check (0-20 points)
-    if (len(password) >= 8) score += 10;
-    if (len(password) >= 12) score += 10;
+    if (password.length >= 8) score += 10;
+    if (password.length >= 12) score += 10;
     
     // Character type checks (0-40 points)
     if (/[a-z]/.test(password)) score += 10;
@@ -56,7 +56,7 @@ Password_input.onkeyup = function(){
 
     // Check password strength using client-side validation
     const strength = password_strength(Password_input_value);
-    if (strength < 20){
+    if (strength < 40){
         password_warning_2.innerHTML = "Password is not strong enough"
     } else{
         password_warning_2.innerHTML = ""

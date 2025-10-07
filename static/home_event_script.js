@@ -1,7 +1,7 @@
 
 function check_user_role(){
     $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"role"},function(data){
-        if (data.item_value == "admin"){
+        if (data.item_Value == "admin"){
             document.getElementById("lobby-admin-portal").style.display = "block"
         } else {
             document.getElementById("lobby-admin-portal").style.display = "none" 
