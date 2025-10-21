@@ -91,20 +91,17 @@ function login(){
         if (data.check == true){
             $.getJSON('/get_Session_ID',function(data){
                 sessionStorage.setItem("Session_ID",data.Code)
-
-                store_data(sessionStorage.getItem("Session_ID"),"Username",Username)
-                store_data(sessionStorage.getItem("Session_ID"),"Password",Password)
+                $.post('/accessUserRole',{userName:Username},function(data){
+                    store_data(sessionStorage.getItem("Session_ID"),"Username",Username)
+                    store_data(sessionStorage.getItem("Session_ID"),"Password",Password)
+                    store_data(sessionStorage.getItem("Session_ID"),"role",data.role)
+                    
+                    Username = "";
+                    Password = "";
+                    document.location.href = "/lobby";
+                })
             })
             
-            
-            
-            $.post('/accessUserRole',{userName:Username},function(data){
-                store_data(sessionStorage.getItem("Session_ID"),"role",data.role)
-                
-                Username = "";
-                Password = "";
-                document.location.href = "/lobby";
-            })
         } else {
             alert("Incorrect Password/Username")
         }
