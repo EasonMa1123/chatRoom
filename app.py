@@ -505,10 +505,12 @@ def store_session_data():
 
 @app.route('/access_session_data',methods=['POST'])
 def access_session_data():
-    session_ID = request.form['Session_ID']
-    item_name = request.form['Item_Name']
-    return jsonify({"item_Value":session_storage[session_ID][item_name]})
-
+    try:
+        session_ID = request.form['Session_ID']
+        item_name = request.form['Item_Name']
+        return jsonify({"item_Value":session_storage[session_ID][item_name]})
+    except:
+        return jsonify({"item_Value":"NULL"})
 
 @app.route('/remove_session_data',methods=['POST'])
 def remove_session_data():
