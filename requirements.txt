@@ -1,6 +1,6 @@
 flask
 pymysql
 gunicorn==23.0.0
-ExponEncryption
+ExponEncryption == 0.0.1
 cryptography
 

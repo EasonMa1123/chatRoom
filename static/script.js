@@ -34,6 +34,7 @@ document.getElementById("Chat-Room-Title").innerText = `Room: ${roomCode}`
  */
 function check_invalid_enter() {
     $.post('/access_session_data',{Session_ID:sessionStorage.getItem("Session_ID"),Item_Name:"Username"},function(data){
+        
         if (data.item_Value == null || data.item_Value == "NULL") {
             alert("You must log in first!");
             window.location.href = "/";
